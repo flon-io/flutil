@@ -8,7 +8,7 @@
 #include "flutil.h"
 
 
-describe "flu_strrtrim()"
+context "str functions"
 {
   before each
   {
@@ -19,11 +19,38 @@ describe "flu_strrtrim()"
     if (s != NULL) free(s);
   }
 
-  it "trims on the right"
+  describe "flu_strrtrim()"
   {
-    s = flu_strrtrim("brown fox \n\t");
+    it "trims on the right"
+    {
+      s = flu_strrtrim("brown fox \n\t");
 
-    ensure(strcmp("brown fox", s) == 0);
+      ensure(strcmp("brown fox", s) == 0);
+    }
+
+    it "doesn't trim when not necessary"
+    {
+      s = flu_strrtrim("");
+
+      ensure(strcmp("", s) == 0);
+    }
+  }
+
+  describe "flu_strtrim()"
+  {
+    it "trims on the left and on the right"
+    {
+      s = flu_strtrim("  \tbrown fox \n\t");
+
+      ensure(strcmp("brown fox", s) == 0);
+    }
+
+    it "doesn't trim when not necessary"
+    {
+      s = flu_strtrim("");
+
+      ensure(strcmp("", s) == 0);
+    }
   }
 }
 
