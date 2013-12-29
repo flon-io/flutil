@@ -19,7 +19,7 @@ context "str functions"
     if (s != NULL) free(s);
   }
 
-  describe "flu_strrtrim()"
+  describe "flu_strrtrim(char *s)"
   {
     it "trims on the right"
     {
@@ -34,9 +34,19 @@ context "str functions"
 
       ensure(strcmp("", s) == 0);
     }
+
+    it "returns a new string"
+    {
+      char *s0 = strdup("");
+      s = flu_strrtrim(s0);
+
+      ensure(s != s0);
+
+      free(s0);
+    }
   }
 
-  describe "flu_strtrim()"
+  describe "flu_strtrim(char *s)"
   {
     it "trims on the left and on the right"
     {
@@ -50,6 +60,19 @@ context "str functions"
       s = flu_strtrim("");
 
       ensure(strcmp("", s) == 0);
+    }
+  }
+
+  describe "flu_strends(char *s, char *ending)"
+  {
+    it "returns 1 if the s ends with ending"
+    {
+      ensure(flu_strends("toto", "to") == 1);
+    }
+
+    it "returns 0 else"
+    {
+      ensure(flu_strends("toto", "thenada") == 0);
     }
   }
 }
