@@ -5,7 +5,9 @@
 futile<ESC>xhhhil<ESC>
 ```
 
-[flon](http://flon.io) utility library, somehow.
+A [flon](http://flon.io) utility library, somehow.
+
+There's a [flutil.h](src/flutil.h), the doc is in there.
 
 
 ## License
