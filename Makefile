@@ -3,14 +3,8 @@ NAME=flutil
 
 default: $(NAME).o
 
-.DEFAULT:
+.DEFAULT spec clean:
 	$(MAKE) -C tmp/ $@ NAME=$(NAME)
-
-spec:
-	$(MAKE) -C tmp/ spec NAME=$(NAME)
-
-clean:
-	$(MAKE) -C tmp/ clean NAME=$(NAME)
 
 .PHONY: spec clean
 
