@@ -25,6 +25,9 @@
 
 // flutil.h
 
+#ifndef FLON_FLUTIL_H
+#define FLON_FLUTIL_H
+
 #include <stdarg.h>
 #include <string.h>
 
@@ -116,4 +119,7 @@ char *flu_sprintf(const char *format, ...);
  * and arguments.
  */
 void flu_die(int exit_value, const char *format, ...);
+
+
+#endif // FLON_FLUTIL_H
 
