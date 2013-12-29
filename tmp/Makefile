@@ -4,8 +4,10 @@ LDLIBS=
 CC=c99
 VPATH=../src
 
-# TODO: at some point deploy rodzo and help deploy it
-RODZO=../../rodzo/bin/rodzo
+RODZO=$(shell which rodzo)
+ifeq ($(RODZO),)
+  RODZO=../../rodzo/bin/rodzo
+endif
 
 
 s.c: ../spec/*_spec.c
