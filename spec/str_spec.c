@@ -37,7 +37,7 @@ context "str functions"
 
     it "returns a new string"
     {
-      char *s0 = strdup("");
+      char *s0 = rdz_strdup("");
       s = flu_strrtrim(s0);
 
       ensure(s != s0);
