@@ -21,5 +21,20 @@ context "sbuffer"
       free(s);
     }
   }
+
+  describe "flu_sbputc()"
+  {
+    it "prints a char to a flu_sbuffer"
+    {
+      flu_sbuffer *b = flu_sbuffer_malloc();
+
+      int c = flu_sbputc(b, 'a');
+
+      char *s = flu_sbuffer_to_string(b);
+
+      ensure(s ===f "a");
+      ensure(((char)c) == 'a');
+    }
+  }
 }
 
