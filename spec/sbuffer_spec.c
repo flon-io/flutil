@@ -16,9 +16,7 @@ context "sbuffer"
     {
       char *s = flu_sprintf("%d/%d/%d", 2013, 12, 19);
 
-      ensure(strcmp("2013/12/19", s) == 0);
-
-      free(s);
+      ensure(s ===f "2013/12/19");
     }
   }
 
