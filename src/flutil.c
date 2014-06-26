@@ -282,6 +282,22 @@ char *flu_n_unescape(const char *s, size_t n)
 //
 // colls
 
+flu_node *flu_node_malloc(void *item)
+{
+  flu_node *n = calloc(1, sizeof(flu_node));
+  n->item = item;
+  n->next = NULL;
+  //n->key = ...
+
+  return n;
+}
+
+void flu_node_free(flu_node *n)
+{
+  //if (n->key != NULL) free(n->key)
+  free(n);
+}
+
 flu_list *flu_list_malloc()
 {
   flu_list *l = calloc(1, sizeof(flu_list));
@@ -298,7 +314,7 @@ void flu_list_free(flu_list *l)
   for (flu_node *n = l->first; n != NULL; )
   {
     flu_node *next = n->next;
-    free(n);
+    flu_node_free(n);
     n = next;
   }
   free(l);
@@ -312,9 +328,7 @@ void flu_list_and_items_free(flu_list *l, void (*free_item)(void *))
 
 void flu_list_add(flu_list *l, void *item)
 {
-  flu_node *n = calloc(1, sizeof(flu_node));
-  n->item = item;
-  n->next = NULL;
+  flu_node *n = flu_node_malloc(item);
 
   if (l->first == NULL) l->first = n;
   if (l->last != NULL) l->last->next = n;
