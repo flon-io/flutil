@@ -156,6 +156,7 @@ char *flu_n_unescape(const char *s, size_t n);
 typedef struct flu_node {
   struct flu_node *next;
   void *item;
+  //char *key;
 } flu_node;
 
 typedef struct flu_list {
@@ -168,13 +169,21 @@ flu_list *flu_list_malloc();
 void flu_list_free(flu_list *l);
 void flu_list_and_items_free(flu_list *l, void (*free_item)(void *));
 
-void *flu_list_at(const flu_list *l, size_t n);
+//void *flu_list_at(const flu_list *l, size_t n);
+//size_t flu_list_indexof(const flu_list *l, void *item);
+//int flu_list_contains(const flu_list *l, void *item);
 
 void **flu_list_to_array(const flu_list *l);
 void **flu_list_to_array_n(const flu_list *l);
 
 void flu_list_add(flu_list *l, void *item);
+//void flu_list_add_unique(flu_list *l, void *item);
 //void flu_list_insert(flu_list *l, size_t index, const void *item);
+//void *flu_list_pop(flu_list *l);
+//void *flu_list_shift(flu_list *l);
+
+//flu_htable
+//flu_set
 
 
 //
