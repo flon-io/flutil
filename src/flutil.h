@@ -149,5 +149,30 @@ char *flu_n_escape(const char *s, size_t n);
 char *flu_unescape(const char *s);
 char *flu_n_unescape(const char *s, size_t n);
 
+
+//
+// colls
+
+typedef struct flu_node {
+  struct flu_node *next;
+  void *item;
+} flu_node;
+
+typedef struct flu_list {
+  flu_node *first;
+  flu_node *last;
+  size_t size;
+} flu_list;
+
+flu_list *flu_list_malloc();
+void flu_list_free(const flu_list *l);
+void flu_list_and_nodes_free(const flu_list *l, void (*free_item)(void *));
+
+void **flu_list_to_array(const flu_list *l);
+void **flu_list_to_array_n(const flu_list *l);
+
+void flu_list_add(flu_list *l, void *item);
+//void flu_list_insert(const flu_list *l, size_t index, const void *item);
+
 #endif // FLON_FLUTIL_H
 

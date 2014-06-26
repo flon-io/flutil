@@ -278,3 +278,40 @@ char *flu_n_unescape(const char *s, size_t n)
   return d;
 }
 
+
+//
+// colls
+
+flu_list *flu_list_malloc()
+{
+  flu_list *l = calloc(1, sizeof(flu_list));
+
+  l->first = NULL;
+  l->last = NULL;
+  l->size = 0;
+
+  return l;
+}
+
+void flu_list_free(const flu_list *l)
+{
+  //printf("l size: %zu\n", l->size);
+  for (flu_node *n = l->first; n != NULL; n = n->next)
+  {
+    //printf("n: %p\n", n);
+    free(n);
+  }
+}
+
+void flu_list_add(flu_list *l, void *item)
+{
+  flu_node *n = calloc(1, sizeof(flu_node));
+  n->item = item;
+  n->next = NULL;
+
+  if (l->first == NULL) l->first = n;
+  if (l->last != NULL) l->last->next = n;
+  l->last = n;
+  l->size++;
+}
+
