@@ -49,6 +49,38 @@ context "colls"
     }
   }
 
+  describe "flu_list_add_unique()"
+  {
+    it "adds if the item isn't part of the list"
+    {
+      l = flu_list_malloc();
+      flu_list_add_unique(l, "one");
+
+      ensure(l->size == 1);
+      ensure(l->first == l->last);
+
+      flu_list_add_unique(l, "two");
+
+      ensure(l->size == 2);
+      ensure(l->first->item === "one");
+      ensure(l->last->item === "two");
+    }
+
+    it "doesn't add if the item is already part of the list"
+    {
+      char *one = flu_strdup("one");
+
+      l = flu_list_malloc();
+      flu_list_add_unique(l, one);
+      ensure(l->size == 1);
+
+      flu_list_add_unique(l, one);
+      ensure(l->size == 1);
+
+      free(one);
+    }
+  }
+
   describe "flu_list_and_items_free()"
   {
     it "frees the list and all its items"

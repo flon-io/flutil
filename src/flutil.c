@@ -336,6 +336,16 @@ void flu_list_add(flu_list *l, void *item)
   l->size++;
 }
 
+void flu_list_add_unique(flu_list *l, void *item)
+{
+  for (flu_node *n = l->first; n != NULL; n = n->next)
+  {
+    if (n->item == item) return;
+  }
+
+  flu_list_add(l, item);
+}
+
 void **flu_list_to_array(const flu_list *l)
 {
   void **a = calloc(l->size, sizeof(void *));
