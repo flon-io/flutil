@@ -165,8 +165,8 @@ typedef struct flu_list {
 } flu_list;
 
 flu_list *flu_list_malloc();
-void flu_list_free(const flu_list *l);
-void flu_list_and_nodes_free(const flu_list *l, void (*free_item)(void *));
+void flu_list_free(flu_list *l);
+void flu_list_and_nodes_free(flu_list *l, void (*free_item)(void *));
 
 void **flu_list_to_array(const flu_list *l);
 void **flu_list_to_array_n(const flu_list *l);

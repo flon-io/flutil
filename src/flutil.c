@@ -293,14 +293,15 @@ flu_list *flu_list_malloc()
   return l;
 }
 
-void flu_list_free(const flu_list *l)
+void flu_list_free(flu_list *l)
 {
-  //printf("l size: %zu\n", l->size);
-  for (flu_node *n = l->first; n != NULL; n = n->next)
+  for (flu_node *n = l->first; n != NULL; )
   {
-    //printf("n: %p\n", n);
+    flu_node *next = n->next;
     free(n);
+    n = next;
   }
+  free(l);
 }
 
 void flu_list_add(flu_list *l, void *item)
