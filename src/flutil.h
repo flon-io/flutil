@@ -168,11 +168,19 @@ flu_list *flu_list_malloc();
 void flu_list_free(flu_list *l);
 void flu_list_and_items_free(flu_list *l, void (*free_item)(void *));
 
+void *flu_list_at(const flu_list *l, size_t n);
+
 void **flu_list_to_array(const flu_list *l);
 void **flu_list_to_array_n(const flu_list *l);
 
 void flu_list_add(flu_list *l, void *item);
 //void flu_list_insert(flu_list *l, size_t index, const void *item);
+
+
+//
+// misc
+
+char *flu_strdup(char *s);
 
 #endif // FLON_FLUTIL_H
 

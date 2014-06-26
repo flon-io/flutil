@@ -322,3 +322,32 @@ void flu_list_add(flu_list *l, void *item)
   l->size++;
 }
 
+void **flu_list_to_array(const flu_list *l)
+{
+  void **a = calloc(l->size, sizeof(void *));
+  size_t i = 0;
+  for (flu_node *n = l->first; n != NULL; n = n->next) a[i++] = n->item;
+  return a;
+}
+
+void **flu_list_to_array_n(const flu_list *l)
+{
+  void **a = calloc(l->size + 1, sizeof(void *));
+  size_t i = 0;
+  for (flu_node *n = l->first; n != NULL; n = n->next) a[i++] = n->item;
+  a[i] = NULL;
+  return a;
+}
+
+
+//
+// misc
+
+char *flu_strdup(char *s)
+{
+  int l = strlen(s);
+  char *r = calloc(l + 1, sizeof(char));
+  strcpy(r, s);
+  return r;
+}
+
