@@ -42,5 +42,23 @@ context "colls"
       ensure(l->first == l->last);
     }
   }
+
+  describe "flu_list_and_items_free()"
+  {
+    it "frees the list and all its items"
+    {
+      l = flu_list_malloc();
+      flu_list_add(l, strdup("hello"));
+      flu_list_add(l, strdup("world"));
+
+      ensure(l->size == 2);
+
+      flu_list_and_items_free(l, free);
+
+      l = NULL;
+
+      // that spec depends on Valgrind ;-)
+    }
+  }
 }
 

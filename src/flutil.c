@@ -304,6 +304,12 @@ void flu_list_free(flu_list *l)
   free(l);
 }
 
+void flu_list_and_items_free(flu_list *l, void (*free_item)(void *))
+{
+  for (flu_node *n = l->first; n != NULL; n = n->next) free_item(n->item);
+  flu_list_free(l);
+}
+
 void flu_list_add(flu_list *l, void *item)
 {
   flu_node *n = calloc(1, sizeof(flu_node));
