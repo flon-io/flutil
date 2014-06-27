@@ -182,7 +182,7 @@ int flu_list_add_unique(flu_list *l, void *item);
 //void *flu_list_pop(flu_list *l);
 //void *flu_list_shift(flu_list *l);
 
-//flu_htable
+//flu_htable h=100, k=1000
 //flu_set
 
 

@@ -116,7 +116,7 @@ context "colls"
       flu_list_add(l, flu_strdup("hello"));
       flu_list_add(l, flu_strdup("world"));
 
-      char **a = flu_list_to_array(l);
+      char **a = (char **)flu_list_to_array(l);
 
       ensure(a[0] ===f "hello");
       ensure(a[1] ===f "world");
@@ -133,7 +133,7 @@ context "colls"
       flu_list_add(l, flu_strdup("hello"));
       flu_list_add(l, flu_strdup("world"));
 
-      char **a = flu_list_to_array_n(l);
+      char **a = (char **)flu_list_to_array_n(l);
 
       ensure(a[0] ===f "hello");
       ensure(a[1] ===f "world");
