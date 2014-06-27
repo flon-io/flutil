@@ -90,6 +90,29 @@ context "colls"
     }
   }
 
+  describe "flu_list_at()"
+  {
+    it "returns NULL if pointed outside of the list"
+    {
+      l = flu_list_malloc();
+
+      flu_list_add(l, "one");
+
+      ensure(flu_list_at(l, 1) == NULL);
+    }
+
+    it "returns the item at the given index"
+    {
+      l = flu_list_malloc();
+
+      flu_list_add(l, "un");
+      flu_list_add(l, "deux");
+
+      ensure(flu_list_at(l, 0) === "un");
+      ensure(flu_list_at(l, 1) === "deux");
+    }
+  }
+
   describe "flu_list_and_items_free()"
   {
     it "frees the list and all its items"
