@@ -336,14 +336,15 @@ void flu_list_add(flu_list *l, void *item)
   l->size++;
 }
 
-void flu_list_add_unique(flu_list *l, void *item)
+int flu_list_add_unique(flu_list *l, void *item)
 {
   for (flu_node *n = l->first; n != NULL; n = n->next)
   {
-    if (n->item == item) return;
+    if (n->item == item) return 0; // not added
   }
 
   flu_list_add(l, item);
+  return 1; // added
 }
 
 void **flu_list_to_array(const flu_list *l)

@@ -53,14 +53,18 @@ context "colls"
   {
     it "adds if the item isn't part of the list"
     {
+      int r;
       l = flu_list_malloc();
-      flu_list_add_unique(l, "one");
 
+      r = flu_list_add_unique(l, "one");
+
+      ensure(r == 1); // added
       ensure(l->size == 1);
       ensure(l->first == l->last);
 
-      flu_list_add_unique(l, "two");
+      r = flu_list_add_unique(l, "two");
 
+      ensure(r == 1); // added
       ensure(l->size == 2);
       ensure(l->first->item === "one");
       ensure(l->last->item === "two");
@@ -68,13 +72,18 @@ context "colls"
 
     it "doesn't add if the item is already part of the list"
     {
+      int r;
       char *one = flu_strdup("one");
 
       l = flu_list_malloc();
-      flu_list_add_unique(l, one);
+      r = flu_list_add_unique(l, one);
+
+      ensure(r == 1); // added
       ensure(l->size == 1);
 
-      flu_list_add_unique(l, one);
+      r = flu_list_add_unique(l, one);
+
+      ensure(r == 0); // not added
       ensure(l->size == 1);
 
       free(one);
