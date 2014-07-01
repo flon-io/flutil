@@ -165,5 +165,20 @@ context "colls"
       free(a);
     }
   }
+
+  describe "flu_list_unshift()"
+  {
+    it "places an item at the first place in the list"
+    {
+      l = flu_list_malloc();
+      flu_list_unshift(l, "eins");
+      flu_list_unshift(l, "zwei");
+
+      ensure(l->size == 2);
+      ensure(flu_list_at(l, 0) === "zwei");
+      ensure(flu_list_at(l, 1) === "eins");
+      ensure(l->last->item === "eins");
+    }
+  }
 }
 
