@@ -180,5 +180,31 @@ context "colls"
       ensure(l->last->item === "eins");
     }
   }
+
+  describe "flu_list_shift()"
+  {
+    it "removes and returns the first item in the list"
+    {
+      l = flu_list_malloc();
+      flu_list_add(l, "hitotsu");
+      flu_list_add(l, "futatsu");
+
+      ensure(l->size == 2);
+
+      ensure(flu_list_shift(l) === "hitotsu");
+      ensure(l->first == l->last);
+      ensure(l->size == 1);
+
+      ensure(flu_list_shift(l) === "futatsu");
+      ensure(l->first == NULL);
+      ensure(l->last == NULL);
+      ensure(l->size == 0);
+
+      ensure(flu_list_shift(l) == NULL);
+      ensure(l->first == NULL);
+      ensure(l->last == NULL);
+      ensure(l->size == 0);
+    }
+  }
 }
 

@@ -367,6 +367,20 @@ void flu_list_unshift(flu_list *l, void *item)
   l->size++;
 }
 
+void *flu_list_shift(flu_list *l)
+{
+  if (l->size == 0) return NULL;
+
+  flu_node *n = l->first;
+  void *item = n->item;
+  l->first = n->next;
+  free(n);
+  if (l->first == NULL) l->last = NULL;
+  l->size--;
+
+  return item;
+}
+
 void **flu_list_to_array(const flu_list *l)
 {
   void **a = calloc(l->size, sizeof(void *));
