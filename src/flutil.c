@@ -282,7 +282,7 @@ char *flu_n_unescape(const char *s, size_t n)
 //
 // colls
 
-flu_node *flu_node_malloc(void *item)
+static flu_node *flu_node_malloc(const void *item)
 {
   flu_node *n = calloc(1, sizeof(flu_node));
   n->item = item;
