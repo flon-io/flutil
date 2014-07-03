@@ -337,7 +337,7 @@ void *flu_list_at(const flu_list *l, size_t n)
   return NULL;
 }
 
-void flu_list_add(flu_list *l, void *item)
+void flu_list_add(flu_list *l, const void *item)
 {
   flu_node *n = flu_node_malloc(item);
 
@@ -347,7 +347,7 @@ void flu_list_add(flu_list *l, void *item)
   l->size++;
 }
 
-int flu_list_add_unique(flu_list *l, void *item)
+int flu_list_add_unique(flu_list *l, const void *item)
 {
   for (flu_node *n = l->first; n != NULL; n = n->next)
   {
@@ -358,7 +358,7 @@ int flu_list_add_unique(flu_list *l, void *item)
   return 1; // added
 }
 
-void flu_list_unshift(flu_list *l, void *item)
+void flu_list_unshift(flu_list *l, const void *item)
 {
   flu_node *n = flu_node_malloc(item);
   n->next = l->first;
