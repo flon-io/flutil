@@ -165,21 +165,61 @@ typedef struct flu_list {
   size_t size;
 } flu_list;
 
+/* Creates a new, empty, flu_list
+ */
 flu_list *flu_list_malloc();
+
+
+/* Frees a flu_list and all its nodes. But doesn't attempt freeing the
+ * items in the nodes.
+ */
 void flu_list_free(flu_list *l);
+
+/* Frees a flu_list and all its nodes. Calls the given free_item function
+ * on each of the items within the nodes.
+ */
 void flu_list_and_items_free(flu_list *l, void (*free_item)(void *));
 
+/* Returns the nth element in a flu_list. Warning, takes n steps.
+ * Returns NULL if n > size of flu_list.
+ */
 void *flu_list_at(const flu_list *l, size_t n);
+
 //size_t flu_list_indexof(const flu_list *l, void *item);
 //int flu_list_contains(const flu_list *l, void *item);
 
+/* Returns an array of void pointers, pointers to the items in the flu_list.
+ * The size of the array is the size of the flu_list.
+ */
 void **flu_list_to_array(const flu_list *l);
+
+/* Returns the array of pointers to the items in the flu_list, with an
+ * extra NULL pointer at the end of the array.
+ */
 void **flu_list_to_array_n(const flu_list *l);
 
+/* Adds an item at the end of a flu_list.
+ */
 void flu_list_add(flu_list *l, void *item);
+
+/* Adds an item at the end of a flu_list. Doesn't add if the list already
+ * contains the item (well a pointer to the item).
+ * Returns 1 if the item was added, 0 if the item was found and not added.
+ *
+ * This function is used to turn a flu_list into a rickety "set". The
+ * bigger the list, the costlier the calls.
+ */
 int flu_list_add_unique(flu_list *l, void *item);
+
+/* Adds an item at the beginning of the list.
+ */
 void flu_list_unshift(flu_list *l, void *item);
+
+/* Removes the first item in the list and returns it.
+ * Returns NULL if the list is empty.
+ */
 void *flu_list_shift(flu_list *l);
+
 //void *flu_list_pop(flu_list *l);
 //void flu_list_insert(flu_list *l, size_t index, const void *item);
 
@@ -190,6 +230,8 @@ void *flu_list_shift(flu_list *l);
 //
 // misc
 
+/* For those "warning: implicit declaration of function 'strdup'" times.
+ */
 char *flu_strdup(char *s);
 
 #endif // FLON_FLUTIL_H
