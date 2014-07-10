@@ -171,6 +171,47 @@ char *flu_sprintf(const char *format, ...)
   return s;
 }
 
+//
+// readall
+
+char *flu_readall(const char *path)
+{
+  FILE *in = fopen(path, "r");
+
+  if (in == NULL) return NULL;
+
+  char *s = flu_freadall(in);
+  fclose(in);
+
+  return s;
+}
+
+char *flu_freadall(FILE *in)
+{
+  if (in == NULL) return NULL;
+
+  flu_sbuffer *b = flu_sbuffer_malloc();
+  char rb[1024];
+
+  while (1)
+  {
+    size_t s = fread(rb, 1024, 1, in);
+
+    if (s == 0)
+    {
+      if (feof(in) == 1) break;
+
+      // else error...
+      flu_sbuffer_free(b);
+      return NULL;
+    }
+
+    flu_sbputs(b, rb);
+  }
+
+  return flu_sbuffer_to_string(b);
+}
+
 
 //
 // die

@@ -109,6 +109,20 @@ char *flu_sprintf(const char *format, ...);
 
 
 //
+// using sbuffer to read the entirety of a file
+
+/* Given a path, reads the content of the path in a new string.
+ * Returns NULL if reading failed for any reason.
+ */
+char *flu_readall(const char *path);
+
+/* Given a file, reads all its content to a new string.
+ * Returns NULL if reading failed for any reason.
+ */
+char *flu_freadall(FILE *in);
+
+
+//
 // die
 
 /* Makes the process exit with the given exit_value. Right before
