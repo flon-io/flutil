@@ -28,6 +28,7 @@
 #ifndef FLON_FLUTIL_H
 #define FLON_FLUTIL_H
 
+#include <stdio.h>
 #include <stdarg.h>
 
 
