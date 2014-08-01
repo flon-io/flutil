@@ -320,7 +320,7 @@ char *flu_n_unescape(const char *s, size_t n)
 
 
 //
-// colls
+// flu_list
 
 static flu_node *flu_node_malloc(void *item)
 {
