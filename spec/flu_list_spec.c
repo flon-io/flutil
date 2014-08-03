@@ -166,6 +166,39 @@ context "colls"
     }
   }
 
+  describe "flu_list_to_array_r()"
+  {
+    it "creates a reversed array out of the list"
+    {
+      l = flu_list_malloc();
+      flu_list_add(l, flu_strdup("hello"));
+      flu_list_add(l, flu_strdup("world"));
+
+      char **a = (char **)flu_list_to_array_r(l, 0);
+
+      ensure(a[0] ===f "world");
+      ensure(a[1] ===f "hello");
+      //ensure(a[2] == NULL);
+
+      free(a);
+    }
+
+    it "returns the reversed array with a final NULL"
+    {
+      l = flu_list_malloc();
+      flu_list_add(l, flu_strdup("hello"));
+      flu_list_add(l, flu_strdup("world"));
+
+      char **a = (char **)flu_list_to_array_r(l, 1);
+
+      ensure(a[0] ===f "world");
+      ensure(a[1] ===f "hello");
+      ensure(a[2] == NULL);
+
+      free(a);
+    }
+  }
+
   describe "flu_list_unshift()"
   {
     it "places an item at the first place in the list"

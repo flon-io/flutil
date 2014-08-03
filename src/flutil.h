@@ -196,6 +196,12 @@ void *flu_list_at(const flu_list *l, size_t n);
  */
 void **flu_list_to_array(const flu_list *l, int add_extra_null);
 
+/* Same as flu_list_to_array() but the resulting array elements are
+ * in the reverse order.
+ * `add_extra_null` adds an extra NULL at the end.
+ */
+void **flu_list_to_array_r(const flu_list *l, int add_extra_null);
+
 /* Adds an item at the end of a flu_list.
  */
 void flu_list_add(flu_list *l, void *item);

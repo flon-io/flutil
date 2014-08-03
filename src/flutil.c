@@ -430,6 +430,15 @@ void **flu_list_to_array(const flu_list *l, int add_extra_null)
   return a;
 }
 
+void **flu_list_to_array_r(const flu_list *l, int add_extra_null)
+{
+  size_t s = l->size + (add_extra_null ? 1 : 0);
+  void **a = calloc(s, sizeof(void *));
+  size_t i = l->size;
+  for (flu_node *n = l->first; n != NULL; n = n->next) a[--i] = n->item;
+  return a;
+}
+
 
 //
 // misc
