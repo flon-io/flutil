@@ -131,7 +131,7 @@ context "colls"
     }
   }
 
-  describe "flu_list_to_array()"
+  describe "flu_list_to_array(l, 0)"
   {
     it "creates an array out of the list"
     {
@@ -139,7 +139,7 @@ context "colls"
       flu_list_add(l, flu_strdup("hello"));
       flu_list_add(l, flu_strdup("world"));
 
-      char **a = (char **)flu_list_to_array(l);
+      char **a = (char **)flu_list_to_array(l, 0);
 
       ensure(a[0] ===f "hello");
       ensure(a[1] ===f "world");
@@ -148,7 +148,7 @@ context "colls"
     }
   }
 
-  describe "flu_list_to_array_n()"
+  describe "flu_list_to_array(l, 1)"
   {
     it "creates a NULL terminated array out of the list"
     {
@@ -156,7 +156,7 @@ context "colls"
       flu_list_add(l, flu_strdup("hello"));
       flu_list_add(l, flu_strdup("world"));
 
-      char **a = (char **)flu_list_to_array_n(l);
+      char **a = (char **)flu_list_to_array(l, 1);
 
       ensure(a[0] ===f "hello");
       ensure(a[1] ===f "world");
