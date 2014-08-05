@@ -49,6 +49,14 @@ char *flu_strrtrim(const char *s);
  */
 char *flu_strtrim(const char *s);
 
+/* Returns the index of the first occurence of char c in string s.
+ */
+ssize_t flu_index(const char *s, char c);
+
+/* Returns the index of the last occurence of char c in string s.
+ */
+ssize_t flu_rindex(const char *s, char c);
+
 
 //
 // sbuffer

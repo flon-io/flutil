@@ -75,5 +75,31 @@ context "str functions"
       ensure(flu_strends("toto", "thenada") == 0);
     }
   }
+
+  describe "flu_index(char *s, char c)"
+  {
+    it "returns -1 if it doesn't find the char"
+    {
+      ensure(flu_index("nada", 'z') == -1);
+    }
+
+    it "returns the index of the first occurence of the char"
+    {
+      ensure(flu_index("nada", 'a') == 1);
+    }
+  }
+
+  describe "flu_rindex(char *s, char c)"
+  {
+    it "returns -1 if it doesn't find the char"
+    {
+      ensure(flu_rindex("nada", 'z') == -1);
+    }
+
+    it "returns the index of the last occurence of the char"
+    {
+      ensure(flu_rindex("nada", 'a') == 3);
+    }
+  }
 }
 
