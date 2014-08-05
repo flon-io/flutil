@@ -76,29 +76,39 @@ context "str functions"
     }
   }
 
-  describe "flu_index(char *s, char c)"
+  describe "flu_index(char *s, size_t off, char c)"
   {
     it "returns -1 if it doesn't find the char"
     {
-      ensure(flu_index("nada", 'z') == -1);
+      ensure(flu_index("nada", 0, 'z') == -1);
     }
 
     it "returns the index of the first occurence of the char"
     {
-      ensure(flu_index("nada", 'a') == 1);
+      ensure(flu_index("nada", 0, 'a') == 1);
+    }
+
+    it "returns the index of the 1st occurence of the char, starting at off"
+    {
+      ensure(flu_index("nada", 2, 'a') == 3);
     }
   }
 
-  describe "flu_rindex(char *s, char c)"
+  describe "flu_rindex(char *s, ssize_t off, char c)"
   {
     it "returns -1 if it doesn't find the char"
     {
-      ensure(flu_rindex("nada", 'z') == -1);
+      ensure(flu_rindex("nada", -1, 'z') == -1);
     }
 
     it "returns the index of the last occurence of the char"
     {
-      ensure(flu_rindex("nada", 'a') == 3);
+      ensure(flu_rindex("nada", -1, 'a') == 3);
+    }
+
+    it "returns the index of the last occurence of the char, starting at off"
+    {
+      ensure(flu_rindex("nada", 2, 'a') == 1);
     }
   }
 }
