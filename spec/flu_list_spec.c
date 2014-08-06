@@ -148,7 +148,7 @@ context "colls"
     }
   }
 
-  describe "flu_list_to_array(l, FLU_EXTRA_NULL)"
+  describe "flu_list_to_array(l, FLU_F_EXTRA_NULL)"
   {
     it "creates a NULL terminated array out of the list"
     {
@@ -156,7 +156,7 @@ context "colls"
       flu_list_add(l, flu_strdup("hello"));
       flu_list_add(l, flu_strdup("world"));
 
-      char **a = (char **)flu_list_to_array(l, FLU_EXTRA_NULL);
+      char **a = (char **)flu_list_to_array(l, FLU_F_EXTRA_NULL);
 
       ensure(a[0] ===f "hello");
       ensure(a[1] ===f "world");
@@ -166,7 +166,7 @@ context "colls"
     }
   }
 
-  describe "flu_list_to_array(l, FLU_REVERSE)"
+  describe "flu_list_to_array(l, FLU_F_REVERSE)"
   {
     it "creates a reversed array out of the list"
     {
@@ -174,7 +174,7 @@ context "colls"
       flu_list_add(l, flu_strdup("hello"));
       flu_list_add(l, flu_strdup("world"));
 
-      char **a = (char **)flu_list_to_array(l, FLU_REVERSE);
+      char **a = (char **)flu_list_to_array(l, FLU_F_REVERSE);
 
       ensure(a[0] ===f "world");
       ensure(a[1] ===f "hello");
@@ -189,7 +189,7 @@ context "colls"
       flu_list_add(l, flu_strdup("hello"));
       flu_list_add(l, flu_strdup("world"));
 
-      char **a = (char **)flu_list_to_array(l, FLU_REVERSE | FLU_EXTRA_NULL);
+      char **a = (char **)flu_list_to_array(l, FLU_F_REVERSE | FLU_F_EXTRA_NULL);
 
       ensure(a[0] ===f "world");
       ensure(a[1] ===f "hello");
