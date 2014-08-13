@@ -51,5 +51,26 @@ context "sbuffer"
       ensure(s ===f "hell freeze will");
     }
   }
+
+  describe "flu_sbwrite()"
+  {
+    it "writes part of a string to a flu_sbuffer"
+    {
+      flu_sbuffer *b = flu_sbuffer_malloc();
+
+      size_t s0 = flu_sbwrite(b, "freeze ", 7);
+      size_t s1 = flu_sbwrite(b, "will\0iam", 8);
+
+      ensure(s0 == 7);
+      ensure(s1 == 8);
+
+      char *s = flu_sbuffer_to_string(b);
+
+      ensure(s === "freeze will");
+      ensure(s[11] == '\0');
+      ensure(s + 12 === "iam");
+      free(s);
+    }
+  }
 }
 
