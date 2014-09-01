@@ -75,7 +75,7 @@ context "sbuffer"
 
   describe "flu_sbuffer_free()"
   {
-    it "frees an open flu_sbuffer"
+    it "frees an open buffer"
     {
       flu_sbuffer *b = flu_sbuffer_malloc();
 
@@ -84,7 +84,18 @@ context "sbuffer"
       ensure(1 == 1); // Valgrind should tell
     }
 
-    it "frees a closed flu_sbuffer"
+    it "frees a read buffer"
+    {
+      flu_sbuffer *b = flu_sbuffer_malloc();
+      char *s = flu_sbuffer_to_string(b);
+
+      flu_sbuffer_free(b);
+
+      ensure(s ===f "");
+      //ensure(s === "");
+    }
+
+    it "frees a closed buffer"
     {
       flu_sbuffer *b = flu_sbuffer_malloc();
       flu_sbuffer_close(b);
