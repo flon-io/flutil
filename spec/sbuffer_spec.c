@@ -84,16 +84,19 @@ context "sbuffer"
       ensure(1 == 1); // Valgrind should tell
     }
 
-    it "frees a read buffer"
-    {
-      flu_sbuffer *b = flu_sbuffer_malloc();
-      char *s = flu_sbuffer_to_string(b);
-
-      flu_sbuffer_free(b);
-
-      ensure(s ===f "");
-      //ensure(s === "");
-    }
+    //it "frees a read buffer"
+    //{
+    //  flu_sbuffer *b = flu_sbuffer_malloc();
+    //  char *s = flu_sbuffer_to_string(b);
+    //
+    //  flu_sbuffer_free(b);
+    //
+    //  ensure(s ===f "");
+    //  //ensure(s === "");
+    //}
+      //
+      // No, since flu_sbuffer_to_string() frees the buffer,
+      // freeing again necessarily fails.
 
     it "frees a closed buffer"
     {
