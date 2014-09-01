@@ -72,5 +72,27 @@ context "sbuffer"
       free(s);
     }
   }
+
+  describe "flu_sbuffer_free()"
+  {
+    it "frees an open flu_sbuffer"
+    {
+      flu_sbuffer *b = flu_sbuffer_malloc();
+
+      flu_sbuffer_free(b);
+
+      ensure(1 == 1); // Valgrind should tell
+    }
+
+    it "frees a closed flu_sbuffer"
+    {
+      flu_sbuffer *b = flu_sbuffer_malloc();
+      flu_sbuffer_close(b);
+
+      flu_sbuffer_free(b);
+
+      ensure(1 == 1); // Valgrind should tell
+    }
+  }
 }
 
