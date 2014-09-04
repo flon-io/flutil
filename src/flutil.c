@@ -363,14 +363,14 @@ static flu_node *flu_node_malloc(void *item)
   flu_node *n = calloc(1, sizeof(flu_node));
   n->item = item;
   n->next = NULL;
-  //n->key = ...
+  n->key = NULL;
 
   return n;
 }
 
 void flu_node_free(flu_node *n)
 {
-  //if (n->key != NULL) free(n->key)
+  if (n->key != NULL) free(n->key);
   free(n);
 }
 
@@ -468,6 +468,46 @@ void **flu_list_to_array(const flu_list *l, int flags)
     i = i + (flags & FLU_F_REVERSE ? -1 : 1);
   }
   return a;
+}
+
+void flu_list_set(flu_list *l, char *key, void *item)
+{
+  flu_list_unshift(l, item);
+  l->first->key = strdup(key);
+}
+
+void *flu_list_get(flu_list *l, char *key)
+{
+  for (flu_node *n = l->first; n != NULL; n = n->next)
+  {
+    if (n->key != NULL && strcmp(n->key, key) == 0) return n->item;
+  }
+  return NULL;
+}
+
+char **flu_list_keys(flu_list *l)
+{
+  char **r = calloc(l->size + 1, sizeof(char *));
+
+  for (flu_node *n = l->first; n != NULL; n = n->next)
+  {
+    for (size_t i = 0; i < l->size; i++)
+    {
+      if (r[i] == NULL) { r[i] = n->key; break; }
+      if (strcmp(r[i], n->key) == 0) { break; }
+    }
+  }
+
+  char **rr = calloc(l->size + 1, sizeof(char *));
+
+  for (ssize_t i = l->size, j = 0; i >= 0; i--)
+  {
+    if (r[i] != NULL) rr[j++] = r[i];
+  }
+
+  free(r);
+
+  return rr;
 }
 
 

@@ -178,7 +178,7 @@ char *flu_n_unescape(const char *s, size_t n);
 typedef struct flu_node {
   struct flu_node *next;
   void *item;
-  //char *key;
+  char *key;
 } flu_node;
 
 typedef struct flu_list {
@@ -250,8 +250,11 @@ void *flu_list_shift(flu_list *l);
 //void *flu_list_pop(flu_list *l);
 //void flu_list_insert(flu_list *l, size_t index, const void *item);
 
-//flu_htable h=100, k=1000
-//flu_set
+// dictionary functions
+
+void flu_list_set(flu_list *l, char *key, void *item);
+void *flu_list_get(flu_list *l, char *key);
+char **flu_list_keys(flu_list *l);
 
 
 //
