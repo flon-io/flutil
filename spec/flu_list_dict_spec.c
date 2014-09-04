@@ -39,6 +39,20 @@ context "flu_list as dict"
 
   describe "flu_list_get()"
   {
+    it "returns NULL if there is no item for the key"
+    {
+      ensure(flu_list_get(l, "red") == NULL);
+
+      flu_list_set(l, "red", "rot");
+      flu_list_set(l, "red", NULL);
+
+      ensure(flu_list_get(l, "red") == NULL);
+
+      flu_list_set(l, "red", "rouge");
+
+      ensure(flu_list_get(l, "red") === "rouge");
+    }
+
     it "returns the item for the first node with the given key"
     {
       flu_list_set(l, "red", "rot");
@@ -63,6 +77,8 @@ context "flu_list as dict"
       ensure(keys[0] === "red");
       ensure(keys[1] === "blue");
       ensure(keys[2] == NULL);
+
+      free(keys);
     }
 
     it "returns an array of the keys in the flu_list (2)"
