@@ -266,11 +266,6 @@ void flu_list_set(flu_list *l, char *key, void *item);
  */
 void *flu_list_get(flu_list *l, char *key);
 
-/* Returns an array of char*, the list of all the keys in the flu_list, in
- * the orders they were "unshifted" in (oldest last).
- */
-char **flu_list_keys(flu_list *l);
-
 /* Returns a trimmed (a unique value per key) version of the given flu_list
  * dictionary. Meant for iterating over key/values.
  */

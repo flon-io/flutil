@@ -472,8 +472,7 @@ void **flu_list_to_array(const flu_list *l, int flags)
 
 void flu_list_set(flu_list *l, char *key, void *item)
 {
-  flu_list_unshift(l, item);
-  l->first->key = strdup(key);
+  flu_list_unshift(l, item); l->first->key = strdup(key);
 }
 
 void *flu_list_get(flu_list *l, char *key)
@@ -485,32 +484,6 @@ void *flu_list_get(flu_list *l, char *key)
   return NULL;
 }
 
-char **flu_list_keys(flu_list *l)
-{
-  char **r = calloc(l->size + 1, sizeof(char *));
-
-  for (flu_node *n = l->first; n != NULL; n = n->next)
-  {
-    for (size_t i = 0; i < l->size; i++)
-    {
-      if (n->key == NULL) { continue; }
-      if (r[i] == NULL) { r[i] = n->key; break; }
-      if (strcmp(r[i], n->key) == 0) { break; }
-    }
-  }
-
-  char **rr = calloc(l->size + 1, sizeof(char *));
-
-  for (ssize_t i = l->size, j = 0; i >= 0; i--)
-  {
-    if (r[i] != NULL) rr[j++] = r[i];
-  }
-
-  free(r);
-
-  return rr;
-}
-
 flu_list *flu_list_dtrim(flu_list *l)
 {
   flu_list *r = flu_list_malloc();
@@ -519,8 +492,7 @@ flu_list *flu_list_dtrim(flu_list *l)
   {
     if (n->key == NULL) continue;
     if (flu_list_get(r, n->key) != NULL) continue;
-    flu_list_add(r, n->item);
-    r->last->key = strdup(n->key);
+    flu_list_add(r, n->item); r->last->key = strdup(n->key);
   }
 
   return r;

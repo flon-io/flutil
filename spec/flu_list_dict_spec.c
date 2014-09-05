@@ -73,57 +73,6 @@ context "flu_list as dict"
     }
   }
 
-  describe "flu_list_keys()"
-  {
-    it "returns an array of the keys in the flu_list"
-    {
-      flu_list_set(l, "red", "aka");
-      flu_list_set(l, "blue", "ao");
-
-      char **keys = flu_list_keys(l);
-
-      ensure(keys[0] === "red");
-      ensure(keys[1] === "blue");
-      ensure(keys[2] == NULL);
-
-      free(keys);
-    }
-
-    it "returns an array of the keys in the flu_list (2)"
-    {
-      flu_list_set(l, "red", "aka");
-      flu_list_set(l, "blue", "ao");
-      flu_list_set(l, "red", "rosso");
-      flu_list_set(l, "orange", "orange");
-      flu_list_set(l, "white", "bianco");
-
-      char **keys = flu_list_keys(l);
-
-      ensure(keys[0] === "blue");
-      ensure(keys[1] === "red");
-      ensure(keys[2] === "orange");
-      ensure(keys[3] === "white");
-      ensure(keys[4] == NULL);
-
-      free(keys);
-    }
-
-    it "skips non-keyed nodes"
-    {
-      flu_list_set(l, "blue", "bleu");
-      flu_list_unshift(l, "black");
-      flu_list_set(l, "white", "blanc");
-
-      char **keys = flu_list_keys(l);
-
-      ensure(keys[0] === "blue");
-      ensure(keys[1] === "white");
-      ensure(keys[2] == NULL);
-
-      free(keys);
-    }
-  }
-
   describe "flu_list_dtrim()"
   {
     it "returns a new, trimmed, flu_list"
