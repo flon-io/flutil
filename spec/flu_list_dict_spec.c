@@ -123,5 +123,42 @@ context "flu_list as dict"
       free(keys);
     }
   }
+
+  describe "flu_list_dtrim()"
+  {
+    it "returns a new, trimmed, flu_list"
+    {
+      flu_list_set(l, "red", "aka");
+      flu_list_set(l, "blue", "ao");
+
+      flu_list *tl = flu_list_dtrim(l);
+
+      ensure(tl->size == 2);
+      ensure(flu_list_at(tl, 0) === "ao");
+      ensure(flu_list_at(tl, 1) === "aka");
+      ensure(tl->first->key === "blue");
+      ensure(tl->last->key === "red");
+
+      flu_list_free(tl);
+    }
+
+    it "returns a new, trimmed, flu_list (2)"
+    {
+      flu_list_set(l, "blue", "bleu");
+      flu_list_unshift(l, "black");
+      flu_list_set(l, "white", "blanc");
+      flu_list_set(l, "blue", "blau");
+
+      flu_list *tl = flu_list_dtrim(l);
+
+      ensure(tl->size == 2);
+      ensure(flu_list_at(tl, 0) === "blau");
+      ensure(flu_list_at(tl, 1) === "blanc");
+      ensure(tl->first->key === "blue");
+      ensure(tl->last->key === "white");
+
+      flu_list_free(tl);
+    }
+  }
 }
 

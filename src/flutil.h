@@ -271,7 +271,10 @@ void *flu_list_get(flu_list *l, char *key);
  */
 char **flu_list_keys(flu_list *l);
 
-//flu_list *flu_list_dtrim(flu_list *l);
+/* Returns a trimmed (a unique value per key) version of the given flu_list
+ * dictionary. Meant for iterating over key/values.
+ */
+flu_list *flu_list_dtrim(flu_list *l);
 
 
 //

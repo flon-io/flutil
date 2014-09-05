@@ -511,6 +511,21 @@ char **flu_list_keys(flu_list *l)
   return rr;
 }
 
+flu_list *flu_list_dtrim(flu_list *l)
+{
+  flu_list *r = flu_list_malloc();
+
+  for (flu_node *n = l->first; n != NULL; n = n->next)
+  {
+    if (n->key == NULL) continue;
+    if (flu_list_get(r, n->key) != NULL) continue;
+    flu_list_add(r, n->item);
+    r->last->key = strdup(n->key);
+  }
+
+  return r;
+}
+
 
 //
 // misc
