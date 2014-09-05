@@ -250,11 +250,28 @@ void *flu_list_shift(flu_list *l);
 //void *flu_list_pop(flu_list *l);
 //void flu_list_insert(flu_list *l, size_t index, const void *item);
 
-// dictionary functions
+//
+// flu_list dictionary functions
+//
+// Where flu_list is used as a dictionary (warning: no hashing underneath,
+// plain unshifting of new bindings).
 
+/* Sets an item under a given key.
+ * Unshifts the new binding (O(1)).
+ */
 void flu_list_set(flu_list *l, char *key, void *item);
+
+/* Given a key, returns the item bound for it, NULL instead.
+ * (O(n)).
+ */
 void *flu_list_get(flu_list *l, char *key);
+
+/* Returns an array of char*, the list of all the keys in the flu_list, in
+ * the orders they were "unshifted" in (oldest last).
+ */
 char **flu_list_keys(flu_list *l);
+
+//flu_list *flu_list_dtrim(flu_list *l);
 
 
 //
