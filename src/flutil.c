@@ -493,6 +493,7 @@ char **flu_list_keys(flu_list *l)
   {
     for (size_t i = 0; i < l->size; i++)
     {
+      if (n->key == NULL) { continue; }
       if (r[i] == NULL) { r[i] = n->key; break; }
       if (strcmp(r[i], n->key) == 0) { break; }
     }

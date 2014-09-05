@@ -63,6 +63,14 @@ context "flu_list as dict"
 
       ensure(flu_list_get(l, "red") === "rouge");
     }
+
+    it "skips non-keyed nodes"
+    {
+      flu_list_set(l, "blue", "bleu");
+      flu_list_unshift(l, "black");
+
+      ensure(flu_list_get(l, "blue") === "bleu");
+    }
   }
 
   describe "flu_list_keys()"
@@ -96,6 +104,21 @@ context "flu_list as dict"
       ensure(keys[2] === "orange");
       ensure(keys[3] === "white");
       ensure(keys[4] == NULL);
+
+      free(keys);
+    }
+
+    it "skips non-keyed nodes"
+    {
+      flu_list_set(l, "blue", "bleu");
+      flu_list_unshift(l, "black");
+      flu_list_set(l, "white", "blanc");
+
+      char **keys = flu_list_keys(l);
+
+      ensure(keys[0] === "blue");
+      ensure(keys[1] === "white");
+      ensure(keys[2] == NULL);
 
       free(keys);
     }
