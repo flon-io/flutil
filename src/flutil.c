@@ -363,18 +363,25 @@ void **flu_list_to_array(const flu_list *l, int flags)
   return a;
 }
 
-void flu_list_set(flu_list *l, char *key, void *item)
+void flu_list_set(flu_list *l, const char *key, void *item)
 {
   flu_list_unshift(l, item); l->first->key = strdup(key);
 }
 
-void *flu_list_get(flu_list *l, char *key)
+static flu_node *flu_list_getn(flu_list *l, const char *key)
 {
   for (flu_node *n = l->first; n != NULL; n = n->next)
   {
-    if (n->key != NULL && strcmp(n->key, key) == 0) return n->item;
+    if (n->key != NULL && strcmp(n->key, key) == 0) return n;
   }
   return NULL;
+}
+
+void *flu_list_get(flu_list *l, const char *key)
+{
+  flu_node *n = flu_list_getn(l, key);
+
+  return n == NULL ? NULL : n->item;
 }
 
 flu_list *flu_list_dtrim(flu_list *l)
@@ -384,7 +391,7 @@ flu_list *flu_list_dtrim(flu_list *l)
   for (flu_node *n = l->first; n != NULL; n = n->next)
   {
     if (n->key == NULL) continue;
-    if (flu_list_get(r, n->key) != NULL) continue;
+    if (flu_list_getn(r, n->key) != NULL) continue;
     flu_list_add(r, n->item); r->last->key = strdup(n->key);
   }
 

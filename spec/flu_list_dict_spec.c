@@ -97,14 +97,23 @@ context "flu_list as dict"
       flu_list_unshift(l, "black");
       flu_list_set(l, "white", "blanc");
       flu_list_set(l, "blue", "blau");
+      flu_list_set(l, "white", NULL);
+      flu_list_set(l, "red", "rojo");
 
       flu_list *tl = flu_list_dtrim(l);
 
-      ensure(tl->size == 2);
-      ensure(flu_list_at(tl, 0) === "blau");
-      ensure(flu_list_at(tl, 1) === "blanc");
-      ensure(tl->first->key === "blue");
-      ensure(tl->last->key === "white");
+      //size_t i = 0;
+      //for (flu_node *n = tl->first; n != NULL; n = n->next)
+      //{
+      //  printf("%zu: %s: \"%s\"\n", i++, n->key, (char *)n->item);
+      //}
+
+      ensure(tl->size == 3);
+      ensure(flu_list_at(tl, 0) === "rojo");
+      ensure(flu_list_at(tl, 1) === NULL);
+      ensure(flu_list_at(tl, 2) === "blau");
+      ensure(tl->first->key === "red");
+      ensure(tl->last->key === "blue");
 
       flu_list_free(tl);
     }
