@@ -145,32 +145,6 @@ char *flu_freadall(FILE *in);
 
 
 //
-// die
-
-/* Makes the process exit with the given exit_value. Right before
- * that it does perror(msg) where msg is composed with the given format
- * and arguments.
- */
-void flu_die(int exit_value, const char *format, ...);
-
-
-//
-// escape
-
-/* Returns an escaped copy of the given string.
- * Only escapes \ " \b \f \n \r \t. It doesn't escape UTF-8 chars (the
- * ones above ASCII).
- */
-char *flu_escape(const char *s);
-char *flu_n_escape(const char *s, size_t n);
-
-/* Returns an unescaped copy of the given string.
- */
-char *flu_unescape(const char *s);
-char *flu_n_unescape(const char *s, size_t n);
-
-
-//
 // flu_list
 //
 // a minimal list/stack/set with no ambition
@@ -190,7 +164,6 @@ typedef struct flu_list {
 /* Creates a new, empty, flu_list
  */
 flu_list *flu_list_malloc();
-
 
 /* Frees a flu_list and all its nodes. But doesn't attempt freeing the
  * items in the nodes.
@@ -273,7 +246,29 @@ flu_list *flu_list_dtrim(flu_list *l);
 
 
 //
+// escape
+
+/* Returns an escaped copy of the given string.
+ * Only escapes \ " \b \f \n \r \t. It doesn't escape UTF-8 chars (the
+ * ones above ASCII).
+ */
+char *flu_escape(const char *s);
+char *flu_n_escape(const char *s, size_t n);
+
+/* Returns an unescaped copy of the given string.
+ */
+char *flu_unescape(const char *s);
+char *flu_n_unescape(const char *s, size_t n);
+
+
+//
 // misc
+
+/* Makes the process exit with the given exit_value. Right before
+ * that it does perror(msg) where msg is composed with the given format
+ * and arguments.
+ */
+void flu_die(int exit_value, const char *format, ...);
 
 /* For those "warning: implicit declaration of function 'strdup'" times.
  */
