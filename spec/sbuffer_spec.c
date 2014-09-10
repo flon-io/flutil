@@ -73,6 +73,20 @@ context "sbuffer"
     }
   }
 
+  describe "flu_sbfwrite()"
+  {
+    it "exposes fwrite for the sbuffer's stream"
+    {
+      flu_sbuffer *b = flu_sbuffer_malloc();
+
+      size_t i = flu_sbfwrite(b, "source", sizeof(char), 4);
+
+      ensure(i == 4);
+
+      ensure(flu_sbuffer_to_string(b) ===f "sour");
+    }
+  }
+
   describe "flu_sbuffer_free()"
   {
     it "frees an open buffer"
