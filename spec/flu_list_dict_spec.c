@@ -118,5 +118,21 @@ context "flu_list as dict"
       flu_list_free(tl);
     }
   }
+
+  describe "flu_d()"
+  {
+    it "builds a flu_list dict"
+    {
+      flu_list *d =
+        flu_d("name", "Hans", "age", 30, "balance", 1000L, NULL);
+
+      ensure(d->size == 3);
+      ensure(flu_list_get(d, "name") === "Hans");
+      ensure(flu_list_get(d, "age") == 30);
+      ensure(flu_list_get(d, "balance") == 1000L);
+
+      flu_list_free(d);
+    }
+  }
 }
 
