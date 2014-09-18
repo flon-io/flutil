@@ -131,6 +131,24 @@ context "flu_list"
     }
   }
 
+  describe "flu_list_free_all()"
+  {
+    it "frees the list and all its items"
+    {
+      l = flu_list_malloc();
+      flu_list_add(l, flu_strdup("hello"));
+      flu_list_add(l, flu_strdup("world"));
+
+      ensure(l->size == 2);
+
+      flu_list_free_all(l);
+
+      l = NULL;
+
+      // that spec depends on Valgrind ;-)
+    }
+  }
+
   describe "flu_list_to_array(l, 0)"
   {
     it "creates an array out of the list"
