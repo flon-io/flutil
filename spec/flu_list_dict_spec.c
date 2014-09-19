@@ -37,6 +37,18 @@ context "flu_list as dict"
     }
   }
 
+  describe "flu_list_set_last()"
+  {
+    it "sets a 'default'"
+    {
+      flu_list_set(l, "red", "aka");
+      flu_list_set_last(l, "red", "murakami");
+
+      ensure(l->size == 2);
+      ensure(flu_list_get(l, "red") === "aka");
+    }
+  }
+
   describe "flu_list_get()"
   {
     it "returns NULL if there is no item for the key"
