@@ -233,11 +233,11 @@ char *flu_freadall(FILE *in)
   if (in == NULL) return NULL;
 
   flu_sbuffer *b = flu_sbuffer_malloc();
-  char rb[1024];
+  char rb[4096];
 
   while (1)
   {
-    size_t s = fread(rb, 1024, 1, in);
+    size_t s = fread(rb, 4096, 1, in);
 
     if (s == 0)
     {
