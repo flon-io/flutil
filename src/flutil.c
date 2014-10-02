@@ -237,9 +237,11 @@ char *flu_freadall(FILE *in)
 
   while (1)
   {
-    size_t s = fread(rb, 4096, 1, in);
+    size_t s = fread(rb, sizeof(char), 4096, in);
 
-    if (s == 0)
+    if (s > 0) flu_sbputs_n(b, rb, s);
+
+    if (s < 4096)
     {
       if (feof(in) == 1) break;
 
@@ -247,8 +249,6 @@ char *flu_freadall(FILE *in)
       flu_sbuffer_free(b);
       return NULL;
     }
-
-    flu_sbputs(b, rb);
   }
 
   return flu_sbuffer_to_string(b);
