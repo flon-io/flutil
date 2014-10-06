@@ -10,7 +10,6 @@
 
 context "readall"
 {
-
   describe "flu_readall(path)"
   {
     it "reads the entirety of a file in a string"
@@ -29,6 +28,24 @@ context "readall"
       ensure(s != NULL);
       ensure(strstr(s, "sprintf'ed") != NULL);
       free(s);
+    }
+  }
+}
+
+context "writeall"
+{
+  describe "flu_writeall(path, ...)"
+  {
+    it "writes a file"
+    {
+      char *path = flu_writeall(
+        "./test%i.txt", 0,
+        "hello %s\n", "world");
+
+      expect(path ===f "./test0.txt");
+      expect(flu_readall("./test0.txt") ===f "hello world\n");
+
+      expect(unlink("./test0.txt") == 0);
     }
   }
 }
