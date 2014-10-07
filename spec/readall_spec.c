@@ -38,11 +38,11 @@ context "writeall"
   {
     it "writes a file"
     {
-      char *path = flu_writeall(
+      int r = flu_writeall(
         "./test%i.txt", 0,
         "hello %s\n", "world");
 
-      expect(path ===f "./test0.txt");
+      expect(r == 1);
       expect(flu_readall("./test0.txt") ===f "hello world\n");
 
       expect(unlink("./test0.txt") == 0);
