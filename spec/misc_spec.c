@@ -29,5 +29,42 @@ context "misc"
       ensure(flu_getMs() > 1409000000000000);
     }
   }
+
+  describe "flu_canopath()"
+  {
+    it "canonicalizes /x"
+    {
+      expect(flu_canopath("/x") ===f "/x");
+    }
+    it "canonicalizes ./x"
+    {
+      expect(flu_canopath("./x") $==f "/tmp/x");
+    }
+    it "canonicalizes ../x"
+    {
+      expect(flu_canopath("../x") $==f "/flutil/x");
+    }
+    it "canonicalizes .."
+    {
+      expect(flu_canopath("..") $==f "/flutil/");
+    }
+    it "canonicalizes /.."
+    {
+      expect(flu_canopath("/..") ===f "/");
+    }
+    it "canonicalizes .//x"
+    {
+      expect(flu_canopath(".//x") $==f "/tmp/x");
+    }
+    it "canonicalizes ."
+    {
+      expect(flu_canopath(".") $==f "/tmp/");
+    }
+
+    it "composes its original path"
+    {
+      expect(flu_canopath("/x/%s", "y") ===f "/x/y");
+    }
+  }
 }
 
