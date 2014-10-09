@@ -332,5 +332,9 @@ long long flu_getMs();
  */
 char *flu_canopath(const char *path, ...);
 
+char *flu_basename(const char *path, const char *new_suffix);
+char flu_fstat(const char *path);
+int flu_move(const char *path, const char *destination);
+
 #endif // FLON_FLUTIL_H
 
