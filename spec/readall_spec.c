@@ -50,29 +50,3 @@ context "writeall"
   }
 }
 
-context "unlink"
-{
-  describe "flu_unlink(path, ...)"
-  {
-    it "returns 0 in case of success (like unlink)"
-    {
-      flu_writeall("./test_unlink.txt", "unlink me!");
-
-      int r = flu_unlink("./test_unlink.txt");
-
-      expect(r == 0);
-      expect(flu_readall("./test_unlink.txt") == NULL);
-    }
-
-    it "composes its path"
-    {
-      flu_writeall("./test_unlink_1.txt", "unlink me!!");
-
-      int r = flu_unlink("./test_unlink_%i.txt", 1);
-
-      expect(r == 0);
-      expect(flu_readall("./test_unlink.txt") == NULL);
-    }
-  }
-}
-
