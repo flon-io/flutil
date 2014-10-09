@@ -703,6 +703,16 @@ char *flu_canopath(const char *path, ...)
   return r;
 }
 
+char *flu_dirname(const char *path)
+{
+  char *dp = strdup(path);
+  char *dn = dirname(dp);
+  char *ddn = strdup(dn);
+  free(dp);
+
+  return ddn;
+}
+
 char *flu_basename(const char *path, const char *new_suffix)
 {
   char *dp = strdup(path);

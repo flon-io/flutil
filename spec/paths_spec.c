@@ -5,6 +5,9 @@
 // Thu Oct  9 15:34:56 JST 2014
 //
 
+#include <sys/stat.h>
+#include <sys/types.h>
+
 #include "flutil.h"
 
 
@@ -26,9 +29,22 @@ context "paths"
     }
   }
 
+  describe "flu_dirname()"
+  {
+    it "returns the dirname of a path"
+    {
+      expect(flu_dirname("/x/y/z.txt") ===f "/x/y");
+    }
+
+    it "returns the dirname of a path (2)"
+    {
+      expect(flu_dirname("z.txt") ===f ".");
+    }
+  }
+
   describe "flu_basename()"
   {
-    it "returns the basename given a path"
+    it "returns the basename of a path"
     {
       expect(flu_basename("/x/y/z.txt", NULL) ===f "z.txt");
     }
