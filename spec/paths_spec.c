@@ -159,6 +159,15 @@ context "path functions"
 
       expect(r == 1);
     }
+
+    it "composes its paths"
+    {
+      int r = flu_move("_test0/d%i", 0, "_test1/d%i", 1);
+
+      expect(r == 0);
+
+      expect(flu_readall("_test1/d1/b.txt") ===f "blighty");
+    }
   }
 }
 

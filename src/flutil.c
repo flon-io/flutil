@@ -401,22 +401,32 @@ char flu_fstat(const char *path, ...)
   else return 0;
 }
 
-int flu_move(const char *orig, const char *dest)
+int flu_move(const char *orig, ...)
 {
-  if (flu_fstat(orig) == 0) return 1;
+  va_list ap; va_start(ap, orig);
+  char *ori = flu_svprintf(orig, ap);
 
-  char *np = (char *)dest;
+  if (flu_fstat(ori) == 0) { free(ori); return 1; }
 
-  if (flu_fstat(dest) == 'd')
+  char *dest = va_arg(ap, char *);
+  char *des = flu_svprintf(dest, ap);
+  va_end(ap);
+
+  char *np = des;
+
+  if (flu_fstat(des) == 'd')
   {
-    char *ob = strdup(orig);
+    char *ob = strdup(ori);
     char *obn = basename(ob);
-    np = flu_sprintf("%s/%s", dest, obn);
+    np = flu_sprintf("%s/%s", des, obn);
     free(ob);
   }
 
-  int r = rename(orig, np);
-  if (np != dest) free(np);
+  int r = rename(ori, np);
+
+  free(ori);
+  free(des);
+  if (np != des) free(np);
 
   return r;
 }

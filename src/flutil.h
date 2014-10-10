@@ -189,8 +189,13 @@ char flu_fstat(const char *path, ...);
 
 /* Moves a file (or a directory). Behaves much like the "mv" user command.
  * Returns 0 in case of success.
+ *
+ * Basically, the signature is
+ * ```int flu_move(const char *path, const char *destination);```
+ * but one can do
+ * ```flu_move("src/%i/t.c", x, "arch/src/%i/t.c", y)```
  */
-int flu_move(const char *path, const char *destination);
+int flu_move(const char *path, ...);
 
 
 //
