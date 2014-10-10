@@ -375,12 +375,18 @@ char *flu_dirname(const char *path, ...)
   return ddn;
 }
 
-char *flu_basename(const char *path, const char *new_suffix)
+char *flu_basename(const char *path, ...)
 {
-  char *dp = strdup(path);
-  char *bn = basename(dp);
+  va_list ap; va_start(ap, path);
+  char *s = flu_svprintf(path, ap);
+  char *new_suffix = va_arg(ap, char *);
+  va_end(ap);
+
+  if (new_suffix && *new_suffix != '.') { free(s); return NULL; }
+
+  char *bn = basename(s);
   char *dbn = strdup(bn);
-  free(dp);
+  free(s);
 
   if (new_suffix) strcpy(strrchr(dbn, '.'), new_suffix);
 

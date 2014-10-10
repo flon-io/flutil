@@ -176,10 +176,11 @@ char *flu_canopath(const char *path, ...);
 char *flu_dirname(const char *path, ...);
 
 /* Given a path, returns the file basename.
- * If new_suffix is given the file suffix (from the last dot) is replaced
- * with the new_suffix (an example: ".json").
+ * If a new suffix is given (as a last char * arg) the file suffix
+ * (from the last dot) is replaced with the new_suffix (an example: ".json").
+ * If the new suffix doesn't begin with a dot, NULL is returned.
  */
-char *flu_basename(const char *path, const char *new_suffix);
+char *flu_basename(const char *path, ...);
 
 /* If the path points to nowhere, returns 0 ('\0').
  * If the path points to a directory, returns 'd'.

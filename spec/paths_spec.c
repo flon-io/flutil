@@ -88,6 +88,18 @@ context "path functions"
     {
       expect(flu_basename("/x/y/z.json", ".txt") ===f "z.txt");
     }
+
+    it "composes its path"
+    {
+      expect(flu_basename("/x/y/%s.txt", "z", NULL) ===f "z.txt");
+      expect(flu_basename("/x/y/%s.json", "z", ".txt") ===f "z.txt");
+    }
+
+    it "returns NULL if there is a new suffix and it doesn't begin with '.'"
+    {
+      expect(flu_basename("/x/y/z.json", "txt") == NULL);
+      expect(flu_basename("/x/y/%s.json", "z", "txt") == NULL);
+    }
   }
 
   describe "flu_move()"
