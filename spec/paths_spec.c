@@ -42,13 +42,20 @@ context "path functions"
     {
       expect(flu_fstat("../nada") == 0);
     }
+
     it "returns 'd' if the path points to a directory"
     {
       expect(flu_fstat("../src") == 'd');
     }
+
     it "returns 'f' if the path points to a non-directory"
     {
       expect(flu_fstat("../src/flutil.c") == 'f');
+    }
+
+    it "composes paths"
+    {
+      expect(flu_fstat("../%s/flutil.c", "src") == 'f');
     }
   }
 

@@ -387,11 +387,17 @@ char *flu_basename(const char *path, const char *new_suffix)
   return dbn;
 }
 
-char flu_fstat(const char *path)
+char flu_fstat(const char *path, ...)
 {
-  struct stat s;
+  va_list ap; va_start(ap, path);
+  char *p = flu_svprintf(path, ap);
+  va_end(ap);
 
-  if (stat(path, &s) == 0) return S_ISDIR(s.st_mode) ? 'd' : 'f';
+  struct stat s;
+  int r = stat(p, &s);
+  free(p);
+
+  if (r == 0) return S_ISDIR(s.st_mode) ? 'd' : 'f';
   else return 0;
 }
 

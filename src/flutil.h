@@ -185,7 +185,7 @@ char *flu_basename(const char *path, const char *new_suffix);
  * If the path points to a directory, returns 'd'.
  * Else returns 'f'.
  */
-char flu_fstat(const char *path);
+char flu_fstat(const char *path, ...);
 
 /* Moves a file (or a directory). Behaves much like the "mv" user command.
  * Returns 0 in case of success.
