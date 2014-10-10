@@ -362,12 +362,15 @@ char *flu_canopath(const char *path, ...)
   return r;
 }
 
-char *flu_dirname(const char *path)
+char *flu_dirname(const char *path, ...)
 {
-  char *dp = strdup(path);
-  char *dn = dirname(dp);
+  va_list ap; va_start(ap, path);
+  char *s = flu_svprintf(path, ap);
+  va_end(ap);
+
+  char *dn = dirname(s);
   char *ddn = strdup(dn);
-  free(dp);
+  free(s);
 
   return ddn;
 }

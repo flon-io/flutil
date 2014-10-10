@@ -63,6 +63,11 @@ context "path functions"
     {
       expect(flu_dirname("z.txt") ===f ".");
     }
+
+    it "composes paths"
+    {
+      expect(flu_dirname("/x/%s/z.txt", "y") ===f "/x/y");
+    }
   }
 
   describe "flu_basename()"

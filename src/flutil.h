@@ -173,7 +173,7 @@ char *flu_canopath(const char *path, ...);
 
 /* Given a path, returns its dir path.
  */
-char *flu_dirname(const char *path);
+char *flu_dirname(const char *path, ...);
 
 /* Given a path, returns the file basename.
  * If new_suffix is given the file suffix (from the last dot) is replaced
