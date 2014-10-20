@@ -111,5 +111,58 @@ context "str functions"
       ensure(flu_rindex("nada", 2, 'a') == 1);
     }
   }
+
+  describe "flu_split()"
+  {
+    before each
+    {
+      flu_list *l = NULL;
+    }
+    after each
+    {
+      if (l) flu_list_free_all(l);
+    }
+
+    it "splits a string"
+    {
+      l = flu_split("a,b,c", ",");
+
+      expect(l != NULL);
+      expect(l->size zu== 3);
+      expect(l->first->item === "a");
+      expect(l->first->next->item === "b");
+      expect(l->last->item === "c");
+    }
+
+    it "splits a one item list"
+    {
+      l = flu_split("abc", ".");
+
+      expect(l != NULL);
+      expect(l->size zu== 1);
+      expect(l->first->item === "abc");
+    }
+
+    it "splits an empty list"
+    {
+      l = flu_split("", ".");
+
+      expect(l != NULL);
+      expect(l->size zu== 1);
+      expect(l->first->item === "");
+    }
+
+    it "splits with longer delimiters"
+    {
+      l = flu_split("a/,/b/,/b/,/c", "/,/");
+
+      expect(l != NULL);
+      expect(l->size zu== 4);
+      expect(l->first->item === "a");
+      expect(l->first->next->item === "b");
+      expect(l->first->next->next->item === "b");
+      expect(l->last->item === "c");
+    }
+  }
 }
 
