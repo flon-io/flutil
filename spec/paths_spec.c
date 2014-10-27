@@ -181,5 +181,46 @@ context "path functions"
       expect(flu_readall("_test1/d1/b.txt") ===f "blighty");
     }
   }
+
+  describe "flu_mkdir_p()"
+  {
+    after each
+    {
+      system("rm -fR __mkdir_test_dir");
+    }
+
+    it "creates a single dir"
+    {
+      int r = flu_mkdir_p("__mkdir_test_dir", 0755);
+
+      expect(r == 0);
+
+      expect(flu_fstat("__mkdir_test_dir") == 'd');
+    }
+
+    it "creates a tree of dirs"
+    {
+      int r = flu_mkdir_p("__mkdir_test_dir/a/b/c", 0755);
+
+      expect(r == 0);
+
+      expect(flu_fstat("__mkdir_test_dir") == 'd');
+      expect(flu_fstat("__mkdir_test_dir/a") == 'd');
+      expect(flu_fstat("__mkdir_test_dir/a/b") == 'd');
+      expect(flu_fstat("__mkdir_test_dir/a/b/c") == 'd');
+    }
+
+    it "composes its path"
+    {
+      int r = flu_mkdir_p("__mkdir_test_dir/%s/b/c", "a", 0755);
+
+      expect(r == 0);
+
+      expect(flu_fstat("__mkdir_test_dir") == 'd');
+      expect(flu_fstat("__mkdir_test_dir/a") == 'd');
+      expect(flu_fstat("__mkdir_test_dir/a/b") == 'd');
+      expect(flu_fstat("__mkdir_test_dir/a/b/c") == 'd');
+    }
+  }
 }
 

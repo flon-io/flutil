@@ -455,6 +455,31 @@ int flu_move(const char *orig, ...)
   return r;
 }
 
+int flu_mkdir_p(const char *path, ...)
+{
+  va_list ap; va_start(ap, path);
+  char *p = flu_svprintf(path, ap);
+  int mode = va_arg(ap, int);
+  va_end(ap);
+
+  int r = 0;
+
+  for (char *b = p; ; )
+  {
+    b = strstr(b, "/");
+    char *pp = b ? strndup(p, b - p) : strdup(p);
+    r = mkdir(pp, mode);
+    free(pp);
+    if (r != 0) break;
+    if (b == NULL) break;
+    ++b;
+  }
+
+  free(p);
+
+  return r;
+}
+
 
 //
 // flu_list
