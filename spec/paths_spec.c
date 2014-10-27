@@ -210,6 +210,15 @@ context "path functions"
       expect(flu_fstat("__mkdir_test_dir/a/b/c") == 'd');
     }
 
+    it "returns 0 (success) if the path already exists"
+    {
+      int r = flu_mkdir_p("__mkdir_test_dir/a/b/c", 0755);
+      expect(r == 0);
+
+      r = flu_mkdir_p("__mkdir_test_dir/a/b/c", 0755);
+      expect(r == 0);
+    }
+
     it "composes its path"
     {
       int r = flu_mkdir_p("__mkdir_test_dir/%s/b/c", "a", 0755);

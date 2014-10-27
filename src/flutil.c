@@ -35,6 +35,7 @@
 #include <sys/types.h>
 #include <unistd.h>
 #include <libgen.h>
+#include <errno.h>
 
 #include "flutil.h"
 
@@ -463,18 +464,20 @@ int flu_mkdir_p(const char *path, ...)
   va_end(ap);
 
   int r = 0;
+  char *pp = NULL;
 
   for (char *b = p; ; )
   {
     b = strstr(b, "/");
-    char *pp = b ? strndup(p, b - p) : strdup(p);
+    pp = b ? strndup(p, b - p) : strdup(p);
     r = mkdir(pp, mode);
-    free(pp);
-    if (r != 0) break;
-    if (b == NULL) break;
+    if (r != 0 && (errno != EEXIST || flu_fstat(pp) == 'f')) break;
+    free(pp); pp = NULL;
+    if (b == NULL) { r = 0; errno = 0; break; }
     ++b;
   }
 
+  if (pp) free(pp);
   free(p);
 
   return r;
