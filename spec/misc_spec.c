@@ -66,5 +66,13 @@ context "misc"
       expect(flu_canopath("/x/%s", "y") ===f "/x/y");
     }
   }
+
+  describe "flu_system()"
+  {
+    it "behaves like system + printf"
+    {
+      expect(flu_system("%s > /dev/null", "pwd") == 0);
+    }
+  }
 }
 

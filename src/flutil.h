@@ -375,5 +375,9 @@ long long flu_getms();
  */
 long long flu_getMs();
 
+/* Like system(3), but accepts a format string and arguments.
+ */
+int flu_system(const char *format, ...);
+
 #endif // FLON_FLUTIL_H
 

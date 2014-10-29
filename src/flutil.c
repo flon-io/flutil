@@ -828,3 +828,14 @@ long long flu_getMs()
   return r == 0 ? tv.tv_sec * 1000000 + tv.tv_usec : 0;
 }
 
+int flu_system(const char *cmd, ...)
+{
+  va_list ap; va_start(ap, cmd); char *c = flu_svprintf(cmd, ap); va_end(ap);
+
+  int r = system(c);
+
+  free(c);
+
+  return r;
+}
+
