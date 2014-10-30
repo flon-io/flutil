@@ -819,7 +819,7 @@ long long flu_getms()
   struct timespec ts;
   int r = clock_gettime(CLOCK_REALTIME, &ts);
 
-  return r == 0 ? ts.tv_sec * 1E3 + ts.tv_nsec / 1E6 : 0;
+  return r == 0 ? ts.tv_sec * 1000 + ts.tv_nsec / 1000000 : 0;
 }
 
 long long flu_getMs()
@@ -827,22 +827,44 @@ long long flu_getMs()
   struct timespec ts;
   int r = clock_gettime(CLOCK_REALTIME, &ts);
 
-  return r == 0 ? ts.tv_sec * 1E6 + ts.tv_nsec / 1E3 : 0;
+  return r == 0 ? ts.tv_sec * 1000000 + ts.tv_nsec / 1000 : 0;
 }
 
 long long flu_msleep(long long milliseconds)
 {
   struct timespec treq;
-  treq.tv_sec = 0;
-  treq.tv_nsec = milliseconds * 1000 * 1000;
+  treq.tv_sec = milliseconds / 1000;
+  treq.tv_nsec = (milliseconds * 1000000) % 1000000000;
 
   struct timespec trem;
-  treq.tv_sec = 0;
-  treq.tv_nsec = 0;
+  trem.tv_sec = 0;
+  trem.tv_nsec = 0;
 
   nanosleep(&treq, &trem);
 
-  return treq.tv_sec * 1E3 + treq.tv_nsec / 1E6;
+  return trem.tv_sec * 1000 + trem.tv_nsec / 1000000;
+}
+
+long long flu_do_msleep(long long milliseconds)
+{
+  long long start = flu_getms();
+
+  struct timespec treq;
+  treq.tv_sec = milliseconds / 1000;
+  treq.tv_nsec = (milliseconds * 1000000) % 1000000000;
+
+  struct timespec trem;
+  trem.tv_sec = 0;
+  trem.tv_nsec = 0;
+
+  while (1)
+  {
+    nanosleep(&treq, &trem);
+    if (trem.tv_sec == 0 && trem.tv_nsec == 0) break;
+    treq.tv_sec = trem.tv_sec; treq.tv_nsec = trem.tv_nsec;
+  }
+
+  return flu_getms() - start;
 }
 
 int flu_system(const char *cmd, ...)

@@ -34,11 +34,19 @@ context "misc"
   {
     it "sleeps for some milliseconds"
     {
-      long long start = flu_getms();
-
       long long r = flu_msleep(7);
 
       expect(r lli== 0); // vanilla
+    }
+  }
+
+  describe "flu_do_msleep()"
+  {
+    it "sleeps for some milliseconds"
+    {
+      long long r = flu_do_msleep(7);
+
+      expect(r > 6);
     }
   }
 

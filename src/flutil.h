@@ -380,6 +380,12 @@ long long flu_getMs();
  */
 long long flu_msleep(long long milliseconds);
 
+/* Sleeps for a given amount of milliseconds.
+ * If interrupted, sleeps again until the required milliseconds have all been
+ * slept through. Returns the how many milliseconds it actually slept.
+ */
+long long flu_do_msleep(long long milliseconds);
+
 /* Like system(3), but accepts a format string and arguments.
  */
 int flu_system(const char *format, ...);
