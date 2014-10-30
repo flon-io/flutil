@@ -860,8 +860,12 @@ long long flu_do_msleep(long long milliseconds)
   while (1)
   {
     nanosleep(&treq, &trem);
+
+    //printf("trem s: %llu, ns: %llu\n", trem.tv_sec, trem.tv_nsec);
     if (trem.tv_sec == 0 && trem.tv_nsec == 0) break;
+
     treq.tv_sec = trem.tv_sec; treq.tv_nsec = trem.tv_nsec;
+    trem.tv_sec = 0; trem.tv_nsec = 0;
   }
 
   return flu_getms() - start;
