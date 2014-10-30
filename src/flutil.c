@@ -30,7 +30,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
-#include <sys/time.h>
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <unistd.h>
@@ -811,21 +810,24 @@ char *flu_strdup(char *s)
   int l = strlen(s);
   char *r = calloc(l + 1, sizeof(char));
   strcpy(r, s);
+
   return r;
 }
 
 long long flu_getms()
 {
-  struct timeval tv;
-  int r = gettimeofday(&tv, NULL);
-  return r == 0 ? tv.tv_sec * 1000 + tv.tv_usec / 1000 : 0;
+  struct timespec ts;
+  int r = clock_gettime(CLOCK_REALTIME, &ts);
+
+  return r == 0 ? ts.tv_sec * 1E3 + ts.tv_nsec / 1E6 : 0;
 }
 
 long long flu_getMs()
 {
-  struct timeval tv;
-  int r = gettimeofday(&tv, NULL);
-  return r == 0 ? tv.tv_sec * 1000000 + tv.tv_usec : 0;
+  struct timespec ts;
+  int r = clock_gettime(CLOCK_REALTIME, &ts);
+
+  return r == 0 ? ts.tv_sec * 1E6 + ts.tv_nsec / 1E3 : 0;
 }
 
 long long flu_msleep(long long milliseconds)
