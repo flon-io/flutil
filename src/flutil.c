@@ -832,17 +832,17 @@ long long flu_getMs()
 
 long long flu_msleep(long long milliseconds)
 {
-  long long start = flu_getms();
-
   struct timespec treq;
   treq.tv_sec = 0;
   treq.tv_nsec = milliseconds * 1000 * 1000;
 
   struct timespec trem;
+  treq.tv_sec = 0;
+  treq.tv_nsec = 0;
 
   nanosleep(&treq, &trem);
 
-  return flu_getms() - start;
+  return treq.tv_sec * 1E3 + treq.tv_nsec / 1E6;
 }
 
 int flu_system(const char *cmd, ...)

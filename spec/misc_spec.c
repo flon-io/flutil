@@ -38,9 +38,7 @@ context "misc"
 
       long long r = flu_msleep(7);
 
-      expect(flu_getms() > start + 6);
-      expect(r > 6);
-      expect(r < 10);
+      expect(r lli== 0); // vanilla
     }
   }
 

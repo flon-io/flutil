@@ -376,7 +376,7 @@ long long flu_getms();
 long long flu_getMs();
 
 /* Sleeps for a given amount of milliseconds.
- * Returns how many millisecond it slept.
+ * Returns how many milliseconds still have to be slepts (interrupted).
  */
 long long flu_msleep(long long milliseconds);
 
