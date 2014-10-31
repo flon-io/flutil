@@ -800,7 +800,7 @@ char *flu_urlencode(const char *s, ssize_t n)
     )
       flu_sbputc(b, c);
     else
-      flu_sbprintf(b, "%%%x", c);
+      flu_sbprintf(b, "%%%02x", c);
   }
 
   return flu_sbuffer_to_string(b);

@@ -59,6 +59,7 @@ context "escapes"
     it "encodes reserved characters"
     {
       expect(flu_urlencode("a b c", -1) ===f "a%20b%20c");
+      expect(flu_urlencode("ab\ncd", -1) ===f "ab%0acd");
     }
   }
 
@@ -67,6 +68,8 @@ context "escapes"
     it "decodes percent encoded characters"
     {
       expect(flu_urldecode("a%20b%20c", -1) ===f "a b c");
+      expect(flu_urldecode("ab%0acd", -1) ===f "ab\ncd");
+      expect(flu_urldecode("ab%0Acd", -1) ===f "ab\ncd");
     }
   }
 }
