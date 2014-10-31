@@ -53,5 +53,21 @@ context "escapes"
       ensure(flu_unescape("that's \\zorro") ===f "that's \\zorro");
     }
   }
+
+  describe "flu_urlencode()"
+  {
+    it "encodes reserved characters"
+    {
+      expect(flu_urlencode("a b c", -1) ===f "a%20b%20c");
+    }
+  }
+
+  describe "flu_urldecode()"
+  {
+    it "decodes percent encoded characters"
+    {
+      expect(flu_urldecode("a%20b%20c", -1) ===f "a b c");
+    }
+  }
 }
 
