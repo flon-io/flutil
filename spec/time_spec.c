@@ -10,23 +10,37 @@
 
 context "time"
 {
-  describe "flu_getms()"
+  describe "flu_gets('s')"
   {
-    it "returns the count of milliseconds (10-3) since the Epoch"
+    it "returns the count of seconds since the Epoch"
     {
-      //printf("ms: %li\n", flu_getms());
+      //printf("s: %lli\n", flu_gets('s'));
 
-      ensure(flu_getms() > 1409000000000);
+      ensure(flu_gets('s') > 1409000000);
     }
   }
 
-  describe "flu_getMs()"
+  describe "flu_gets('m')"
+  {
+    it "returns the count of milliseconds (10-3) since the Epoch"
+    {
+      ensure(flu_gets('m') > 1409000000000);
+    }
+  }
+
+  describe "flu_gets('M')"
+  {
+    it "returns the count of milliseconds (10-3) since the Epoch"
+    {
+      ensure(flu_gets('M') > 1409000000000000);
+    }
+  }
+
+  describe "flu_gets('n')"
   {
     it "returns the count of microseconds (10-6) since the Epoch"
     {
-      //printf("Ms: %li\n", flu_getMs());
-
-      ensure(flu_getMs() > 1409000000000000);
+      ensure(flu_gets('n') > 1409000000000000000);
     }
   }
 

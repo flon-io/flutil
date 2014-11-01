@@ -873,20 +873,15 @@ int flu_system(const char *cmd, ...)
 //
 // time
 
-long long flu_getms()
+long long flu_gets(char level)
 {
   struct timespec ts;
   int r = clock_gettime(CLOCK_REALTIME, &ts);
 
-  return r == 0 ? ts.tv_sec * 1000 + ts.tv_nsec / 1000000 : 0;
-}
-
-long long flu_getMs()
-{
-  struct timespec ts;
-  int r = clock_gettime(CLOCK_REALTIME, &ts);
-
-  return r == 0 ? ts.tv_sec * 1000000 + ts.tv_nsec / 1000 : 0;
+  if (level == 'n') return r == 0 ? ts.tv_sec * 1000000000 + ts.tv_nsec : 0;
+  if (level == 'M') return r == 0 ? ts.tv_sec * 1000000 + ts.tv_nsec / 1000 : 0;
+  if (level == 'm') return r == 0 ? ts.tv_sec * 1000 + ts.tv_nsec / 1000000 : 0;
+  return r == 0 ? ts.tv_sec : 0; // else, 's'
 }
 
 long long flu_msleep(long long milliseconds)
@@ -906,7 +901,7 @@ long long flu_msleep(long long milliseconds)
 
 long long flu_do_msleep(long long milliseconds)
 {
-  long long start = flu_getms();
+  long long start = flu_gets('m');
 
   struct timespec treq;
   treq.tv_sec = milliseconds / 1000;
@@ -927,6 +922,6 @@ long long flu_do_msleep(long long milliseconds)
     trem.tv_sec = 0; trem.tv_nsec = 0;
   }
 
-  return flu_getms() - start;
+  return flu_gets('m') - start;
 }
 

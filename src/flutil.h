@@ -378,13 +378,12 @@ int flu_system(const char *format, ...);
 //
 // time
 
-/* Returns the count of milliseconds (10-3) since the Epoch.
+/* Returns the count of seconds since the Epoch.
+ * If level is set to 'm', it will return milliseconds.
+ * If level is set to 'M', it will return microseconds.
+ * If level is set to 'n', it will return nanoseconds.
  */
-long long flu_getms();
-
-/* Returns the count of microseconds (10-6) since the Epoch.
- */
-long long flu_getMs();
+long long flu_gets(char level);
 
 /* Sleeps for a given amount of milliseconds.
  * Returns how many milliseconds still have to be slepts (interrupted).
