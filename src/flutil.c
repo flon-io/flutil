@@ -858,6 +858,21 @@ char *flu_strdup(char *s)
   return r;
 }
 
+int flu_system(const char *cmd, ...)
+{
+  va_list ap; va_start(ap, cmd); char *c = flu_svprintf(cmd, ap); va_end(ap);
+
+  int r = system(c);
+
+  free(c);
+
+  return r;
+}
+
+
+//
+// time
+
 long long flu_getms()
 {
   struct timespec ts;
@@ -913,16 +928,5 @@ long long flu_do_msleep(long long milliseconds)
   }
 
   return flu_getms() - start;
-}
-
-int flu_system(const char *cmd, ...)
-{
-  va_list ap; va_start(ap, cmd); char *c = flu_svprintf(cmd, ap); va_end(ap);
-
-  int r = system(c);
-
-  free(c);
-
-  return r;
 }
 

@@ -370,6 +370,14 @@ void flu_die(int exit_value, const char *format, ...);
  */
 char *flu_strdup(char *s);
 
+/* Like system(3), but accepts a format string and arguments.
+ */
+int flu_system(const char *format, ...);
+
+
+//
+// time
+
 /* Returns the count of milliseconds (10-3) since the Epoch.
  */
 long long flu_getms();
@@ -388,10 +396,6 @@ long long flu_msleep(long long milliseconds);
  * slept through. Returns the how many milliseconds it actually slept.
  */
 long long flu_do_msleep(long long milliseconds);
-
-/* Like system(3), but accepts a format string and arguments.
- */
-int flu_system(const char *format, ...);
 
 #endif // FLON_FLUTIL_H
 
