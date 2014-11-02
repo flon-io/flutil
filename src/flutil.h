@@ -32,6 +32,7 @@
 
 #include <stdio.h>
 #include <stdarg.h>
+#include <time.h>
 
 
 #define FLU_VERSION "1.0.0"
@@ -380,7 +381,7 @@ int flu_system(const char *format, ...);
 
 /* Returns the count of seconds since the Epoch.
  * If level is set to 'm', it will return milliseconds.
- * If level is set to 'M', it will return microseconds.
+ * If level is set to 'u', it will return microseconds.
  * If level is set to 'n', it will return nanoseconds.
  */
 long long flu_gets(char level);
@@ -395,6 +396,22 @@ long long flu_msleep(long long milliseconds);
  * slept through. Returns the how many milliseconds it actually slept.
  */
 long long flu_do_msleep(long long milliseconds);
+
+/* Formats the given time into a string.
+ *
+ * 'z' --> "2014-11-01T16:34:01Z"
+ * 'h' --> "20141101.1634"
+ * 's' --> "20141101.163401"
+ * 'm' --> "20141101.163401.001"  // milliseconds
+ * 'u' --> "20141101.163401.000001"  // microseconds
+ * 'n' --> "20141101.163401.000000001"  // nanoseconds
+ *
+ * If the tm arg is NULL, the function will grab the time thanks to
+ * clock_gettime(CLOCK_REALTIME, &ts).
+ */
+char *flu_tstamp(struct timespec *ts, int utc, char format);
+
+//struct timespec *flu_parse_tstamp(char *s, int utc);
 
 #endif // FLON_FLUTIL_H
 

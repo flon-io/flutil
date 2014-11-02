@@ -28,17 +28,17 @@ context "time"
     }
   }
 
-  describe "flu_gets('M')"
+  describe "flu_gets('u')"
   {
-    it "returns the count of milliseconds (10-3) since the Epoch"
+    it "returns the count of microseconds (10-3) since the Epoch"
     {
-      ensure(flu_gets('M') > 1409000000000000);
+      ensure(flu_gets('u') > 1409000000000000);
     }
   }
 
   describe "flu_gets('n')"
   {
-    it "returns the count of microseconds (10-6) since the Epoch"
+    it "returns the count of nanoseconds (10-6) since the Epoch"
     {
       ensure(flu_gets('n') > 1409000000000000000);
     }
@@ -61,6 +61,79 @@ context "time"
       long long r = flu_do_msleep(7);
 
       expect(r > 6);
+    }
+  }
+
+  //describe "flu_ts_to_tm()"
+  //{
+  //  it "turns ts into a local tm when utc=0"
+  //  {
+  //    struct timespec ts;
+  //    ts.tv_sec = 1414791000;
+  //    ts.tv_nsec = 0;
+  //      //
+  //      // 2014/11/01 06:30:00
+  //    struct tm *t = flu_ts_to_tm(&ts, 0);
+  //    char st[64];
+  //    strftime(st, 64, "%Y%m%d.%H%M%S.", t);
+  //    puts(st);
+  //  }
+
+  //  it "turns ts into an UTC tm when utc=1"
+  //}
+
+  /* Formats the given time into a string.
+   *
+   * 'z' --> "2014-11-01T16:34:01Z"
+   * 'h' --> "20141101.1634"
+   * 's' --> "20141101.163401"
+   * 'm' --> "20141101.163401.001"  // milliseconds
+   * 'u' --> "20141101.163401.000001"  // microseconds
+   * 'n' --> "20141101.163401.000000001"  // nanoseconds
+   *
+   * If the tm arg is NULL, the function will grab the time thanks to
+   * clock_gettime(CLOCK_REALTIME, &ts).
+   */
+  //char *flu_tstamp(struct timespec *ts, int utc, char format);
+
+  describe "flu_tstamp()"
+  {
+    it "outputs a string timestamp"
+    {
+      struct timespec ts;
+      ts.tv_sec = 1414791000;
+      ts.tv_nsec = 123456789;
+        //
+        // 2014/11/01 06:30:00
+
+      expect(flu_tstamp(&ts, 0, 'z') ===f "2014-10-31T21:30:00Z");
+      expect(flu_tstamp(&ts, 1, 'z') ===f "2014-10-31T21:30:00Z");
+
+      expect(flu_tstamp(&ts, 0, 'h') ===f "20141101.0630");
+      expect(flu_tstamp(&ts, 1, 'h') ===f "20141031.2130");
+      expect(flu_tstamp(&ts, 0, 's') ===f "20141101.063000");
+      expect(flu_tstamp(&ts, 1, 's') ===f "20141031.213000");
+
+      expect(flu_tstamp(&ts, 0, 'm') ===f "20141101.063000.123");
+      expect(flu_tstamp(&ts, 1, 'm') ===f "20141031.213000.123");
+      expect(flu_tstamp(&ts, 0, 'u') ===f "20141101.063000.123456");
+      expect(flu_tstamp(&ts, 1, 'u') ===f "20141031.213000.123456");
+      expect(flu_tstamp(&ts, 0, 'n') ===f "20141101.063000.123456789");
+      expect(flu_tstamp(&ts, 1, 'n') ===f "20141031.213000.123456789");
+
+      ts.tv_nsec = 1;
+
+      expect(flu_tstamp(&ts, 0, 'm') ===f "20141101.063000.000");
+      expect(flu_tstamp(&ts, 1, 'm') ===f "20141031.213000.000");
+      expect(flu_tstamp(&ts, 0, 'u') ===f "20141101.063000.000000");
+      expect(flu_tstamp(&ts, 1, 'u') ===f "20141031.213000.000000");
+      expect(flu_tstamp(&ts, 0, 'n') ===f "20141101.063000.000000001");
+      expect(flu_tstamp(&ts, 1, 'n') ===f "20141031.213000.000000001");
+    }
+
+    it "gets its time from clock_gettime(CLOCK_REALTIME, ...) if ts is NULL"
+    {
+      expect(flu_tstamp(NULL, 0, 'n') ^==f "20");
     }
   }
 }

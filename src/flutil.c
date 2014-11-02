@@ -879,7 +879,7 @@ long long flu_gets(char level)
   int r = clock_gettime(CLOCK_REALTIME, &ts);
 
   if (level == 'n') return r == 0 ? ts.tv_sec * 1000000000 + ts.tv_nsec : 0;
-  if (level == 'M') return r == 0 ? ts.tv_sec * 1000000 + ts.tv_nsec / 1000 : 0;
+  if (level == 'u') return r == 0 ? ts.tv_sec * 1000000 + ts.tv_nsec / 1000 : 0;
   if (level == 'm') return r == 0 ? ts.tv_sec * 1000 + ts.tv_nsec / 1000000 : 0;
   return r == 0 ? ts.tv_sec : 0; // else, 's'
 }
@@ -923,5 +923,49 @@ long long flu_do_msleep(long long milliseconds)
   }
 
   return flu_gets('m') - start;
+}
+
+char *flu_tstamp(struct timespec *ts, int utc, char format)
+{
+  if (ts == NULL)
+  {
+    struct timespec tss;
+    int i = clock_gettime(CLOCK_REALTIME, &tss);
+    if (i != 0) return NULL;
+    ts = &tss;
+  }
+
+  if (format == 'z' || format == 'Z') utc = 1;
+
+  struct tm *tm = utc ? gmtime(&ts->tv_sec) : localtime(&ts->tv_sec);
+
+  if (tm == NULL) return NULL;
+
+  char *r = calloc(32, sizeof(char));
+
+  if (format == 'z' || format == 'Z')
+  {
+    strftime(r, 32, "%Y-%m-%dT%H:%M:%SZ", tm);
+    return r;
+  }
+
+  strftime(r, 32, "%Y%m%d.%H%M%S", tm);
+  size_t l = strlen(r);
+
+  if (format == 'h') { *(r + l - 2) = '\0'; return r; }
+  if (format == 's') { return r; }
+
+  *(r + l) = '.';
+
+  sprintf(r + l + 1, "%09lli", ts->tv_nsec);
+
+  size_t off = 9;
+  //
+  if (format == 'u') off = 6;
+  else if (format == 'm') off = 3;
+  //
+  *(r + l + 1 + off) = '\0';
+
+  return r;
 }
 

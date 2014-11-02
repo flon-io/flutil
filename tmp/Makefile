@@ -1,6 +1,5 @@
 
-#CFLAGS=-I../src -g -Wall -O3 # helps Valgrind, but makes it see more problems
-CFLAGS=-I../src -g -Wall -lrt
+CFLAGS=-I../src -g -Wall -lrt -D_POSIX_C_SOURCE=200809L
 LDLIBS=
 CC=c99
 VPATH=../src
