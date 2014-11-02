@@ -165,32 +165,32 @@ context "time"
 
         ts = flu_parse_tstamp("2014-10-31T21:30:00Z", 0);
         expect(ts != NULL);
-        expect(ts->tv_sec lli== 1414791000);
-        expect(ts->tv_nsec lli== 0);
+        expect(ts->tv_sec li== 1414791000);
+        expect(ts->tv_nsec li== 0);
         free(ts);
 
         ts = flu_parse_tstamp("2014-10-31T21:30:00Z", 1);
         expect(ts != NULL);
-        expect(ts->tv_sec lli== 1414791000);
-        expect(ts->tv_nsec lli== 0);
+        expect(ts->tv_sec li== 1414791000);
+        expect(ts->tv_nsec li== 0);
         free(ts);
 
         ts = flu_parse_tstamp("20141031.2130", 1);
         expect(ts != NULL);
-        expect(ts->tv_sec lli== 1414791000);
-        expect(ts->tv_nsec lli== 0);
+        expect(ts->tv_sec li== 1414791000);
+        expect(ts->tv_nsec li== 0);
         free(ts);
 
         ts = flu_parse_tstamp("20141101.0630", 0);
         expect(ts != NULL);
-        expect(ts->tv_sec lli== 1414791000);
-        expect(ts->tv_nsec lli== 0);
+        expect(ts->tv_sec li== 1414791000);
+        expect(ts->tv_nsec li== 0);
         free(ts);
 
         ts = flu_parse_tstamp("20141101.063055", 0);
         expect(ts != NULL);
-        expect(ts->tv_sec lli== 1414791055);
-        expect(ts->tv_nsec lli== 0);
+        expect(ts->tv_sec li== 1414791055);
+        expect(ts->tv_nsec li== 0);
         free(ts);
       }
 
@@ -200,20 +200,20 @@ context "time"
 
         ts = flu_parse_tstamp("20141101.063055.001", 0);
         expect(ts != NULL);
-        expect(ts->tv_sec lli== 1414791055);
-        expect(ts->tv_nsec lli== 1000000);
+        expect(ts->tv_sec li== 1414791055);
+        expect(ts->tv_nsec li== 1000000);
         free(ts);
 
         ts = flu_parse_tstamp("20141101.063055.001001", 0);
         expect(ts != NULL);
-        expect(ts->tv_sec lli== 1414791055);
-        expect(ts->tv_nsec lli== 1001000);
+        expect(ts->tv_sec li== 1414791055);
+        expect(ts->tv_nsec li== 1001000);
         free(ts);
 
         ts = flu_parse_tstamp("20141101.063055.001001009", 0);
         expect(ts != NULL);
-        expect(ts->tv_sec lli== 1414791055);
-        expect(ts->tv_nsec lli== 1001009);
+        expect(ts->tv_sec li== 1414791055);
+        expect(ts->tv_nsec li== 1001009);
         free(ts);
       }
 

@@ -957,7 +957,7 @@ char *flu_tstamp(struct timespec *ts, int utc, char format)
 
   *(r + l) = '.';
 
-  sprintf(r + l + 1, "%09lli", ts->tv_nsec);
+  sprintf(r + l + 1, "%09li", ts->tv_nsec);
 
   size_t off = 9;
   //
@@ -1009,7 +1009,7 @@ struct timespec *flu_parse_tstamp(char *s, int utc)
     //
   if (utc) { if ( ! tz) unsetenv("TZ"); else setenv("TZ", tz, 1); tzset(); }
     //
-    // /!\ not thread-safe /!\
+    // /!\ not thread-safe /!\.
 
   struct timespec *ts = calloc(1, sizeof(struct timespec));
   ts->tv_sec = t;
