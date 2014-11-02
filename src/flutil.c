@@ -1045,14 +1045,12 @@ char *flu_ts_to_s(struct timespec *ts, char format)
 
   snprintf(r, 20, "%lis%09li", ts->tv_sec, ts->tv_nsec);
 
-  char *s = strchr(r, 's');
-  //
   ssize_t off = -1;
   if (format == 's') off = 0;
   else if (format == 'm') off = 3;
   else if (format == 'u') off = 6;
   //
-  if (off > -1) *(s + 1 + off) = '\0';
+  if (off > -1) *(strchr(r, 's') + 1 + off) = '\0';
 
   return r;
 }
