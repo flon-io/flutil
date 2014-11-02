@@ -166,14 +166,16 @@ context "time"
         ts = flu_parse_tstamp("2014-10-31T21:30:00Z", 0);
         expect(ts != NULL);
         expect(ts->tv_sec lli== 1414791000);
-        expect(ts->tv_sec lli== 0);
+        expect(ts->tv_nsec lli== 0);
         free(ts);
 
         ts = flu_parse_tstamp("2014-10-31T21:30:00Z", 1);
         expect(ts != NULL);
         expect(ts->tv_sec lli== 1414791000);
-        expect(ts->tv_sec lli== 0);
+        expect(ts->tv_nsec lli== 0);
         free(ts);
+
+        expect (0 == 1);
       }
 
       it "returns NULL when it cannot parse"

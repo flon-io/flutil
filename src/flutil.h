@@ -412,6 +412,8 @@ long long flu_do_msleep(long long milliseconds);
 char *flu_tstamp(struct timespec *ts, int utc, char format);
 
 /* Parses a timestamp, takes a utc hint.
+ *
+ * /!\ not thread-safe, sets and resets the "TZ" env variable /!\
  */
 struct timespec *flu_parse_tstamp(char *s, int utc);
 

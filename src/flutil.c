@@ -979,7 +979,13 @@ struct timespec *flu_parse_tstamp(char *s, int utc)
     if (r == NULL) return NULL;
   }
 
+  char *tz = getenv("TZ"); setenv("TZ", "UTC", 1); tzset();
+    //
   time_t t = mktime(&tm);
+    //
+  if (tz == NULL) unsetenv("TZ"); else setenv("TZ", tz, 1); tzset();
+    //
+    // /!\ not thread-safe /!\
 
   struct timespec *ts = calloc(1, sizeof(struct timespec));
   ts->tv_sec = t;
