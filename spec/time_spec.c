@@ -175,7 +175,46 @@ context "time"
         expect(ts->tv_nsec lli== 0);
         free(ts);
 
-        expect (0 == 1);
+        ts = flu_parse_tstamp("20141031.2130", 1);
+        expect(ts != NULL);
+        expect(ts->tv_sec lli== 1414791000);
+        expect(ts->tv_nsec lli== 0);
+        free(ts);
+
+        ts = flu_parse_tstamp("20141101.0630", 0);
+        expect(ts != NULL);
+        expect(ts->tv_sec lli== 1414791000);
+        expect(ts->tv_nsec lli== 0);
+        free(ts);
+
+        ts = flu_parse_tstamp("20141101.063055", 0);
+        expect(ts != NULL);
+        expect(ts->tv_sec lli== 1414791055);
+        expect(ts->tv_nsec lli== 0);
+        free(ts);
+      }
+
+      it "parses timestamps with subseconds"
+      {
+        struct timespec *ts = NULL;
+
+        ts = flu_parse_tstamp("20141101.063055.001", 0);
+        expect(ts != NULL);
+        expect(ts->tv_sec lli== 1414791055);
+        expect(ts->tv_nsec lli== 1000000);
+        free(ts);
+
+        ts = flu_parse_tstamp("20141101.063055.001001", 0);
+        expect(ts != NULL);
+        expect(ts->tv_sec lli== 1414791055);
+        expect(ts->tv_nsec lli== 1001000);
+        free(ts);
+
+        ts = flu_parse_tstamp("20141101.063055.001001009", 0);
+        expect(ts != NULL);
+        expect(ts->tv_sec lli== 1414791055);
+        expect(ts->tv_nsec lli== 1001009);
+        free(ts);
       }
 
       it "returns NULL when it cannot parse"

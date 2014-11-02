@@ -972,24 +972,58 @@ char *flu_tstamp(struct timespec *ts, int utc, char format)
 struct timespec *flu_parse_tstamp(char *s, int utc)
 {
   struct tm tm = {};
+  char *subseconds = NULL;
 
   if (strchr(s, '-'))
   {
+    utc = 1;
     char *r = strptime(s, "%Y-%m-%dT%H:%M:%SZ", &tm);
     if (r == NULL) return NULL;
   }
+  else
+  {
+    char *format = "%Y%m%d.%H%M";
 
-  char *tz = getenv("TZ"); setenv("TZ", "UTC", 1); tzset();
+    char *a = strchr(s, '.');
+    char *b = strrchr(s, '.');
+
+    if (a == NULL) return NULL;
+
+    char *ss = NULL;
+    if (a != b) { subseconds = b + 1; ss = strndup(s, b - s); }
+    else ss = strdup(s);
+    printf(">%s<\n", ss);
+
+    if (strlen(a + 1) > 4) format = "%Y%m%d.%H%M%S";
+
+    char *r = strptime(ss, format, &tm);
+
+    free(ss);
+
+    if (r == NULL) return NULL;
+  }
+
+  char *tz = NULL;
+  if (utc) { tz = getenv("TZ"); setenv("TZ", "UTC", 1); tzset(); }
     //
   time_t t = mktime(&tm);
     //
-  if (tz == NULL) unsetenv("TZ"); else setenv("TZ", tz, 1); tzset();
+  if (utc) { if ( ! tz) unsetenv("TZ"); else setenv("TZ", tz, 1); tzset(); }
     //
     // /!\ not thread-safe /!\
 
   struct timespec *ts = calloc(1, sizeof(struct timespec));
   ts->tv_sec = t;
   ts->tv_nsec = 0;
+
+  if (subseconds)
+  {
+    size_t st = strlen(subseconds);
+
+    ts->tv_nsec = strtoll(subseconds, NULL, 10);
+    if (st == 3) ts->tv_nsec = ts->tv_nsec * 1000 * 1000;
+    else if (st == 6) ts->tv_nsec = ts->tv_nsec * 1000;
+  }
 
   return ts;
 }
