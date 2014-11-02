@@ -96,69 +96,90 @@ context "time"
    */
   //char *flu_tstamp(struct timespec *ts, int utc, char format);
 
-  describe "flu_tstamp()"
+  context "tz dependents"
   {
-    it "outputs a string timestamp"
+    before each
     {
-      struct timespec ts;
-      ts.tv_sec = 1414791000;
-      ts.tv_nsec = 123456789;
-        //
-        // 2014/11/01 06:30:00
-
-      expect(flu_tstamp(&ts, 0, 'z') ===f "2014-10-31T21:30:00Z");
-      expect(flu_tstamp(&ts, 1, 'z') ===f "2014-10-31T21:30:00Z");
-
-      expect(flu_tstamp(&ts, 0, 'h') ===f "20141101.0630");
-      expect(flu_tstamp(&ts, 1, 'h') ===f "20141031.2130");
-      expect(flu_tstamp(&ts, 0, 's') ===f "20141101.063000");
-      expect(flu_tstamp(&ts, 1, 's') ===f "20141031.213000");
-
-      expect(flu_tstamp(&ts, 0, 'm') ===f "20141101.063000.123");
-      expect(flu_tstamp(&ts, 1, 'm') ===f "20141031.213000.123");
-      expect(flu_tstamp(&ts, 0, 'u') ===f "20141101.063000.123456");
-      expect(flu_tstamp(&ts, 1, 'u') ===f "20141031.213000.123456");
-      expect(flu_tstamp(&ts, 0, 'n') ===f "20141101.063000.123456789");
-      expect(flu_tstamp(&ts, 1, 'n') ===f "20141031.213000.123456789");
-
-      ts.tv_nsec = 1;
-
-      expect(flu_tstamp(&ts, 0, 'm') ===f "20141101.063000.000");
-      expect(flu_tstamp(&ts, 1, 'm') ===f "20141031.213000.000");
-      expect(flu_tstamp(&ts, 0, 'u') ===f "20141101.063000.000000");
-      expect(flu_tstamp(&ts, 1, 'u') ===f "20141031.213000.000000");
-      expect(flu_tstamp(&ts, 0, 'n') ===f "20141101.063000.000000001");
-      expect(flu_tstamp(&ts, 1, 'n') ===f "20141031.213000.000000001");
+      //printf("0  tz: %s/%s\n", tzname[0], tzname[1]);
+      char *tz = getenv("TZ");
+      setenv("TZ", "JST-9", 1);
+      tzset();
+      //printf("0b tz: %s/%s\n", tzname[0], tzname[1]);
+    }
+    after each
+    {
+      //printf("1 pre: %s\n", tz);
+      //printf("1  tz: %s/%s\n", tzname[0], tzname[1]);
+      if (tz == NULL) unsetenv("TZ");
+      else setenv("TZ", tz, 1);
+      tzset();
+      //printf("1b tz: %s/%s\n", tzname[0], tzname[1]);
     }
 
-    it "gets its time from clock_gettime(CLOCK_REALTIME, ...) if ts is NULL"
+    describe "flu_tstamp()"
     {
-      expect(flu_tstamp(NULL, 0, 'n') ^==f "20");
+      it "outputs a string timestamp"
+      {
+        struct timespec ts;
+        ts.tv_sec = 1414791000;
+        ts.tv_nsec = 123456789;
+          //
+          // 2014/11/01 06:30:00
+
+        expect(flu_tstamp(&ts, 0, 'z') ===f "2014-10-31T21:30:00Z");
+        expect(flu_tstamp(&ts, 1, 'z') ===f "2014-10-31T21:30:00Z");
+
+        expect(flu_tstamp(&ts, 0, 'h') ===f "20141101.0630");
+        expect(flu_tstamp(&ts, 1, 'h') ===f "20141031.2130");
+        expect(flu_tstamp(&ts, 0, 's') ===f "20141101.063000");
+        expect(flu_tstamp(&ts, 1, 's') ===f "20141031.213000");
+
+        expect(flu_tstamp(&ts, 0, 'm') ===f "20141101.063000.123");
+        expect(flu_tstamp(&ts, 1, 'm') ===f "20141031.213000.123");
+        expect(flu_tstamp(&ts, 0, 'u') ===f "20141101.063000.123456");
+        expect(flu_tstamp(&ts, 1, 'u') ===f "20141031.213000.123456");
+        expect(flu_tstamp(&ts, 0, 'n') ===f "20141101.063000.123456789");
+        expect(flu_tstamp(&ts, 1, 'n') ===f "20141031.213000.123456789");
+
+        ts.tv_nsec = 1;
+
+        expect(flu_tstamp(&ts, 0, 'm') ===f "20141101.063000.000");
+        expect(flu_tstamp(&ts, 1, 'm') ===f "20141031.213000.000");
+        expect(flu_tstamp(&ts, 0, 'u') ===f "20141101.063000.000000");
+        expect(flu_tstamp(&ts, 1, 'u') ===f "20141031.213000.000000");
+        expect(flu_tstamp(&ts, 0, 'n') ===f "20141101.063000.000000001");
+        expect(flu_tstamp(&ts, 1, 'n') ===f "20141031.213000.000000001");
+      }
+
+      it "gets its time from clock_gettime(CLOCK_REALTIME, ...) if ts is NULL"
+      {
+        expect(flu_tstamp(NULL, 0, 'n') ^==f "20");
+      }
     }
-  }
 
-  describe "flu_parse_tstamp()"
-  {
-    it "parses timestamps"
+    describe "flu_parse_tstamp()"
     {
-      struct timespec *ts = NULL;
+      it "parses timestamps"
+      {
+        struct timespec *ts = NULL;
 
-      ts = flu_parse_tstamp("2014-10-31T21:30:00Z", 0);
-      expect(ts != NULL);
-      expect(ts->tv_sec lli== 1414791000);
-      expect(ts->tv_sec lli== 0);
-      free(ts);
+        ts = flu_parse_tstamp("2014-10-31T21:30:00Z", 0);
+        expect(ts != NULL);
+        expect(ts->tv_sec lli== 1414791000);
+        expect(ts->tv_sec lli== 0);
+        free(ts);
 
-      ts = flu_parse_tstamp("2014-10-31T21:30:00Z", 1);
-      expect(ts != NULL);
-      expect(ts->tv_sec lli== 1414791000);
-      expect(ts->tv_sec lli== 0);
-      free(ts);
-    }
+        ts = flu_parse_tstamp("2014-10-31T21:30:00Z", 1);
+        expect(ts != NULL);
+        expect(ts->tv_sec lli== 1414791000);
+        expect(ts->tv_sec lli== 0);
+        free(ts);
+      }
 
-    it "returns NULL when it cannot parse"
-    {
-      expect(flu_parse_tstamp("lore ipsum", 0) == NULL);
+      it "returns NULL when it cannot parse"
+      {
+        expect(flu_parse_tstamp("lore ipsum", 0) == NULL);
+      }
     }
   }
 }
