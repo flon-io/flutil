@@ -992,7 +992,6 @@ struct timespec *flu_parse_tstamp(char *s, int utc)
     char *ss = NULL;
     if (a != b) { subseconds = b + 1; ss = strndup(s, b - s); }
     else ss = strdup(s);
-    printf(">%s<\n", ss);
 
     if (strlen(a + 1) > 4) format = "%Y%m%d.%H%M%S";
 
