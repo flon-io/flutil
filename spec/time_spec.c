@@ -223,6 +223,7 @@ context "time"
       }
     }
   }
+
   describe "flu_tdiff()"
   {
     it "substracts t0 from t1"
@@ -249,6 +250,19 @@ context "time"
       expect(t2->tv_nsec li== 999999900);
 
       free(t2);
+    }
+  }
+
+  describe "flu_ts_to_s()"
+  {
+    it "renders a timespec as a string"
+    {
+      struct timespec ts = { 10, 1200300 };
+
+      expect(flu_ts_to_s(&ts, 's') ===f "10s");
+      expect(flu_ts_to_s(&ts, 'm') ===f "10s001");
+      expect(flu_ts_to_s(&ts, 'u') ===f "10s001200");
+      expect(flu_ts_to_s(&ts, 'n') ===f "10s001200300");
     }
   }
 }

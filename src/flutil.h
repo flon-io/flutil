@@ -421,5 +421,9 @@ struct timespec *flu_parse_tstamp(char *s, int utc);
  */
 struct timespec *flu_tdiff(struct timespec *t1, struct timespec *t0);
 
+/* Use to print the output of flu_tdiff().
+ */
+char *flu_ts_to_s(struct timespec *ts, char format);
+
 #endif // FLON_FLUTIL_H
 
