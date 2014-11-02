@@ -136,5 +136,30 @@ context "time"
       expect(flu_tstamp(NULL, 0, 'n') ^==f "20");
     }
   }
+
+  describe "flu_parse_tstamp()"
+  {
+    it "parses timestamps"
+    {
+      struct timespec *ts = NULL;
+
+      ts = flu_parse_tstamp("2014-10-31T21:30:00Z", 0);
+      expect(ts != NULL);
+      expect(ts->tv_sec lli== 1414791000);
+      expect(ts->tv_sec lli== 0);
+      free(ts);
+
+      ts = flu_parse_tstamp("2014-10-31T21:30:00Z", 1);
+      expect(ts != NULL);
+      expect(ts->tv_sec lli== 1414791000);
+      expect(ts->tv_sec lli== 0);
+      free(ts);
+    }
+
+    it "returns NULL when it cannot parse"
+    {
+      expect(flu_parse_tstamp("lore ipsum", 0) == NULL);
+    }
+  }
 }
 

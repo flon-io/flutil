@@ -411,7 +411,9 @@ long long flu_do_msleep(long long milliseconds);
  */
 char *flu_tstamp(struct timespec *ts, int utc, char format);
 
-//struct timespec *flu_parse_tstamp(char *s, int utc);
+/* Parses a timestamp, takes a utc hint.
+ */
+struct timespec *flu_parse_tstamp(char *s, int utc);
 
 #endif // FLON_FLUTIL_H
 

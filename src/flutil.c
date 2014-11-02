@@ -969,3 +969,22 @@ char *flu_tstamp(struct timespec *ts, int utc, char format)
   return r;
 }
 
+struct timespec *flu_parse_tstamp(char *s, int utc)
+{
+  struct tm tm = {};
+
+  if (strchr(s, '-'))
+  {
+    char *r = strptime(s, "%Y-%m-%dT%H:%M:%SZ", &tm);
+    if (r == NULL) return NULL;
+  }
+
+  time_t t = mktime(&tm);
+
+  struct timespec *ts = calloc(1, sizeof(struct timespec));
+  ts->tv_sec = t;
+  ts->tv_nsec = 0;
+
+  return ts;
+}
+
