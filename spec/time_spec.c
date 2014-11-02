@@ -223,5 +223,33 @@ context "time"
       }
     }
   }
+  describe "flu_tdiff()"
+  {
+    it "substracts t0 from t1"
+    {
+      struct timespec t0 = { 10, 10 };
+      struct timespec t1 = { 100, 100 };
+
+      struct timespec *t2 = flu_tdiff(&t1, &t0);
+
+      expect(t2->tv_sec li== 90);
+      expect(t2->tv_nsec li== 90);
+
+      free(t2);
+    }
+
+    it "carries from nanoseconds to seconds"
+    {
+      struct timespec t0 = { 10, 100 };
+      struct timespec t1 = { 100, 0 };
+
+      struct timespec *t2 = flu_tdiff(&t1, &t0);
+
+      expect(t2->tv_sec li== 89);
+      expect(t2->tv_nsec li== 999999900);
+
+      free(t2);
+    }
+  }
 }
 

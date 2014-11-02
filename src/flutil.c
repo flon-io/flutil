@@ -1027,3 +1027,15 @@ struct timespec *flu_parse_tstamp(char *s, int utc)
   return ts;
 }
 
+struct timespec *flu_tdiff(struct timespec *t1, struct timespec *t0)
+{
+  struct timespec *t2 = calloc(1, sizeof(struct timespec));
+
+  t2->tv_sec = t1->tv_sec - t0->tv_sec;
+  t2->tv_nsec = t1->tv_nsec - t0->tv_nsec;
+
+  if (t2->tv_nsec < 0) { --t2->tv_sec; t2->tv_nsec += 1000000000; }
+
+  return t2;
+}
+

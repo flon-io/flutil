@@ -417,5 +417,9 @@ char *flu_tstamp(struct timespec *ts, int utc, char format);
  */
 struct timespec *flu_parse_tstamp(char *s, int utc);
 
+/* Does t1 - t0, over seconds and nanoseconds.
+ */
+struct timespec *flu_tdiff(struct timespec *t1, struct timespec *t0);
+
 #endif // FLON_FLUTIL_H
 
