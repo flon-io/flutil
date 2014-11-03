@@ -10,37 +10,52 @@
 
 context "time"
 {
-  describe "flu_gets('s')"
+  describe "flu_now()"
   {
-    it "returns the count of seconds since the Epoch"
+    it "returns the timespec for now"
     {
-      //printf("s: %lli\n", flu_gets('s'));
+      struct timespec *ts = flu_now();
 
-      ensure(flu_gets('s') > 1409000000);
+      expect(ts->tv_sec > 1409000000);
+
+      free(ts);
     }
   }
 
-  describe "flu_gets('m')"
+  describe "flu_gets()"
   {
-    it "returns the count of milliseconds (10-3) since the Epoch"
+    describe "flu_gets('s')"
     {
-      ensure(flu_gets('m') > 1409000000000);
-    }
-  }
+      it "returns the count of seconds since the Epoch"
+      {
+        //printf("s: %lli\n", flu_gets('s'));
 
-  describe "flu_gets('u')"
-  {
-    it "returns the count of microseconds (10-3) since the Epoch"
-    {
-      ensure(flu_gets('u') > 1409000000000000);
+        ensure(flu_gets('s') > 1409000000);
+      }
     }
-  }
 
-  describe "flu_gets('n')"
-  {
-    it "returns the count of nanoseconds (10-6) since the Epoch"
+    describe "flu_gets('m')"
     {
-      ensure(flu_gets('n') > 1409000000000000000);
+      it "returns the count of milliseconds (10-3) since the Epoch"
+      {
+        ensure(flu_gets('m') > 1409000000000);
+      }
+    }
+
+    describe "flu_gets('u')"
+    {
+      it "returns the count of microseconds (10-3) since the Epoch"
+      {
+        ensure(flu_gets('u') > 1409000000000000);
+      }
+    }
+
+    describe "flu_gets('n')"
+    {
+      it "returns the count of nanoseconds (10-6) since the Epoch"
+      {
+        ensure(flu_gets('n') > 1409000000000000000);
+      }
     }
   }
 
@@ -248,6 +263,17 @@ context "time"
 
       expect(t2->tv_sec li== 89);
       expect(t2->tv_nsec li== 999999900);
+
+      free(t2);
+    }
+
+    it "uses flu_now() if t1 is not set"
+    {
+      struct timespec t0 = { 1414791055, 0 };
+
+      struct timespec *t2 = flu_tdiff(NULL, &t0);
+
+      expect(t2->tv_sec > 0);
 
       free(t2);
     }
