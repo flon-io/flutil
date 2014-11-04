@@ -329,11 +329,47 @@ context "time"
       expect(ts->tv_sec li== 0);
       expect(ts->tv_nsec li== 1000000);
       free(ts);
+
+      ts = flu_parse_ts("-1");
+      expect(ts->tv_sec li== -1);
+      expect(ts->tv_nsec li== 0);
+      free(ts);
+
+      ts = flu_parse_ts("-1s");
+      expect(ts->tv_sec li== -1);
+      expect(ts->tv_nsec li== 0);
+      free(ts);
+
+      ts = flu_parse_ts("-.001s");
+      expect(ts->tv_sec li== 0);
+      expect(ts->tv_nsec li== -1000000);
+      free(ts);
+
+      ts = flu_parse_ts("-.001");
+      expect(ts->tv_sec li== 0);
+      expect(ts->tv_nsec li== -1000000);
+      free(ts);
     }
 
     it "returns NULL when it cannot parse"
     {
       expect(flu_parse_ts("nada") == NULL);
+    }
+
+    it "accepts changes of sign"
+    {
+      struct timespec *ts = NULL;
+
+      ts = flu_parse_ts("5s-1");
+      expect(ts->tv_sec li== 4);
+      expect(ts->tv_nsec li== 0);
+      free(ts);
+
+      ts = flu_parse_ts("5s-.001+1m");
+      //puts(flu_ts_to_s(ts, 'n'));
+      expect(ts->tv_sec li== 64);
+      expect(ts->tv_nsec li== 999000000);
+      free(ts);
     }
   }
 
@@ -345,6 +381,7 @@ context "time"
       expect(flu_parse_t("2m10s") lli== 130);
       expect(flu_parse_t("-7s") lli== -7);
       expect(flu_parse_t("1h1s") lli== 3601);
+      expect(flu_parse_t("-10m7s") lli== -607);
     }
 
     it "sets errno to EINVAL when it cannot parse"
@@ -360,6 +397,11 @@ context "time"
       expect(r == 0);
       expect(errno == EINVAL);
       errno = 0;
+    }
+
+    it "accepts changes of sign"
+    {
+      expect(flu_parse_t("1h-2m+3s") lli== 3600 - 2 * 60 + 3);
     }
   }
 }
