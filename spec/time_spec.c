@@ -382,6 +382,15 @@ context "time"
       expect(flu_parse_t("-7s") lli== -7);
       expect(flu_parse_t("1h1s") lli== 3601);
       expect(flu_parse_t("-10m7s") lli== -607);
+
+      expect(flu_parse_t("1") lli== 1);
+      expect(flu_parse_t("1s") lli== 1);
+      expect(flu_parse_t("1m") lli== 60);
+      expect(flu_parse_t("1h") lli== 60 * 60);
+      expect(flu_parse_t("1d") lli== 24 * 60 * 60);
+      expect(flu_parse_t("1w") lli== 7 * 24 * 60 * 60);
+      expect(flu_parse_t("1M") lli== 30 * 24 * 60 * 60);
+      expect(flu_parse_t("1y") lli== 365 * 24 * 60 * 60);
     }
 
     it "sets errno to EINVAL when it cannot parse"

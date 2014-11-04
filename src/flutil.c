@@ -1095,13 +1095,17 @@ struct timespec *flu_parse_ts(const char *s)
     {
       ss[j++] = c; ss[j] = '\0';
     }
-    else if (c == '\0' || strchr("-+hms", c))
+    else if (c == '\0' || strchr("-+yMwdhms", c))
     {
       short sub = 0;
-      short mod = 1; // s and \0
+      long long mod = 1; // s and \0
       //
       if (c == 'm') mod = 60;
       else if (c == 'h') mod = 60 * 60;
+      else if (c == 'd') mod = 24 * 60 * 60;
+      else if (c == 'w') mod = 7 * 24 * 60 * 60;
+      else if (c == 'M') mod = 30 * 24 * 60 * 60;
+      else if (c == 'y') mod = 365 * 24 * 60 * 60;
 
       if (prev == '.' || (c == '\0' && prev == 's')) sub = 1;
 
