@@ -5,6 +5,8 @@
 // Sat Nov  1 15:48:38 JST 2014
 //
 
+#include <errno.h>
+
 #include "flutil.h"
 
 
@@ -289,6 +291,75 @@ context "time"
       expect(flu_ts_to_s(&ts, 'm') ===f "10s001");
       expect(flu_ts_to_s(&ts, 'u') ===f "10s001200");
       expect(flu_ts_to_s(&ts, 'n') ===f "10s001200300");
+    }
+  }
+
+  describe "flu_parse_ts()"
+  {
+    it "parses a time[spec] string"
+    {
+      struct timespec *ts = NULL;
+
+      ts = flu_parse_ts("10s");
+      expect(ts->tv_sec li== 10);
+      expect(ts->tv_nsec li== 0);
+      free(ts);
+
+      ts = flu_parse_ts("7s001");
+      expect(ts->tv_sec li== 7);
+      expect(ts->tv_nsec li== 1000000);
+      free(ts);
+
+      ts = flu_parse_ts("7s001200");
+      expect(ts->tv_sec li== 7);
+      expect(ts->tv_nsec li== 1200000);
+      free(ts);
+
+      ts = flu_parse_ts("7s001200123");
+      expect(ts->tv_sec li== 7);
+      expect(ts->tv_nsec li== 1200123);
+      free(ts);
+
+      ts = flu_parse_ts("1s1m.001");
+      expect(ts->tv_sec li== 61);
+      expect(ts->tv_nsec li== 1000000);
+      free(ts);
+
+      ts = flu_parse_ts(".001s");
+      expect(ts->tv_sec li== 0);
+      expect(ts->tv_nsec li== 1000000);
+      free(ts);
+    }
+
+    it "returns NULL when it cannot parse"
+    {
+      expect(flu_parse_ts("nada") == NULL);
+    }
+  }
+
+  describe "flu_parse_t()"
+  {
+    it "parses a time string"
+    {
+      expect(flu_parse_t("10s") lli== 10);
+      expect(flu_parse_t("2m10s") lli== 130);
+      expect(flu_parse_t("-7s") lli== -7);
+      expect(flu_parse_t("1h1s") lli== 3601);
+    }
+
+    it "sets errno to EINVAL when it cannot parse"
+    {
+      long long r = -1;
+
+      r = flu_parse_t("nada");
+      expect(r == 0);
+      expect(errno == EINVAL);
+      errno = 0;
+
+      r = flu_parse_t("blah blah");
+      expect(r == 0);
+      expect(errno == EINVAL);
+      errno = 0;
     }
   }
 }
