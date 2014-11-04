@@ -1075,12 +1075,13 @@ char *flu_ts_to_s(struct timespec *ts, char format)
 struct timespec *flu_parse_ts(const char *s)
 {
   struct timespec *ts = calloc(1, sizeof(struct timespec));
-  size_t l = strlen(s);
-  char *ss = calloc(l + 1, sizeof(char));
   long long sign = 1;
   char prev = 0;
-  short sub = 0;
-  int mod;
+
+  size_t l = strlen(s); if (l < 9) l = 9;
+
+  char *ss = calloc(l + 1, sizeof(char));
+  for (size_t k = 0; k < l; ) { ss[k++] = '0'; } ss[l] = '\0';
 
   for (size_t i = 0, j = 0; ; ++i)
   {
@@ -1092,12 +1093,12 @@ struct timespec *flu_parse_ts(const char *s)
     }
     else if (c >= '0' && c <= '9')
     {
-      ss[j++] = c;
+      ss[j++] = c; ss[j] = '\0';
     }
     else if (c == '\0' || strchr("-+hms", c))
     {
-      sub = 0;
-      mod = 1; // s and \0
+      short sub = 0;
+      short mod = 1; // s and \0
       //
       if (c == 'm') mod = 60;
       else if (c == 'h') mod = 60 * 60;
@@ -1106,10 +1107,8 @@ struct timespec *flu_parse_ts(const char *s)
 
       if (sub)
       {
-        char *sss = strdup("000000000");
-        for (size_t k = 0; k < 9 && ss[k] != '\0'; ++k) sss[k] = ss[k];
-        ts->tv_nsec += sign * strtoll(sss, NULL, 10);
-        free(sss);
+        ss[j] = '0'; ss[9] = '\0';
+        ts->tv_nsec += sign * strtoll(ss, NULL, 10);
 
         while (ts->tv_sec > 0 && ts->tv_nsec < 0)
         {
@@ -1121,8 +1120,7 @@ struct timespec *flu_parse_ts(const char *s)
         ts->tv_sec += sign * strtoll(ss, NULL, 10) * mod;
       }
 
-      for (size_t k = 0; k < l + 1; ) ss[k++] = '\0';
-      j = 0;
+      j = 0; for (size_t k = 0; k < l; ) ss[k++] = '0';
 
       if (c == '\0') break;
 
