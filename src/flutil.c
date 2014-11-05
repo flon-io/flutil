@@ -1014,6 +1014,16 @@ struct timespec *flu_parse_tstamp(char *s, int utc)
     if (r == NULL) return NULL;
   }
 
+  //printf(
+  //  "tm: sec:%i, min:%i, hour:%i, mday:%i, mon:%i, year:%i,"
+  //  " wday:%i, yday:%i, isdst:%i\n",
+  //  tm.tm_sec, tm.tm_min, tm.tm_hour, tm.tm_mday, tm.tm_mon, tm.tm_year,
+  //  tm.tm_wday, tm.tm_yday, tm.tm_isdst);
+  ////
+  //// disrupt...
+  //tm.tm_wday = -1;
+  //tm.tm_yday = -1;
+
   char *tz = NULL;
   if (utc) { tz = getenv("TZ"); setenv("TZ", "UTC", 1); tzset(); }
     //
