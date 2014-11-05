@@ -981,6 +981,46 @@ char *flu_tstamp(struct timespec *ts, int utc, char format)
   return r;
 }
 
+static long stol(char *s, size_t off, size_t l)
+{
+  char *ss = strndup(s + off, l);
+  long r = atol(ss);
+  free(ss);
+  //printf("stol() >%s< in >%s< --> %li\n", s, strndup(s + off, l), r);
+
+  return r;
+}
+
+static int ptime(char *s, struct tm *tm)
+{
+  char *d = strchr(s, 'T');
+  if (d == NULL) d = strchr(s, '.');
+  if (d == NULL) return 1;
+
+  if (*d == 'T')
+  {
+    tm->tm_hour = stol(d, 1, 2);
+    tm->tm_min = stol(d, 4, 2);
+    tm->tm_sec = stol(d, 7, 2);
+    d = strchr(s, '-'); tm->tm_year = stol(s, 0, d - s) - 1900;
+    tm->tm_mon = stol(d, 1, 2) - 1;
+    d = strchr(d + 1, '-'); tm->tm_mday = stol(d, 1, 2);
+  }
+  else //if (*d == '.')
+  {
+    tm->tm_hour = stol(d, 1, 2);
+    tm->tm_min = stol(d, 3, 2);
+    tm->tm_sec = stol(d, 5, 2);
+    tm->tm_mday = stol(d - 2, 0, 2);
+    tm->tm_mon = stol(d - 4, 0, 2) - 1;
+    tm->tm_year = stol(s, 0, d - 4 - s) - 1900;
+  }
+
+  tm->tm_wday = 0; tm->tm_yday = 0; tm->tm_isdst = 0;
+
+  return 0; // success
+}
+
 struct timespec *flu_parse_tstamp(char *s, int utc)
 {
   struct tm tm = {};
@@ -989,30 +1029,18 @@ struct timespec *flu_parse_tstamp(char *s, int utc)
   if (strchr(s, '-'))
   {
     utc = 1;
-    char *r = strptime(s, "%Y-%m-%dT%H:%M:%SZ", &tm);
-    if (r == NULL) return NULL;
   }
   else
   {
-    char *format = "%Y%m%d.%H%M";
-
     char *a = strchr(s, '.');
     char *b = strrchr(s, '.');
 
     if (a == NULL) return NULL;
-
-    char *ss = NULL;
-    if (a != b) { subseconds = b + 1; ss = strndup(s, b - s); }
-    else ss = strdup(s);
-
-    if (strlen(a + 1) > 4) format = "%Y%m%d.%H%M%S";
-
-    char *r = strptime(ss, format, &tm);
-
-    free(ss);
-
-    if (r == NULL) return NULL;
+    if (a != b) subseconds = b + 1;
   }
+
+  int r = ptime(s, &tm);
+  if (r != 0) return NULL;
 
   //printf(
   //  "tm: sec:%i, min:%i, hour:%i, mday:%i, mon:%i, year:%i,"
