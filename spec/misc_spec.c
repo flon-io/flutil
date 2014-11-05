@@ -54,5 +54,16 @@ context "misc"
       expect(flu_system("%s > /dev/null", "pwd") == 0);
     }
   }
+
+  describe "flu_stoll()"
+  {
+    it "extracts strings"
+    {
+      expect(flu_stoll("a123b", 3, 10) lli== 0);
+      expect(flu_stoll("a123b" + 1, 3, 10) lli== 123);
+      expect(flu_stoll("123" + 1, 100, 10) lli== 23);
+      expect(flu_stoll("123" + 5, 100, 10) lli== 0);
+    }
+  }
 }
 

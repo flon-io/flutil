@@ -869,6 +869,16 @@ int flu_system(const char *cmd, ...)
   return r;
 }
 
+long long flu_stoll(char *s, size_t l, int base)
+{
+  char *ss = strndup(s, l);
+  long long r = strtoll(ss, NULL, base);
+  free(ss);
+  //printf("flu_stoll() >%s< in >%s< --> %li\n", s, strndup(s, l), r);
+
+  return r;
+}
+
 
 //
 // time
@@ -981,16 +991,6 @@ char *flu_tstamp(struct timespec *ts, int utc, char format)
   return r;
 }
 
-static long stol(char *s, size_t off, size_t l)
-{
-  char *ss = strndup(s + off, l);
-  long r = atol(ss);
-  free(ss);
-  //printf("stol() >%s< in >%s< --> %li\n", s, strndup(s + off, l), r);
-
-  return r;
-}
-
 static int ptime(char *s, struct tm *tm)
 {
   char *d = strchr(s, 'T');
@@ -999,21 +999,21 @@ static int ptime(char *s, struct tm *tm)
 
   if (*d == 'T')
   {
-    tm->tm_hour = stol(d, 1, 2);
-    tm->tm_min = stol(d, 4, 2);
-    tm->tm_sec = stol(d, 7, 2);
-    d = strchr(s, '-'); tm->tm_year = stol(s, 0, d - s) - 1900;
-    tm->tm_mon = stol(d, 1, 2) - 1;
-    d = strchr(d + 1, '-'); tm->tm_mday = stol(d, 1, 2);
+    tm->tm_hour = flu_stoll(d + 1, 2, 10);
+    tm->tm_min = flu_stoll(d + 4, 2, 10);
+    tm->tm_sec = flu_stoll(d + 7, 2, 10);
+    d = strchr(s, '-'); tm->tm_year = flu_stoll(s + 0, d - s, 10) - 1900;
+    tm->tm_mon = flu_stoll(d + 1, 2, 10) - 1;
+    d = strchr(d + 1, '-'); tm->tm_mday = flu_stoll(d + 1, 2, 10);
   }
   else //if (*d == '.')
   {
-    tm->tm_hour = stol(d, 1, 2);
-    tm->tm_min = stol(d, 3, 2);
-    tm->tm_sec = stol(d, 5, 2);
-    tm->tm_mday = stol(d - 2, 0, 2);
-    tm->tm_mon = stol(d - 4, 0, 2) - 1;
-    tm->tm_year = stol(s, 0, d - 4 - s) - 1900;
+    tm->tm_hour = flu_stoll(d + 1, 2, 10);
+    tm->tm_min = flu_stoll(d + 3, 2, 10);
+    tm->tm_sec = flu_stoll(d + 5, 2, 10);
+    tm->tm_mday = flu_stoll(d - 2, 2, 10);
+    tm->tm_mon = flu_stoll(d - 4, 2, 10) - 1;
+    tm->tm_year = flu_stoll(s, d - 4 - s, 10) - 1900;
   }
 
   tm->tm_wday = 0; tm->tm_yday = 0; tm->tm_isdst = 0;

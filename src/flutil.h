@@ -375,6 +375,11 @@ char *flu_strdup(char *s);
  */
 int flu_system(const char *format, ...);
 
+/* Like strtoll(3), but accepts a length.
+ * Returns 0 when in doubt.
+ */
+long long flu_stoll(char *s, size_t l, int base);
+
 
 //
 // time
