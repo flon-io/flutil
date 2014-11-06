@@ -5,9 +5,11 @@
 // Sat Nov  1 15:48:38 JST 2014
 //
 
+#include <time.h>
 #include <errno.h>
 
 #include "flutil.h"
+#include "flutim.h"
 
 
 context "time"
