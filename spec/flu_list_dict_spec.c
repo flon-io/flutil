@@ -133,30 +133,57 @@ context "flu_list as dict"
 
   describe "flu_d()"
   {
+    before each
+    {
+      flu_list *d = NULL;
+    }
+    after each
+    {
+      if (d) flu_list_free(d);
+    }
+
     it "builds a flu_list dict"
     {
-      flu_list *d =
-        flu_d("name", "Hans", "age", "30", "balance", "1000", NULL);
+      d = flu_d("name", "Hans", "age", "30", "balance", "1000", NULL);
 
-      ensure(d->size == 3);
-      ensure(flu_list_get(d, "name") === "Hans");
-      ensure(flu_list_get(d, "age") === "30");
-      ensure(flu_list_get(d, "balance") === "1000");
-
-      flu_list_free(d);
+      expect(d->size == 3);
+      expect(flu_list_get(d, "name") === "Hans");
+      expect(flu_list_get(d, "age") === "30");
+      expect(flu_list_get(d, "balance") === "1000");
     }
-  }
 
-  describe "flu_vsd()"
-  {
-    it "returns NULL when fed a key without a value"
+    it "accepts NULL as a value"
+    {
+      d = flu_d("k0", NULL, NULL);
+
+      expect(d->size == 1);
+      expect(flu_list_get(d, "k0") == NULL);
+    }
+
+    it "accepts NULL as a value (2)"
+    {
+      d = flu_d("k0", NULL, "k1", NULL, NULL);
+
+      expect(d->size == 2);
+      expect(flu_list_get(d, "k0") == NULL);
+      expect(flu_list_get(d, "k1") == NULL);
+    }
   }
 
   describe "flu_sd()"
   {
+    before each
+    {
+      flu_list *d = NULL;
+    }
+    after each
+    {
+      if (d) flu_list_free_all(d);
+    }
+
     it "composes string -> string dictionaries"
     {
-      flu_list *d =
+      d =
         flu_sd(
           "name", "Hans %s", "Rothenmeyer",
           "age", "%X", 15 + 1 + 11,
@@ -164,19 +191,26 @@ context "flu_list as dict"
           "x_%s", "special", "nothing",
           NULL);
 
-      ensure(d->size zu== 4);
-      ensure(flu_list_get(d, "name") === "Hans Rothenmeyer");
-      ensure(flu_list_get(d, "age") === "1B");
-      ensure(flu_list_get(d, "balance") === "1005");
-      ensure(flu_list_get(d, "x_special") === "nothing");
+      expect(d->size zu== 4);
+      expect(flu_list_get(d, "name") === "Hans Rothenmeyer");
+      expect(flu_list_get(d, "age") === "1B");
+      expect(flu_list_get(d, "balance") === "1005");
+      expect(flu_list_get(d, "x_special") === "nothing");
 
-      flu_list_free_all(d);
+      //flu_list_free_all(d);
         //
         // Contrast with flu_d() above. Here, all the strings are
         // malloc'ed so _free_all is "de rigueur".
     }
 
-    it "returns NULL when fed a key without a value"
+    it "accepts NULL as a value"
+    {
+      d = flu_sd("k0", NULL, NULL);
+
+      expect(d != NULL);
+      expect(d->size == 1);
+      expect(flu_list_get(d, "k0") == NULL);
+    }
   }
 }
 
