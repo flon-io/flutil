@@ -146,5 +146,37 @@ context "flu_list as dict"
       flu_list_free(d);
     }
   }
+
+  describe "flu_vsd()"
+  {
+    it "returns NULL when fed a key without a value"
+  }
+
+  describe "flu_sd()"
+  {
+    it "composes string -> string dictionaries"
+    {
+      flu_list *d =
+        flu_sd(
+          "name", "Hans %s", "Rothenmeyer",
+          "age", "%X", 15 + 1 + 11,
+          "balance", "10%s", "05",
+          "x_%s", "special", "nothing",
+          NULL);
+
+      ensure(d->size zu== 4);
+      ensure(flu_list_get(d, "name") === "Hans Rothenmeyer");
+      ensure(flu_list_get(d, "age") === "1B");
+      ensure(flu_list_get(d, "balance") === "1005");
+      ensure(flu_list_get(d, "x_special") === "nothing");
+
+      flu_list_free_all(d);
+        //
+        // Contrast with flu_d() above. Here, all the strings are
+        // malloc'ed so _free_all is "de rigueur".
+    }
+
+    it "returns NULL when fed a key without a value"
+  }
 }
 
