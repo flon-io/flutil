@@ -85,6 +85,21 @@ context "flu_list as dict"
     }
   }
 
+  describe "flu_list_getd()"
+  {
+    it "returns the value in case of hit"
+    {
+      flu_list_set(l, "purple", "murasaki");
+
+      ensure(flu_list_getd(l, "purple", "*nada*") === "murasaki");
+    }
+
+    it "returns the default value in case of miss"
+    {
+      ensure(flu_list_getd(l, "red", "ruddyraga") === "ruddyraga");
+    }
+  }
+
   describe "flu_list_dtrim()"
   {
     it "returns a new, trimmed, flu_list"
