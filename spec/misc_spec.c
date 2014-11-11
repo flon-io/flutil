@@ -65,5 +65,14 @@ context "misc"
       expect(flu_stoll("123" + 5, 100, 10) lli== 0);
     }
   }
+
+  describe "flu_putf()"
+  {
+    it "puts and then frees its argument"
+    {
+      char *s = strdup("");
+      flu_putf(s);
+    }
+  }
 }
 
