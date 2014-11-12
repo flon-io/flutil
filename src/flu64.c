@@ -28,6 +28,7 @@
 #define _POSIX_C_SOURCE 200809L
 
 #include <string.h>
+#include <sys/types.h>
 
 
 static char sixfours[64] =
@@ -58,5 +59,15 @@ void flu64_do_encode(char *in, size_t l, char *out)
     out[j++] = bpad ? '=' : sixfours[y];
     out[j++] = cpad ? '=' : sixfours[z];
   }
+}
+
+char *flu64_encode(char *in, ssize_t l)
+{
+  if (l < 0) l = strlen(in);
+  char *out = calloc(l * 2, sizeof(char));
+
+  flu64_do_encode(in, l, out);
+
+  return out;
 }
 
