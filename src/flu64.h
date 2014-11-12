@@ -32,7 +32,10 @@
 
 
 void flu64_do_encode(char *in, size_t l, char *out);
+void flu64_do_decode(char *in, size_t l, char *out);
+
 char *flu64_encode(char *in, ssize_t l);
+char *flu64_decode(char *in, ssize_t l);
 
 #endif // FLON_FLU64_H
 

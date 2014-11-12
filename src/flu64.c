@@ -36,6 +36,13 @@ static char sixfours[64] =
   "abcdefghijklmnopqrstuvwxyz"
   "0123456789"
   "+/";
+static int foursixes[122 - 43] =
+  {};
+
+static void init_foursixes()
+{
+  for (size_t i = 0; i < 64; ++i) foursixes[sixfours[i] - 43] = i;
+}
 
 void flu64_do_encode(char *in, size_t l, char *out)
 {
@@ -61,12 +68,39 @@ void flu64_do_encode(char *in, size_t l, char *out)
   }
 }
 
+void flu64_do_decode(char *in, size_t l, char *out)
+{
+  if (foursixes[0] == 0) init_foursixes();
+
+  int w, x, y, z;
+
+  for (size_t i = 0, j = 0; i < l; )
+  {
+    w = foursixes[in[i++] - 43]; x = foursixes[in[i++] - 43];
+    y = foursixes[in[i++] - 43]; z = foursixes[in[i++] - 43];
+
+    out[j++] = (w << 2) | (x >> 4);
+    out[j++] = ((x & 0x0f) << 4) | (y >> 2);
+    out[j++] = ((y & 0x03) << 6) | z;
+  }
+}
+
 char *flu64_encode(char *in, ssize_t l)
 {
   if (l < 0) l = strlen(in);
   char *out = calloc(l * 2, sizeof(char));
 
   flu64_do_encode(in, l, out);
+
+  return out;
+}
+
+char *flu64_decode(char *in, ssize_t l)
+{
+  if (l < 0) l = strlen(in);
+  char *out = calloc(l, sizeof(char));
+
+  flu64_do_decode(in, l, out);
 
   return out;
 }

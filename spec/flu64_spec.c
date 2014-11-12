@@ -62,6 +62,8 @@ context "flu64"
         "bmVyYXRpb24gb2Yga25vd2xlZGdlLCBleGNlZWRzIHRoZSBzaG9ydCB2ZWhlbWVuY"
         "2Ugb2YgYW55IGNhcm5hbCBwbGVhc3VyZS4=");
     }
+
+    it "encodes UTF-8 over chars"
   }
 
   describe "flu64_encode()"
@@ -83,6 +85,22 @@ context "flu64"
         "bmVyYXRpb24gb2Yga25vd2xlZGdlLCBleGNlZWRzIHRoZSBzaG9ydCB2ZWhlbWVuY"
         "2Ugb2YgYW55IGNhcm5hbCBwbGVhc3VyZS4=");
     }
+  }
+
+  describe "flu64_do_decode()"
+  {
+    it "decodes"
+    {
+      char *in = "TWFuIGlz";
+      char *out = calloc(strlen(in), sizeof(char));
+
+      flu64_do_decode(in, strlen(in), out);
+
+      expect(out ===f "Man is");
+    }
+
+    it "decodes when padding (=)"
+    it "decodes when padding (==)"
   }
 
   describe "flu64_decode()"
