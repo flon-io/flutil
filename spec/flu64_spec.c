@@ -100,7 +100,24 @@ context "flu64"
     }
 
     it "decodes when padding (=)"
+    {
+      char *in = "TWFuIGlzIGQ=";
+      char *out = calloc(strlen(in), sizeof(char));
+
+      flu64_do_decode(in, strlen(in), out);
+
+      expect(out ===f "Man is d");
+    }
+
     it "decodes when padding (==)"
+    {
+      char *in = "TWFuIGlzIA==";
+      char *out = calloc(strlen(in), sizeof(char));
+
+      flu64_do_decode(in, strlen(in), out);
+
+      expect(out ===f "Man is ");
+    }
   }
 
   describe "flu64_decode()"
