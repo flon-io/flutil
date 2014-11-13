@@ -62,8 +62,6 @@ context "flu64"
         "bmVyYXRpb24gb2Yga25vd2xlZGdlLCBleGNlZWRzIHRoZSBzaG9ydCB2ZWhlbWVuY"
         "2Ugb2YgYW55IGNhcm5hbCBwbGVhc3VyZS4=");
     }
-
-    it "encodes UTF-8 over chars"
   }
 
   describe "flu64_encode()"
@@ -139,6 +137,26 @@ context "flu64"
         "generation of knowledge, exceeds the short vehemence of any carnal "
         "pleasure.");
     }
+  }
+
+  it "deals with UTF-8"
+
+  it "deals with binary data (not just \\0 terminated strings)"
+  {
+    char s[5] = { 0, 'a', 'b', 0, 'e' };
+    //printf("%0x, %0x, %0x, %0x\n", s[0], s[1], s[2], s[3]);
+
+    char *s1 = calloc(5 * 2, sizeof(char));
+    flu64_do_encode(s, 5, s1);
+    //puts(s1);
+
+    expect(s1 === "AGFiAGU=");
+
+    char *s2 = calloc(5, sizeof(char));
+    flu64_do_decode(s1, strlen(s1), s2);
+    //printf("%0x, %0x, %0x, %0x\n", s2[0], s2[1], s2[2], s2[3]);
+
+    expect(strncmp(s, s2, 5) == 0);
   }
 }
 
