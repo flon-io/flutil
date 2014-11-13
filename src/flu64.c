@@ -47,7 +47,7 @@ static void init_foursixes()
 
 void flu64_do_encode(char *in, size_t l, char *out)
 {
-  char a, b, c;
+  unsigned char a, b, c;
   int w, x, y, z;
   int bpad, cpad;
 

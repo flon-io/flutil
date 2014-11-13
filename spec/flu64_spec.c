@@ -153,10 +153,12 @@ context "flu64"
     it "deals with UTF-8"
     {
       char *s =
-        "株式会社spicenadaはCobolConferenceのスポンサーになっております。";
+        "株式会社spicelifeはRubyWorldConferenceのスポンサーになっております。";
 
       s1 = flu64_encode(s, -1);
-      //printf(">%s<\n", s1);
+      expect(s1 === ""
+        "5qCq5byP5Lya56S+c3BpY2VsaWZl44GvUnVieVdvcmxkQ29uZmVyZW5jZeOBru"
+        "OCueODneODs+OCteODvOOBq+OBquOBo+OBpuOBiuOCiuOBvuOBmeOAgg==");
 
       s2 = flu64_decode(s1, -1);
 
