@@ -140,6 +140,19 @@ context "flu64"
   }
 
   it "deals with UTF-8"
+  {
+    char *s =
+      "株式会社spicenadaはCobolConferenceのスポンサーになっております。";
+
+    char *s1 = flu64_encode(s, -1);
+    //printf(">%s<\n", s1);
+
+    char *s2 = flu64_decode(s1, -1);
+
+    expect(s2 === s);
+
+    free(s1); free(s2);
+  }
 
   it "deals with binary data (not just \\0 terminated strings)"
   {
