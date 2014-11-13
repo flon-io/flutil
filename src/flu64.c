@@ -81,8 +81,8 @@ void flu64_do_decode(char *in, size_t l, char *out)
     y = foursixes[in[i++] - 43]; z = foursixes[in[i++] - 43];
 
     out[j++] = (w << 2) | (x >> 4);
-    out[j++] = ((x & 0x0f) << 4) | (y >> 2);
-    out[j++] = ((y & 0x03) << 6) | z;
+    if (in[i - 2] != '=') out[j++] = ((x & 0x0f) << 4) | (y >> 2);
+    if (in[i - 1] != '=') out[j++] = ((y & 0x03) << 6) | z;
   }
 }
 

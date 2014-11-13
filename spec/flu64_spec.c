@@ -139,37 +139,47 @@ context "flu64"
     }
   }
 
-  it "deals with UTF-8"
+  context "roundtrip"
   {
-    char *s =
-      "株式会社spicenadaはCobolConferenceのスポンサーになっております。";
+    before each
+    {
+      char *s1 = NULL; char *s2 = NULL;
+    }
+    after each
+    {
+      free(s1); free(s2);
+    }
 
-    char *s1 = flu64_encode(s, -1);
-    //printf(">%s<\n", s1);
+    it "deals with UTF-8"
+    {
+      char *s =
+        "株式会社spicenadaはCobolConferenceのスポンサーになっております。";
 
-    char *s2 = flu64_decode(s1, -1);
+      s1 = flu64_encode(s, -1);
+      //printf(">%s<\n", s1);
 
-    expect(s2 === s);
+      s2 = flu64_decode(s1, -1);
 
-    free(s1); free(s2);
-  }
+      expect(s2 === s);
+    }
 
-  it "deals with binary data (not just \\0 terminated strings)"
-  {
-    char s[5] = { 0, 'a', 'b', 0, 'e' };
-    //printf("%0x, %0x, %0x, %0x\n", s[0], s[1], s[2], s[3]);
+    it "deals with binary data (not just \\0 terminated strings)"
+    {
+      char s[5] = { 0, 'a', 'b', 0, 'e' };
+      //printf("%0x, %0x, %0x, %0x\n", s[0], s[1], s[2], s[3]);
 
-    char *s1 = calloc(5 * 2, sizeof(char));
-    flu64_do_encode(s, 5, s1);
-    //puts(s1);
+      s1 = calloc(5 * 2, sizeof(char));
+      flu64_do_encode(s, 5, s1);
+      //puts(s1);
 
-    expect(s1 === "AGFiAGU=");
+      expect(s1 === "AGFiAGU=");
 
-    char *s2 = calloc(5, sizeof(char));
-    flu64_do_decode(s1, strlen(s1), s2);
-    //printf("%0x, %0x, %0x, %0x\n", s2[0], s2[1], s2[2], s2[3]);
+      s2 = calloc(5, sizeof(char));
+      flu64_do_decode(s1, strlen(s1), s2);
+      //printf("%0x, %0x, %0x, %0x\n", s2[0], s2[1], s2[2], s2[3]);
 
-    expect(strncmp(s, s2, 5) == 0);
+      expect(strncmp(s, s2, 5) == 0);
+    }
   }
 }
 
