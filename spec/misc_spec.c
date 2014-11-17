@@ -47,6 +47,16 @@ context "misc"
     }
   }
 
+  describe "flu_path()"
+  {
+    it "composes a path"
+    {
+      expect(flu_path("a/%s", "x") ===f "a/x");
+      expect(flu_path("./%s", "/x") ===f "x");
+      expect(flu_path("/%s", "/x") ===f "/x");
+    }
+  }
+
   describe "flu_system()"
   {
     it "behaves like system + printf"

@@ -323,27 +323,15 @@ int flu_unlink(const char *path, ...)
   return r;
 }
 
-char *flu_canopath(const char *path, ...)
+static char *flu_simplify_path(char *s)
 {
-  va_list ap; va_start(ap, path);
-  char *s = flu_svprintf(path, ap);
-  va_end(ap);
-
-  if (s[0] != '/')
-  {
-    char *cwd = getcwd(NULL, 0);
-    char *ss = flu_sprintf("%s/%s", cwd, s);
-    free(cwd);
-    free(s);
-    s = ss;
-  }
-
   char *r = calloc(strlen(s) + 1, sizeof(char));
-  *r = '/';
-  char *rr = r + 1;
+  char *rr = r;
 
-  char *a = s + 1;
+  char *a = s;
   char *b = NULL;
+
+  if (*s == '/') { *r = '/'; rr = r + 1; a = s + 1; }
 
   while (1)
   {
@@ -375,6 +363,37 @@ char *flu_canopath(const char *path, ...)
     a = b + 1;
   }
 
+  return r;
+}
+
+char *flu_path(const char *path, ...)
+{
+  va_list ap; va_start(ap, path);
+  char *s = flu_svprintf(path, ap);
+  va_end(ap);
+
+  char *r = flu_simplify_path(s);
+  free(s);
+
+  return r;
+}
+
+char *flu_canopath(const char *path, ...)
+{
+  va_list ap; va_start(ap, path);
+  char *s = flu_svprintf(path, ap);
+  va_end(ap);
+
+  if (s[0] != '/')
+  {
+    char *cwd = getcwd(NULL, 0);
+    char *ss = flu_sprintf("%s/%s", cwd, s);
+    free(cwd);
+    free(s);
+    s = ss;
+  }
+
+  char *r = flu_simplify_path(s);
   free(s);
 
   return r;
