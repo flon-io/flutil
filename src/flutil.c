@@ -343,7 +343,7 @@ static char *flu_simplify_path(char *s)
     if (l == 2 && strncmp(a, "./", 2) == 0) dots = 1;
     else if (l == 1 && strncmp(a, "/", 1) == 0) dots = 1;
     else if (l == 1 && strncmp(a, ".\0", 2) == 0) dots = 1;
-    else if (l >= 2 && strncmp(a, "..", 2) == 0) dots = 2;
+    else if (l >= 2 && a > s && strncmp(a, "..", 2) == 0) dots = 2;
 
     if (dots == 2 && rr > r + 1)
     {
