@@ -366,14 +366,20 @@ static char *flu_simplify_path(char *s)
   return r;
 }
 
+char *flu_vpath(const char *path, va_list ap)
+{
+  char *s = flu_svprintf(path, ap);
+  char *r = flu_simplify_path(s);
+  free(s);
+
+  return r;
+}
+
 char *flu_path(const char *path, ...)
 {
   va_list ap; va_start(ap, path);
-  char *s = flu_svprintf(path, ap);
+  char *r = flu_vpath(path, ap);
   va_end(ap);
-
-  char *r = flu_simplify_path(s);
-  free(s);
 
   return r;
 }
