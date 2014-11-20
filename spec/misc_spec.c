@@ -58,14 +58,6 @@ context "misc"
     }
   }
 
-  describe "flu_system()"
-  {
-    it "behaves like system + printf"
-    {
-      expect(flu_system("%s > /dev/null", "pwd") == 0);
-    }
-  }
-
   describe "flu_stoll()"
   {
     it "extracts strings"
@@ -83,6 +75,35 @@ context "misc"
     {
       char *s = strdup("");
       flu_putf(s);
+    }
+  }
+
+  describe "flu_system()"
+  {
+    it "behaves like system + printf"
+    {
+      expect(flu_system("%s > /dev/null", "pwd") == 0);
+    }
+  }
+
+  describe "flu_plines()"
+  {
+    it "runs a cmd then returns its stdout output in a string"
+    {
+      char *s = flu_plines("ls -al");
+
+      expect(s >== "flutil.o");
+      expect(s >== "Makefile");
+
+      free(s);
+    }
+  }
+
+  describe "flu_pline()"
+  {
+    it "runs a cmd then returns the first line of its stdout output"
+    {
+      expect(flu_pline("uname %s", "-a") ~==f "Linux");
     }
   }
 }
