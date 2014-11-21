@@ -260,19 +260,13 @@ context "flu_list"
 
   describe "flu_list_isort()"
   {
-    int _strcmp(const void *a, const void *b)
-    {
-      //return strcmp(*(char * const *)s0, *(char * const *)s1);
-      return strcmp((char *)a, (char *)b);
-    }
-
     it "sorts (2 items)"
     {
       l = flu_list_malloc();
       flu_list_add(l, "zebulon");
       flu_list_add(l, "yamatoko");
 
-      flu_list_isort(l, _strcmp);
+      flu_list_isort(l, (int (*)(const void *, const void *))strcmp);
 
       ensure(l->size == 2);
       ensure(l->first->item === "yamatoko");
@@ -286,7 +280,7 @@ context "flu_list"
       flu_list_add(l, "yamatoko");
       flu_list_add(l, "xerxes");
 
-      flu_list_isort(l, _strcmp);
+      flu_list_isort(l, (int (*)(const void *, const void *))strcmp);
 
       ensure(l->size == 3);
       ensure(l->first->item === "xerxes");
@@ -300,7 +294,7 @@ context "flu_list"
       flu_list_add(l, "yamatoko");
       flu_list_add(l, "zebulon");
 
-      flu_list_isort(l, _strcmp);
+      flu_list_isort(l, (int (*)(const void *, const void *))strcmp);
 
       ensure(l->size == 3);
       ensure(l->first->item === "xerxes");
