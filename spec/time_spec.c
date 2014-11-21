@@ -153,6 +153,9 @@ context "time"
         expect(flu_tstamp(&ts, 0, 'g') ===f "Fri, 31 Oct 2014 21:30:00 GMT");
         expect(flu_tstamp(&ts, 1, 'g') ===f "Fri, 31 Oct 2014 21:30:00 GMT");
 
+        expect(flu_tstamp(&ts, 0, '2') ===f "Sat, 01 Nov 2014 06:30:00 +0900");
+        expect(flu_tstamp(&ts, 1, '2') ===f "Fri, 31 Oct 2014 21:30:00 +0000");
+
         expect(flu_tstamp(&ts, 0, 'h') ===f "20141101.0630");
         expect(flu_tstamp(&ts, 1, 'h') ===f "20141031.2130");
         expect(flu_tstamp(&ts, 0, 's') ===f "20141101.063000");
