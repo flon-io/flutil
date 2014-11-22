@@ -51,7 +51,7 @@ long long flu_msleep(long long milliseconds);
 
 /* Sleeps for a given amount of milliseconds.
  * If interrupted, sleeps again until the required milliseconds have all been
- * slept through. Returns the how many milliseconds it actually slept.
+ * slept through. Returns the the count of milliseconds it actually slept.
  */
 long long flu_do_msleep(long long milliseconds);
 
