@@ -540,6 +540,8 @@ flu_list *flu_list_malloc()
 
 void flu_list_free(flu_list *l)
 {
+  if (l == NULL) return;
+
   for (flu_node *n = l->first; n != NULL; )
   {
     flu_node *next = n->next;

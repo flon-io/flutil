@@ -31,6 +31,16 @@ context "flu_list"
     }
   }
 
+  describe "flu_list_free()"
+  {
+    it "can be called against NULL"
+    {
+      flu_list_free(NULL);
+
+      expect(1 i== 1);
+    }
+  }
+
   describe "flu_list_add()"
   {
     it "adds an item to the list"
