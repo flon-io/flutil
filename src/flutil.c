@@ -553,6 +553,8 @@ void flu_list_free(flu_list *l)
 
 void flu_list_and_items_free(flu_list *l, void (*free_item)(void *))
 {
+  if (l == NULL) return;
+
   for (flu_node *n = l->first; n != NULL; n = n->next) free_item(n->item);
   flu_list_free(l);
 }

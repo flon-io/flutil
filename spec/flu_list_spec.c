@@ -139,6 +139,13 @@ context "flu_list"
 
       // that spec depends on Valgrind ;-)
     }
+
+    it "doesn't mind being told to free NULL"
+    {
+      flu_list_and_items_free(NULL, free);
+
+      expect(1 i== 1);
+    }
   }
 
   describe "flu_list_free_all()"
