@@ -121,6 +121,13 @@ context "sbuffer"
 
       ensure(1 == 1); // Valgrind should tell
     }
+
+    it "doesn't mind receiving a NULL"
+    {
+      flu_sbuffer_free(NULL);
+
+      expect(1 i== 1);
+    }
   }
 }
 
