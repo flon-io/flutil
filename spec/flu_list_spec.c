@@ -311,5 +311,31 @@ context "flu_list"
       ensure(l->last->item === "zebulon");
     }
   }
+
+  describe "flu_list_oinsert()"
+  {
+    it "inserts and respects the order"
+    {
+      l = flu_list_malloc();
+      flu_list_add(l, "alpha");
+      flu_list_add(l, "charly");
+
+      flu_list_oinsert(l, "bravo", (int (*)(const void *, const void *))strcmp);
+
+      ensure(l->size zu== 3);
+      ensure(l->first->item === "alpha");
+      ensure(l->last->item === "charly");
+    }
+
+    it "simply adds when the list is empty"
+    {
+      l = flu_list_malloc();
+
+      flu_list_oinsert(l, "argh", (int (*)(const void *, const void *))strcmp);
+
+      ensure(l->size zu== 1);
+      ensure(l->first->item === "argh");
+    }
+  }
 }
 
