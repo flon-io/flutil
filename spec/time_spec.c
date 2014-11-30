@@ -192,6 +192,16 @@ context "time"
 
         expect(flu_sstamp(s, 0, 'z') ===f "2014-10-31T21:30:00Z");
       }
+
+      it "computes now by itself if given 0"
+      {
+        char *a = flu_tstamp(NULL, 0, 'n');
+        char *b = flu_sstamp(0, 0, 'n');
+
+        expect(strcmp(a, b) <= 0);
+
+        free(a); free(b);
+      }
     }
 
     describe "flu_parse_tstamp()"
