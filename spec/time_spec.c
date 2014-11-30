@@ -184,6 +184,16 @@ context "time"
       }
     }
 
+    describe "flu_sstamp()"
+    {
+      it "outputs a string timestamp"
+      {
+        long long s = 1414791000;
+
+        expect(flu_sstamp(s, 0, 'z') ===f "2014-10-31T21:30:00Z");
+      }
+    }
+
     describe "flu_parse_tstamp()"
     {
       it "parses timestamps"
