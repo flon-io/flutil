@@ -34,6 +34,7 @@
 #include <unistd.h>
 #include <libgen.h>
 #include <errno.h>
+#include <wordexp.h>
 
 #include "flutil.h"
 
@@ -502,6 +503,30 @@ int flu_mkdir_p(const char *path, ...)
   }
 
   if (pp) free(pp);
+  free(p);
+
+  return r;
+}
+
+ssize_t flu_rm_files(const char *path, ...)
+{
+  va_list ap; va_start(ap, path); char *p = flu_svprintf(path, ap); va_end(ap);
+
+  ssize_t r = 0;
+
+  wordexp_t we;
+  wordexp(p, &we, WRDE_NOCMD);
+
+  for (size_t i = 0; i < we.we_wordc; ++i)
+  {
+    int ur = unlink(we.we_wordv[i]);
+    if (ur != 0) { r = -1; goto _over; }
+    ++r;
+  }
+
+_over:
+
+  wordfree(&we);
   free(p);
 
   return r;

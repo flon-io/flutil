@@ -231,5 +231,54 @@ context "path functions"
       expect(flu_fstat("__mkdir_test_dir/a/b/c") == 'd');
     }
   }
+
+  describe "flu_rm_files()"
+  {
+    before each
+    {
+      system("mkdir __rm_files_test_dir");
+      system("touch __rm_files_test_dir/a.json");
+      system("touch __rm_files_test_dir/b.json");
+      system("touch __rm_files_test_dir/.nada");
+      system("touch __rm_files_test_dir/c.txt");
+    }
+    after each
+    {
+      system("rm -fR __rm_files_test_dir");
+    }
+
+    it "unlinks the files with the given suffix"
+    {
+      expect(flu_pline("ls __rm_files_test_dir | wc -w") ===f "3");
+
+      ssize_t r = flu_rm_files("__rm_files_test_%s/*.json", "dir");
+
+      expect(r lli== 2);
+      expect(flu_pline("ls __rm_files_test_dir | wc -w") ===f "1");
+    }
+  }
+
+  describe "flu_rm_subdirs()"
+  {
+    before each
+    {
+      system("mkdir -p __rm_fr_test_dir/x/y/z");
+      system("touch __rm_fr_test_dir/x/y/z/a.json");
+      system("touch __rm_fr_test_dir/x/y/z/b.json");
+      system("touch __rm_fr_test_dir/x/y/z/.nada");
+      system("touch __rm_fr_test_dir/x/y/z/c.txt");
+      system("touch __rm_fr_test_dir/x/a.json");
+      system("touch __rm_fr_test_dir/x/b.json");
+    }
+    after each
+    {
+      system("rm -fR __rm_fr_test_dir");
+    }
+
+    it "removes all the subdirs in a dir"
+    {
+      expect(0 i== 1);
+    }
+  }
 }
 
