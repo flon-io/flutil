@@ -262,32 +262,58 @@ context "path functions"
   {
     before each
     {
-      system("mkdir -p __rm_fr_test_dir/x/y/z");
-      system("touch __rm_fr_test_dir/x/y/z/a.json");
-      system("touch __rm_fr_test_dir/x/y/z/b.json");
-      system("touch __rm_fr_test_dir/x/y/z/c.txt");
-      system("touch __rm_fr_test_dir/x/a.json");
-      system("touch __rm_fr_test_dir/x/b.json");
+      system("mkdir -p __empty_test_dir/x/y/z");
+      system("touch __empty_test_dir/x/y/z/a.json");
+      system("touch __empty_test_dir/x/y/z/b.json");
+      system("touch __empty_test_dir/x/y/z/c.txt");
+      system("touch __empty_test_dir/x/a.json");
+      system("touch __empty_test_dir/x/b.json");
     }
     after each
     {
-      system("rm -fR __rm_fr_test_dir");
+      system("rm -fR __empty_test_dir");
     }
 
     it "empties a dir"
     {
-      //flu_system("ls -R __rm_fr_test_dir | grep \"^[^_]\"");
+      //flu_system("ls -R __empty_test_dir | grep \"^[^_]\"");
 
       expect(
-        flu_pline("ls -R __rm_fr_test_dir | grep \"^[^_]\" | wc -l") ===f "8");
+        flu_pline("ls -R __empty_test_dir | grep \"^[^_]\" | wc -l") ===f "8");
 
-      int r = flu_empty_dir("__rm_fr_test_%s", "dir");
+      int r = flu_empty_dir("__empty_test_%s", "dir");
 
-      //flu_system("ls -R __rm_fr_test_dir | grep \"^[^_]\"");
+      //flu_system("ls -R __empty_test_dir | grep \"^[^_]\"");
       expect(r i== 0);
 
       expect(
-        flu_pline("ls -R __rm_fr_test_dir | grep \"^[^_]\" | wc -l") ===f "0");
+        flu_pline("ls -R __empty_test_dir | grep \"^[^_]\" | wc -l") ===f "0");
+    }
+  }
+
+  describe "flu_prune_empty_dirs()"
+  {
+    before each
+    {
+      system("mkdir -p __empty_test_dir/a/x");
+      system("mkdir -p __empty_test_dir/a/y");
+      system("mkdir -p __empty_test_dir/b/z");
+      system("touch __empty_test_dir/a/x/a.json");
+    }
+    after each
+    {
+      system("rm -fR __empty_test_dir");
+    }
+
+    it "recursively prunes empty dirs"
+    {
+      //flu_system("tree __empty_test_dir/");
+      expect(flu_pline("tree __empty_test_dir/ | wc -l") ===f "9");
+
+      flu_prune_empty_dirs("__%s_test_dir", "empty");
+
+      //flu_system("tree __empty_test_dir/");
+      expect(flu_pline("tree __empty_test_dir/ | wc -l") ===f "6");
     }
   }
 }

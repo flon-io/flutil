@@ -571,6 +571,39 @@ _over:
   return r;
 }
 
+int flu_prune_empty_dirs(const char *path, ...)
+{
+  va_list ap; va_start(ap, path); char *p = flu_svprintf(path, ap); va_end(ap);
+
+  int r = 1;
+
+  DIR *dir = opendir(p);
+  if (dir == NULL) goto _over;
+
+  char *pa = NULL;
+
+  struct dirent *de;
+  while ((de = readdir(dir)) != NULL)
+  {
+    if (strcmp(de->d_name, ".") == 0) continue;
+    if (strcmp(de->d_name, "..") == 0) continue;
+
+    if (de->d_type != 4) { r = 0; continue; }
+
+    free(pa); pa = flu_path("%s/%s", p, de->d_name);
+
+    if (flu_prune_empty_dirs(pa) == 0 || rmdir(pa) != 0) r = 0;
+  }
+
+_over:
+
+  free(pa);
+  if (dir) closedir(dir);
+  free(p);
+
+  return r;
+}
+
 
 //
 // flu_list

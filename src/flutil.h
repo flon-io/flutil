@@ -202,6 +202,8 @@ ssize_t flu_rm_files(const char *path, ...);
  */
 int flu_empty_dir(const char *path, ...);
 
+int flu_prune_empty_dirs(const char *path, ...);
+
 
 //
 // flu_list
