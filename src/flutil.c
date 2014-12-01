@@ -34,6 +34,7 @@
 #include <unistd.h>
 #include <libgen.h>
 #include <errno.h>
+#include <dirent.h>
 #include <wordexp.h>
 
 #include "flutil.h"
@@ -527,6 +528,44 @@ ssize_t flu_rm_files(const char *path, ...)
 _over:
 
   wordfree(&we);
+  free(p);
+
+  return r;
+}
+
+int flu_empty_dir(const char *path, ...)
+{
+  va_list ap; va_start(ap, path); char *p = flu_svprintf(path, ap); va_end(ap);
+
+  int r = 0;
+  char *pa = NULL;
+
+  DIR *dir = opendir(p);
+  if (dir == NULL) { r = 1; goto _over; }
+
+  struct dirent *de;
+  while ((de = readdir(dir)) != NULL)
+  {
+    if (*de->d_name == '.') continue;
+
+    free(pa); pa = flu_path("%s/%s", p, de->d_name);
+
+    if (de->d_type == 4) // dir
+    {
+      flu_empty_dir(pa);
+
+      if (rmdir(pa) != 0) { r = 2; goto _over; }
+    }
+    else // not a dir
+    {
+      if (unlink(pa) != 0) { r = 3; goto _over; }
+    }
+  }
+
+_over:
+
+  free(pa);
+  if (dir) closedir(dir);
   free(p);
 
   return r;

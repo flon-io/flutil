@@ -195,6 +195,13 @@ int flu_mkdir_p(const char *path, ...);
  */
 ssize_t flu_rm_files(const char *path, ...);
 
+/* Empties a dir recursively.
+ * Doesn't remove files prefixed with a dot.
+ *
+ * Returns 0 in case of success.
+ */
+int flu_empty_dir(const char *path, ...);
+
 
 //
 // flu_list

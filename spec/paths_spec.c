@@ -258,14 +258,13 @@ context "path functions"
     }
   }
 
-  describe "flu_rm_subdirs()"
+  describe "flu_empty_dir()"
   {
     before each
     {
       system("mkdir -p __rm_fr_test_dir/x/y/z");
       system("touch __rm_fr_test_dir/x/y/z/a.json");
       system("touch __rm_fr_test_dir/x/y/z/b.json");
-      system("touch __rm_fr_test_dir/x/y/z/.nada");
       system("touch __rm_fr_test_dir/x/y/z/c.txt");
       system("touch __rm_fr_test_dir/x/a.json");
       system("touch __rm_fr_test_dir/x/b.json");
@@ -275,9 +274,20 @@ context "path functions"
       system("rm -fR __rm_fr_test_dir");
     }
 
-    it "removes all the subdirs in a dir"
+    it "empties a dir"
     {
-      expect(0 i== 1);
+      //flu_system("ls -R __rm_fr_test_dir | grep \"^[^_]\"");
+
+      expect(
+        flu_pline("ls -R __rm_fr_test_dir | grep \"^[^_]\" | wc -l") ===f "8");
+
+      int r = flu_empty_dir("__rm_fr_test_%s", "dir");
+
+      //flu_system("ls -R __rm_fr_test_dir | grep \"^[^_]\"");
+      expect(r i== 0);
+
+      expect(
+        flu_pline("ls -R __rm_fr_test_dir | grep \"^[^_]\" | wc -l") ===f "0");
     }
   }
 }
