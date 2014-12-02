@@ -443,5 +443,22 @@ context "time"
       expect(flu_parse_t("1h-2m+3s") lli== 3600 - 2 * 60 + 3);
     }
   }
+
+  describe "flu_parse_d()"
+  {
+    it "parses to a double"
+    {
+      expect(flu_parse_d("10s") f== 10.0);
+      expect(flu_parse_d("7s001") f== 7.001);
+      expect(flu_parse_d("7s001200") f== 7.0012);
+      expect(flu_parse_d("7s001200123") f== 7.001200123);
+      expect(flu_parse_d("1s1m.001") f== 61.001);
+      expect(flu_parse_d(".001s") f== 0.001);
+      expect(flu_parse_d("-1") f== -1.0);
+      expect(flu_parse_d("-1s") f== -1.0);
+      expect(flu_parse_d("-.001s") f== -0.001);
+      expect(flu_parse_d("-.001") f== -0.001);
+    }
+  }
 }
 
