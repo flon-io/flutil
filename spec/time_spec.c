@@ -401,6 +401,15 @@ context "time"
       expect(ts->tv_nsec li== 999000000);
       free(ts);
     }
+
+    it "doesn't mind white spaces"
+    {
+      // testing via flu_parse_d()
+
+      expect(flu_parse_d(" 7s001") f== 7.001);
+      expect(flu_parse_d("7s001 ") f== 7.001);
+      expect(flu_parse_d("7s 001") f== 7.001);
+    }
   }
 
   describe "flu_parse_t()"

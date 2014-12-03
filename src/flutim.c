@@ -351,6 +351,10 @@ struct timespec *flu_parse_ts(const char *s)
 
       prev = c;
     }
+    else if (c == ' ')
+    {
+      // ignore
+    }
     else
     {
       free(ss); free(ts); return NULL;
