@@ -344,5 +344,23 @@ context "flu_list"
       ensure(l->first->item === "argh");
     }
   }
+
+//  describe "flu_list_remove()"
+//  {
+//    it "leaves an empty list as is"
+//    {
+//      l = flu_list_malloc();
+//
+//      size_t r = flu_list_remove(
+//        l, (int (*)(const void *, const void *))strcmp, "x");
+//
+//      expect(r zu= 0);
+//      expect(l->size zu== 1);
+//      expect(l->first == NULL);
+//    }
+//
+//    it "removes all the entries for which the cmp returns 0"
+//  }
+  // put in the fridge (have to pass link to free()...)
 }
 
