@@ -37,6 +37,18 @@ context "flu_list as dict"
     }
   }
 
+  describe "flu_list_setk()"
+  {
+    it "sets a node, without duplicating the key string"
+    {
+      flu_list_setk(l, strdup("red"), "aka");
+
+      expect(1 == 1);
+
+      // segfaults or leaks when _setk() is not right
+    }
+  }
+
   describe "flu_list_set_last()"
   {
     it "sets a 'default'"
