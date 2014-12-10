@@ -16,7 +16,7 @@ context "flu_list"
   }
   after each
   {
-    if (l != NULL) flu_list_free(l);
+    flu_list_free(l);
   }
 
   describe "flu_list_malloc()"
@@ -362,5 +362,28 @@ context "flu_list"
 //    it "removes all the entries for which the cmp returns 0"
 //  }
   // put in the fridge (have to pass link to free()...)
+
+  describe "flu_list_concat()"
+  {
+    before each
+    {
+      flu_list *l1 = NULL;
+    }
+    after each
+    {
+      flu_list_free(l1);
+    }
+
+    it "adds the elements of b at then end of a"
+    {
+      l = flu_l("alpha", "bravo", NULL);
+      l1 = flu_l("charly", "delta", NULL);
+
+      flu_list_concat(l, l1);
+
+      expect(flu_list_to_s(l) ===f "[alpha,bravo,charly,delta]");
+      expect(flu_list_to_s(l1) ===f "[charly,delta]");
+    }
+  }
 }
 

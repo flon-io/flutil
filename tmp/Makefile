@@ -21,6 +21,9 @@ s: $(NAMES)
 spec: s
 	time ./s
 
+dspec: s
+	gdb ./s
+
 vspec: s
 	valgrind --leak-check=full -v ./s
 

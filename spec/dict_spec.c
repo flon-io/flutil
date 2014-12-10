@@ -16,7 +16,7 @@ context "flu_list as dict"
   }
   after each
   {
-    if (l != NULL) flu_list_free(l);
+    flu_list_free(l);
   }
 
   describe "flu_list_set()"
@@ -166,7 +166,7 @@ context "flu_list as dict"
     }
     after each
     {
-      if (d) flu_list_free(d);
+      flu_list_free(d);
     }
 
     it "builds a flu_list dict"
@@ -205,7 +205,7 @@ context "flu_list as dict"
     }
     after each
     {
-      if (d) flu_list_free_all(d);
+      flu_list_free_all(d);
     }
 
     it "composes string -> string dictionaries"
@@ -237,6 +237,31 @@ context "flu_list as dict"
       expect(d != NULL);
       expect(d->size == 1);
       expect(flu_list_get(d, "k0") == NULL);
+    }
+  }
+
+  describe "flu_list_concat()"
+  {
+    before each
+    {
+      flu_dict *d0 = NULL;
+      flu_dict *d1 = NULL;
+    }
+    after each
+    {
+      flu_list_free(d0);
+      flu_list_free(d1);
+    }
+
+    it "adds (to, from)"
+    {
+      d0 = flu_d("arnold", "etwilly", NULL);
+      d1 = flu_d("bob", "morane", NULL);
+
+      flu_list_concat(d0, d1);
+
+      expect(flu_list_to_s(d0) ===f "{arnold:etwilly,bob:morane}");
+      expect(flu_list_to_s(d1) ===f "{bob:morane}");
     }
   }
 }
