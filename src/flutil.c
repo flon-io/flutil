@@ -789,7 +789,7 @@ void flu_list_concat(flu_list *to, flu_list *from)
   }
 }
 
-char *flu_list_to_s(flu_list *l)
+static char *list_to_s(flu_list *l, char mode)
 {
   if (l == NULL) return strdup("(null flu_list)");
 
@@ -802,12 +802,15 @@ char *flu_list_to_s(flu_list *l)
   {
     if (n != l->first) flu_sbputc(b, ',');
     if (isdict) flu_sbprintf(b, "%s:", n->key);
-    flu_sbputs( b, (char *)n->item);
+    if (mode == 's') flu_sbputs(b, (char *)n->item);
+    else flu_sbprintf(b, "%p", n->item);
   }
   flu_sbputc(b, isdict ? '}' : ']');
 
   return flu_sbuffer_to_string(b);
 }
+char *flu_list_to_s(flu_list *l) { return list_to_s(l, 's'); }
+char *flu_list_to_sp(flu_list *l) { return list_to_s(l, 'p'); }
 
 void flu_list_set(flu_list *l, const char *key, void *item)
 {

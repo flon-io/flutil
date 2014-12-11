@@ -262,6 +262,11 @@ context "flu_list as dict"
 
       expect(flu_list_to_s(d0) ===f "{arnold:etwilly,bob:morane}");
       expect(flu_list_to_s(d1) ===f "{bob:morane}");
+
+      //flu_putf(flu_list_to_s(d0));
+      //flu_putf(flu_list_to_s(d1));
+      //flu_putf(flu_list_to_sp(d0));
+      //flu_putf(flu_list_to_sp(d1));
     }
   }
 }
