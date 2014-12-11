@@ -80,6 +80,11 @@ context "path functions"
     {
       expect(flu_dirname("/x/") ===f "/x");
     }
+
+    it "returns dot for empty"
+    {
+      expect(flu_dirname("") ===f ".");
+    }
   }
 
   describe "flu_basename()"
