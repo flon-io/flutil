@@ -351,7 +351,7 @@ static char *flu_simplify_path(const char *s)
     {
       *(rr - 1) = 0;
       rr = strrchr(r, '/');
-      rr = rr ? rr + 1 : r + 1;
+      rr = rr ? rr + 1 : r;
     }
     else if (dots < 1)
     {

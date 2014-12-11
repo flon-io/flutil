@@ -55,6 +55,7 @@ context "misc"
       expect(flu_path("./%s", "/x") ===f "x");
       expect(flu_path("/%s", "/x") ===f "/x");
       expect(flu_path("../x") ===f "../x");
+      expect(flu_path("x/..") ===f "");
     }
   }
 
