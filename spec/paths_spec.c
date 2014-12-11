@@ -75,6 +75,11 @@ context "path functions"
     {
       expect(flu_dirname("/x/%s/z.txt", "y") ===f "/x/y");
     }
+
+    it "removes a final /"
+    {
+      expect(flu_dirname("/x/") ===f "/x");
+    }
   }
 
   describe "flu_basename()"
