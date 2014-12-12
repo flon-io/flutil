@@ -41,11 +41,20 @@ context "flu_list as dict"
   {
     it "sets a node, without duplicating the key string"
     {
-      flu_list_setk(l, strdup("red"), "aka");
+      flu_list_setk(l, strdup("red"), "aka", 0);
 
       expect(1 == 1);
 
       // segfaults or leaks when _setk() is not right
+    }
+
+    it "sets as last"
+    {
+      flu_list_setk(l, strdup("red"), "aka", 0);
+      flu_list_setk(l, strdup("green"), "aoi", 1);
+
+      expect(l->first->key === "red");
+      expect(l->last->key === "green");
     }
   }
 
