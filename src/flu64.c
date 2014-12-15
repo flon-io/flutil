@@ -124,7 +124,22 @@ char *flu64_encode_for_url(char *in, ssize_t l)
 
 char *flu64_decode_from_url(char *in, ssize_t l)
 {
-  // TODO
-  return NULL;
+  char *r = NULL;
+
+  char *s = strdup(in);
+  if (l < 0) l = strlen(in);
+
+  for (size_t i = 0; i < l; ++i)
+  {
+    if (s[i] == '.') s[i] = '=';
+    else if (s[i] == '-') s[i] = '+';
+    else if (s[i] == '_') s[i] = '/';
+  }
+
+  r = flu64_decode(s, l);
+
+  free(s);
+
+  return r;
 }
 

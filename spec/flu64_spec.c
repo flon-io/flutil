@@ -153,6 +153,47 @@ context "flu64"
     }
   }
 
+  int datacmp(char *a, char *b, size_t l)
+  {
+    for (size_t i = 0; i < l; ++i) if (a[i] != b[i]) return 0;
+    return 1;
+  }
+
+  describe "flu64_decode_from_url()"
+  {
+    it "decodes, indifferent to =+/ or .-_"
+    {
+      char *data = flu_readall("../spec/bin.data");
+
+      char *data1 = flu64_decode_from_url(
+        "fTTaMxHbMsiET9UpdKWvukktCc0e9uNBTptrjfL1LD5ZCzotkhBG-J_"
+        "eRJPLxAXrUWsCNEFcDg2XIQNfvS1D7A..",
+        -1);
+      expect(datacmp(data, data1, 64) == 1);
+
+      free(data1); data1 = flu64_decode_from_url(
+        "fTTaMxHbMsiET9UpdKWvukktCc0e9uNBTptrjfL1LD5ZCzotkhBG+J/"
+        "eRJPLxAXrUWsCNEFcDg2XIQNfvS1D7A==",
+        -1);
+      expect(datacmp(data, data1, 64) == 1);
+
+      free(data1); data1 = flu64_decode_from_url(
+        "fTTaMxHbMsiET9UpdKWvukktCc0e9uNBTptrjfL1LD5ZCzotkhBG+J_"
+        "eRJPLxAXrUWsCNEFcDg2XIQNfvS1D7A.=",
+        -1);
+      expect(datacmp(data, data1, 64) == 1);
+
+      free(data1); data1 = flu64_decode(
+        "fTTaMxHbMsiET9UpdKWvukktCc0e9uNBTptrjfL1LD5ZCzotkhBG+J_"
+        "eRJPLxAXrUWsCNEFcDg2XIQNfvS1D7A.=",
+        -1);
+      expect(datacmp(data, data1, 64) == 0);
+
+      free(data1);
+      free(data);
+    }
+  }
+
   context "roundtrip"
   {
     before each
