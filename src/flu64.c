@@ -106,3 +106,25 @@ char *flu64_decode(char *in, ssize_t l)
   return out;
 }
 
+char *flu64_encode_for_url(char *in, ssize_t l)
+{
+  char *r = flu64_encode(in, l);
+
+  for (size_t i = 0; ; ++i)
+  {
+    if (r[i] == 0) break;
+
+    if (r[i] == '=') r[i] = '.';
+    else if (r[i] == '+') r[i] = '-';
+    else if (r[i] == '/') r[i] = '_';
+  }
+
+  return r;
+}
+
+char *flu64_decode_from_url(char *in, ssize_t l)
+{
+  // TODO
+  return NULL;
+}
+

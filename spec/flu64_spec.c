@@ -139,6 +139,20 @@ context "flu64"
     }
   }
 
+  describe "flu64_encode_for_url()"
+  {
+    it "encodes, but replaces =+/ with .-_ respectively"
+    {
+      char *data = flu_readall("../spec/bin.data");
+
+      expect(flu64_encode_for_url(data, 64) ===f ""
+        "fTTaMxHbMsiET9UpdKWvukktCc0e9uNBTptrjfL1LD5ZCzotkhBG-J_"
+        "eRJPLxAXrUWsCNEFcDg2XIQNfvS1D7A..");
+
+      free(data);
+    }
+  }
+
   context "roundtrip"
   {
     before each
