@@ -876,6 +876,42 @@ flu_list *flu_list_dtrim(flu_list *l)
   return r;
 }
 
+flu_dict *flu_readdict(const char *path, ...)
+{
+  va_list ap; va_start(ap, path);
+  char *s = flu_vreadall(path, ap);
+  va_end(ap);
+
+  if (s == NULL) return NULL;
+
+  char *os = s;
+  flu_dict *r = flu_list_malloc();
+
+  while (1)
+  {
+    while (*s == '\n' || *s == '\r' || *s == ' ' || *s == '\t') ++s;
+    if (s == 0) break;
+
+    char *col = strpbrk(s, ":="); if (col == NULL) break;
+    char *end = strpbrk(s, "\n\r\0");
+
+    char *co = col - 1; while (*co == ' ' || *co == '\t') --co;
+    char *key = strndup(s, co + 1 - s);
+
+    ++col; while (*col == ' ' || *col == '\t') ++col;
+    char *en = end - 1; while (*en == ' ' || *en == '\t') --en;
+    char *val = strndup(col, en + 1 - col);
+
+    flu_list_setk(r, key, val, 0);
+
+    s = end;
+  }
+
+  free(os);
+
+  return r;
+}
+
 flu_list *flu_vd(va_list ap)
 {
   flu_list *d = flu_list_malloc();

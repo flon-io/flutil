@@ -281,5 +281,34 @@ context "flu_list as dict"
       //flu_putf(flu_list_to_sp(d1));
     }
   }
+
+  describe "flu_readdict()"
+  {
+    before each
+    {
+      flu_dict *d = NULL;
+    }
+    after each
+    {
+      flu_list_free_all(d);
+    }
+
+    it "returns NULL when the path points to something unreadable"
+    {
+      expect(flu_readdict("tmp/_nada") == NULL);
+    }
+
+    it "reads a dict"
+    {
+      d = flu_readdict("../spec/%s", "dict0.txt");
+
+      expect(d != NULL);
+      expect(d->size zu== 4);
+      expect(flu_list_get(d, "color") === "blue");
+      expect(flu_list_get(d, "age") === "3 years");
+      expect(flu_list_get(d, "location") === "beach");
+      expect(flu_list_get(d, "price") === "1 dollar");
+    }
+  }
 }
 
