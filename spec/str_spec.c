@@ -19,6 +19,31 @@ context "str functions"
     if (s != NULL) free(s);
   }
 
+  describe "flu_rtrim()"
+  {
+    it "returns NULL when passed NULL"
+    {
+      expect(flu_rtrim(NULL) == NULL);
+    }
+
+    it "is OK with empty strings"
+    {
+      s = strdup("");
+      char *s1 = flu_rtrim(s);
+
+      expect(s1 === "");
+    }
+
+    it "trims a string in place"
+    {
+      s = strdup("abc ");
+      char *s1 = flu_rtrim(s);
+
+      expect(s == s1);
+      expect(strlen(s1) zu== 3);
+    }
+  }
+
   describe "flu_strrtrim(char *s)"
   {
     it "trims on the right"

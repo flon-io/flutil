@@ -59,7 +59,7 @@ int flu_strends(const char *s, const char *end)
 
 char *flu_rtrim(char *s)
 {
-  for (size_t l = strlen(s); l > 0; l--)
+  if (s) for (size_t l = strlen(s); l > 0; l--)
   {
     char c = s[l - 1];
     if (c == ' ' || c == '\t' || c == '\n' || c == '\r') s[l - 1] = 0;
