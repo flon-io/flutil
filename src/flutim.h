@@ -69,6 +69,8 @@ long long flu_do_msleep(long long milliseconds);
  *
  * '2' --> "Fri, 30 Oct 2014 16:34:01 +0000" // rfc-822
  *
+ * 'T' --> "20141101T163401Z" // ISO8601
+ *
  * If the tm arg is NULL, the function will grab the time thanks to
  * clock_gettime(CLOCK_REALTIME, &ts).
  *

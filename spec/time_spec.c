@@ -110,6 +110,8 @@ context "time"
    * 'u' --> "20141101.163401.000001"  // microseconds
    * 'n' --> "20141101.163401.000000001"  // nanoseconds
    *
+   * 'T' --> "20141101T163401Z"
+   *
    * If the tm arg is NULL, the function will grab the time thanks to
    * clock_gettime(CLOCK_REALTIME, &ts).
    */
@@ -167,6 +169,9 @@ context "time"
         expect(flu_tstamp(&ts, 1, 'u') ===f "20141031.213000.123456");
         expect(flu_tstamp(&ts, 0, 'n') ===f "20141101.063000.123456789");
         expect(flu_tstamp(&ts, 1, 'n') ===f "20141031.213000.123456789");
+
+        expect(flu_tstamp(&ts, 0, 'T') ===f "20141031T213000Z");
+        expect(flu_tstamp(&ts, 1, 'T') ===f "20141031T213000Z");
 
         ts.tv_nsec = 1;
 
