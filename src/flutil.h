@@ -396,6 +396,10 @@ flu_list *flu_sd(char *k0, ...);
  */
 int flu_strends(const char *s, const char *end);
 
+/* Right trims in place, returns s.
+ */
+char *flu_rtrim(char *s);
+
 /* Returns a copy of the string, trimmed on the right.
  */
 char *flu_strrtrim(const char *s);

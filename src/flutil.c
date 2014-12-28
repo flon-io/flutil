@@ -57,17 +57,21 @@ int flu_strends(const char *s, const char *end)
   return (strncmp(s + ls - le, end, le) == 0);
 }
 
-char *flu_strrtrim(const char *s)
+char *flu_rtrim(char *s)
 {
-  char *r = strdup(s);
-  for (size_t l = strlen(r); l > 0; l--)
+  for (size_t l = strlen(s); l > 0; l--)
   {
-    char c = r[l - 1];
-    if (c == ' ' || c == '\t' || c == '\n' || c == '\r') r[l - 1] = '\0';
+    char c = s[l - 1];
+    if (c == ' ' || c == '\t' || c == '\n' || c == '\r') s[l - 1] = 0;
     else break;
   }
 
-  return r;
+  return s;
+}
+
+char *flu_strrtrim(const char *s)
+{
+  return flu_rtrim(strdup(s));
 }
 
 char *flu_strtrim(const char *s)
@@ -76,8 +80,7 @@ char *flu_strtrim(const char *s)
   char *s2 = s1;
   while (1)
   {
-    char c = *s2;
-    if (c == ' ' || c == '\t' || c == '\n' || c == '\r') ++s2;
+    if (*s2 == ' ' || *s2 == '\t' || *s2 == '\n' || *s2 == '\r') ++s2;
     else break;
   }
   char *r = strdup(s2);
@@ -91,7 +94,7 @@ ssize_t flu_index(const char *s, size_t off, char c)
   for (size_t i = off; ; ++i)
   {
     char cc = s[i];
-    if (cc == '\0') break;
+    if (cc == 0) break;
     if (cc == c) return i;
   }
   return -1;
