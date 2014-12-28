@@ -581,10 +581,10 @@ int flu_prune_empty_dirs(const char *path, ...)
 
   int r = 1;
 
+  char *pa = NULL;
+
   DIR *dir = opendir(p);
   if (dir == NULL) goto _over;
-
-  char *pa = NULL;
 
   struct dirent *de;
   while ((de = readdir(dir)) != NULL)
