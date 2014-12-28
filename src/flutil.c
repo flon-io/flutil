@@ -910,6 +910,7 @@ flu_dict *flu_readdict(const char *path, ...)
     s = end;
   }
 
+  memset(os, 0, strlen(os));
   free(os);
 
   return r;
