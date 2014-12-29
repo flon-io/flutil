@@ -870,7 +870,7 @@ void flu_list_sets(flu_list *l, const char *key, ...)
   flu_list_setk(l, k, v, 0);
 }
 
-static flu_node *flu_list_getn(flu_list *l, const char *key)
+flu_node *flu_list_getn(flu_list *l, const char *key)
 {
   for (flu_node *n = l->first; n != NULL; n = n->next)
   {

@@ -358,6 +358,10 @@ void flu_list_set_last(flu_list *l, const char *key, ...);
  */
 void flu_list_sets(flu_list *l, const char *key, ...);
 
+/* Like flu_list_get() but returns the flu_node...
+ */
+flu_node *flu_list_getn(flu_list *l, const char *key);
+
 /* Fetches the item (void *) corresponding to the given key.
  * Expects a last arg that is the default value, returned in case of miss.
  */
