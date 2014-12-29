@@ -1,0 +1,4 @@
+color: blue
+age : 3 years 
+  location:beach    
+price :1 dollar
