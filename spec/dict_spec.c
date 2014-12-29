@@ -327,6 +327,18 @@ context "flu_list as dict"
     }
   }
 
+  describe "flu_list_to_s()"
+  {
+    it "doesn't mind a NULL item"
+    {
+      flu_list_set(l, "a", "Andre");
+      flu_list_set(l, "b", NULL);
+      flu_list_set(l, "c", "Charles");
+
+      expect(flu_list_to_s(l) ===f "{c:Charles,b:NULL,a:Andre}");
+    }
+  }
+
   describe "flu_readdict()"
   {
     before each

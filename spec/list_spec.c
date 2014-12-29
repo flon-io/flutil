@@ -385,5 +385,16 @@ context "flu_list"
       expect(flu_list_to_s(l1) ===f "[charly,delta]");
     }
   }
+
+  describe "flu_list_to_s()"
+  {
+    it "doesn't mind a NULL item"
+    {
+      l = flu_l("alpha", "bravo", NULL);
+      flu_list_unshift(l, NULL);
+
+      expect(flu_list_to_s(l) ===f "[NULL,alpha,bravo]");
+    }
+  }
 }
 

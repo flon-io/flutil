@@ -815,7 +815,7 @@ static char *list_to_s(flu_list *l, char mode)
     if (multi) flu_sbputs(b, "\n  ");
     if (isdict) flu_sbprintf(b, "%s:", n->key);
     if (multi) flu_sbputc(b, ' ');
-    if (mode == 's') flu_sbputs(b, (char *)n->item);
+    if (mode == 's') flu_sbputs(b, n->item ? (char *)n->item : "NULL");
     else flu_sbprintf(b, "%p", n->item);
   }
   if (multi && l->first) flu_sbputc(b, '\n');
