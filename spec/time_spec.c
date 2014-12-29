@@ -101,22 +101,6 @@ context "time"
   //  it "turns ts into an UTC tm when utc=1"
   //}
 
-  /* Formats the given time into a string.
-   *
-   * 'z' --> "2014-11-01T16:34:01Z"
-   * 'h' --> "20141101.1634"
-   * 's' --> "20141101.163401"
-   * 'm' --> "20141101.163401.001"  // milliseconds
-   * 'u' --> "20141101.163401.000001"  // microseconds
-   * 'n' --> "20141101.163401.000000001"  // nanoseconds
-   *
-   * 'T' --> "20141101T163401Z"
-   *
-   * If the tm arg is NULL, the function will grab the time thanks to
-   * clock_gettime(CLOCK_REALTIME, &ts).
-   */
-  //char *flu_tstamp(struct timespec *ts, int utc, char format);
-
   context "tz dependents"
   {
     before each
@@ -157,6 +141,9 @@ context "time"
 
         expect(flu_tstamp(&ts, 0, '2') ===f "Sat, 01 Nov 2014 06:30:00 +0900");
         expect(flu_tstamp(&ts, 1, '2') ===f "Fri, 31 Oct 2014 21:30:00 +0000");
+
+        expect(flu_tstamp(&ts, 0, 'd') ===f "20141101");
+        expect(flu_tstamp(&ts, 1, 'd') ===f "20141031");
 
         expect(flu_tstamp(&ts, 0, 'h') ===f "20141101.0630");
         expect(flu_tstamp(&ts, 1, 'h') ===f "20141031.2130");
