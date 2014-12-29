@@ -87,6 +87,19 @@ context "flu_list as dict"
     }
   }
 
+  describe "flu_list_sets()"
+  {
+    it "composes key and string value"
+    {
+      flu_list_sets(l, "r%s", "ed", "a%s", "ka");
+      flu_list_sets(l, "re%c", 'd', "mura%cami", 'k');
+
+      expect(flu_list_to_s(l) ===f "{red:murakami,red:aka}");
+
+      flu_list_free_all(l); l = NULL;
+    }
+  }
+
   describe "flu_list_get()"
   {
     it "returns NULL if there is no item for the key"
