@@ -879,11 +879,31 @@ static flu_node *flu_list_getn(flu_list *l, const char *key)
   return NULL;
 }
 
-void *flu_list_getd(flu_list *l, const char *key, void *def)
+void *flu_list_getd(flu_list *l, const char *key, ...)
 {
-  flu_node *n = flu_list_getn(l, key);
+  va_list ap; va_start(ap, key);
+  char *k = flu_svprintf(key, ap);
+  void *def = va_arg(ap, void *);
+  va_end(ap);
+
+  flu_node *n = flu_list_getn(l, k);
+
+  free(k);
 
   return n ? n->item : def;
+}
+
+void *flu_list_get(flu_list *l, const char *key, ...)
+{
+  va_list ap; va_start(ap, key);
+  char *k = flu_svprintf(key, ap);
+  va_end(ap);
+
+  flu_node *n = flu_list_getn(l, k);
+
+  free(k);
+
+  return n ? n->item : NULL;
 }
 
 flu_list *flu_list_dtrim(flu_list *l)

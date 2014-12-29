@@ -134,6 +134,13 @@ context "flu_list as dict"
 
       ensure(flu_list_get(l, "blue") === "bleu");
     }
+
+    it "composes its key"
+    {
+      flu_list_set(l, "light%s", "grey", "gris souris");
+
+      ensure(flu_list_get(l, "light%s", "grey") === "gris souris");
+    }
   }
 
   describe "flu_list_getd()"
@@ -148,6 +155,14 @@ context "flu_list as dict"
     it "returns the default value in case of miss"
     {
       ensure(flu_list_getd(l, "red", "ruddyraga") === "ruddyraga");
+    }
+
+    it "composes its key"
+    {
+      flu_list_set(l, "purple", "murasaki");
+
+      ensure(flu_list_getd(l, "p%crple", 'u', "*nada*") === "murasaki");
+      ensure(flu_list_getd(l, "red%i", 1, "ruddyraga") === "ruddyraga");
     }
   }
 

@@ -358,14 +358,15 @@ void flu_list_set_last(flu_list *l, const char *key, ...);
  */
 void flu_list_sets(flu_list *l, const char *key, ...);
 
-/* Like flu_list_get() but a default is specified.
+/* Fetches the item (void *) corresponding to the given key.
+ * Expects a last arg that is the default value, returned in case of miss.
  */
-void *flu_list_getd(flu_list *l, const char *key, void *def);
+void *flu_list_getd(flu_list *l, const char *key, ...);
 
 /* Given a key, returns the item bound for it, NULL instead.
  * (O(n)).
  */
-#define flu_list_get(l, key) flu_list_getd(l, key, NULL)
+void *flu_list_get(flu_list *l, const char *key, ...);
 
 /* Returns a trimmed (a unique value per key) version of the given flu_list
  * dictionary. Meant for iterating over key/values.
