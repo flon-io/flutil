@@ -35,6 +35,14 @@ context "flu_list as dict"
       ensure(l->first->key === "red");
       ensure(l->first->item === "rodzo");
     }
+
+    it "composes its key"
+    {
+      flu_list_set(l, "red-%s", "car", "ferrari");
+      flu_list_set(l, "blue-%s", "plane", "corsair");
+
+      expect(flu_list_to_s(l) ===f "{blue-plane:corsair,red-car:ferrari}");
+    }
   }
 
   describe "flu_list_setk()"
@@ -64,6 +72,15 @@ context "flu_list as dict"
     {
       flu_list_set(l, "red", "aka");
       flu_list_set_last(l, "red", "murakami");
+
+      ensure(l->size == 2);
+      ensure(flu_list_get(l, "red") === "aka");
+    }
+
+    it "composes its key"
+    {
+      flu_list_set(l, "r%s", "ed", "aka");
+      flu_list_set_last(l, "re%c", 'd', "murakami");
 
       ensure(l->size == 2);
       ensure(flu_list_get(l, "red") === "aka");
