@@ -52,6 +52,22 @@ context "sbuffer"
     }
   }
 
+  describe "flu_sbputs_f()"
+  {
+    it "puts and frees"
+    {
+      flu_sbuffer *b = flu_sbuffer_malloc();
+
+      flu_sbputs_f(b, strdup("hello"));
+
+      char *s = flu_sbuffer_to_string(b);
+
+      ensure(s ===f "hello");
+
+      // thanks Valgrind :-)
+    }
+  }
+
   describe "flu_sbwrite()"
   {
     it "writes part of a string to a flu_sbuffer"
