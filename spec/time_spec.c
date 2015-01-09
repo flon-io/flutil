@@ -316,6 +316,29 @@ context "time"
     }
   }
 
+  describe "flu_ts_to_hs()"
+  {
+    it "renders seconds (struct timespec) to a wdhms string"
+    {
+      struct timespec ts;
+
+      ts = (struct timespec){ 10, 1200300 };
+      expect(flu_ts_to_hs(&ts, 's') ===f "10s");
+      expect(flu_ts_to_hs(&ts, 'm') ===f "10s001");
+      expect(flu_ts_to_hs(&ts, 'u') ===f "10s001200");
+      expect(flu_ts_to_hs(&ts, 'n') ===f "10s001200300");
+
+      ts = (struct timespec){ 10, 200300 };
+      expect(flu_ts_to_hs(&ts, 'm') ===f "10s000");
+
+      ts = (struct timespec){ 52 * 7 * 24 * 3600, 201000000 };
+      expect(flu_ts_to_hs(&ts, 'm') ===f "52w0s201");
+
+      ts = (struct timespec){ 23456789, 201000000 };
+      expect(flu_ts_to_hs(&ts, 'm') ===f "38w5d11h46m29s201");
+    }
+  }
+
   describe "flu_parse_ts()"
   {
     it "parses a time[spec] string"

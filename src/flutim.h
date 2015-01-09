@@ -99,6 +99,11 @@ struct timespec *flu_tdiff(struct timespec *t1, struct timespec *t0);
  */
 char *flu_ts_to_s(struct timespec *ts, char format);
 
+/* Like flu_ts_to_s() but potentially outputs w(eeks), h(ours) and (m)inutes,
+ * not just s(econds) and subseconds.
+ */
+char *flu_ts_to_hs(struct timespec *ts, char format);
+
 /* Given a string like "10h55s" returns a timespec instance.
  * Returns NULL when it fails to parse.
  */
