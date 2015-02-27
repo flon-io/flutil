@@ -107,6 +107,8 @@ char *flu_sbuffer_to_string(flu_sbuffer *b);
  */
 char *flu_svprintf(const char *format, va_list ap);
 
+#define flu_sv(format, ap) flu_svprintf(format, ap)
+
 /* Wraps the sbuffer operations in a single call, yielding the result string.
  *
  * Returns NULL in case of issue.
