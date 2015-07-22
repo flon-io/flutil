@@ -901,6 +901,20 @@ void *flu_list_getd(flu_list *l, const char *key, ...)
   return n ? n->item : def;
 }
 
+void *flu_list_getod(flu_list *l, const char *key, ...)
+{
+  va_list ap; va_start(ap, key);
+  char *k = flu_svprintf(key, ap);
+  void *def = va_arg(ap, void *);
+  va_end(ap);
+
+  flu_node *n = l ? flu_list_getn(l, k) : NULL;
+
+  free(k);
+
+  return n ? n->item : def;
+}
+
 void *flu_list_get(flu_list *l, const char *key, ...)
 {
   va_list ap; va_start(ap, key);

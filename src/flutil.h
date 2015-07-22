@@ -373,6 +373,11 @@ flu_node *flu_list_getn(flu_list *l, const char *key);
  */
 void *flu_list_getd(flu_list *l, const char *key, ...);
 
+/* Like flu_list_getd() but tolerates a NULL l, in which case it returns
+ * the default.
+ */
+void *flu_list_getod(flu_list *l, const char *key, ...);
+
 /* Given a key, returns the item bound for it, NULL instead.
  * (O(n)).
  */
