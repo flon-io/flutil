@@ -1133,7 +1133,7 @@ char *flu_urlencode(const char *s, ssize_t n)
 
   flu_sbuffer *b = flu_sbuffer_malloc();
 
-  for (size_t i = 0; i < n; ++i)
+  for (ssize_t i = 0; i < n; ++i)
   {
     char c = s[i];
 
@@ -1157,7 +1157,7 @@ char *flu_urldecode(const char *s, ssize_t n)
 
   char *r = calloc(n + 1, sizeof(char));
 
-  for (size_t i = 0, j = 0; i < n; ++j)
+  for (ssize_t i = 0, j = 0; i < n; ++j)
   {
     if (s[i] != '%') { r[j] = s[i++]; continue; }
 
