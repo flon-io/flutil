@@ -1,6 +1,6 @@
 
 //
-// Copyright (c) 2013-2015, John Mettraux, jmettraux+flon@gmail.com
+// Copyright (c) 2013-2026, John Mettraux, jmettraux+flon@gmail.com
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -239,6 +239,10 @@ flu_list *flu_list_malloc();
  * weaving a list from this method.
  */
 flu_list *flu_l(void *elt0, ...);
+
+/* Returns the length of the given flu_list.
+ */
+size_t flu_list_length(flu_list *l);
 
 /* Frees a flu_list and all its nodes. But doesn't attempt freeing the
  * items in the nodes.

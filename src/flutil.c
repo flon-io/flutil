@@ -1,6 +1,6 @@
 
 //
-// Copyright (c) 2013-2015, John Mettraux, jmettraux+flon@gmail.com
+// Copyright (c) 2013-2026, John Mettraux, jmettraux+flon@gmail.com
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -449,7 +449,9 @@ char *flu_basename(const char *path, ...)
   char *dbn = strdup(bn);
   free(s);
 
-  if (new_suffix) strcpy(strrchr(dbn, '.'), new_suffix);
+  //if (new_suffix) strcpy(strrchr(dbn, '.'), new_suffix);
+  //if (new_suffix) strlcpy(strrchr(dbn, '.'), new_suffix, strlen(new_suffix));
+  if (new_suffix) memcpy(strrchr(dbn, '.'), new_suffix, strlen(new_suffix));
 
   return dbn;
 }
@@ -661,6 +663,14 @@ flu_list *flu_l(void *elt0, ...)
   for (void *e = elt0; e; e = va_arg(ap, void *)) flu_list_add(r, e);
 
   va_end(ap);
+
+  return r;
+}
+
+size_t flu_list_length(flu_list *l)
+{
+  size_t r = 0;
+  for (flu_node *n = l->first; n != NULL; n = n->next) { r++; }
 
   return r;
 }
@@ -1198,7 +1208,9 @@ char *flu_strdup(char *s)
 {
   int l = strlen(s);
   char *r = calloc(l + 1, sizeof(char));
-  strcpy(r, s);
+
+  //strcpy(r, s);
+  memcpy(r, s, strlen(s));
 
   return r;
 }
